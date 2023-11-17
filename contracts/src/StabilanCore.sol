@@ -2,10 +2,26 @@
 pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./interfaces/IBackingToken.sol";
+import "./interfaces/IOptionToken.sol";
 
 contract StabilanCore is Ownable {
 
-    uint256 currentEpoch;
+    uint256 public currentEpoch;
+
+    struct AssetEpochData {
+        int256 strikePrice;
+        uint256 collateralAmount;
+        uint256 reservedAmount;
+        uint256 collateralRatio;
+        uint256 activeUntilTimestamp;
+        IOptionToken optionToken;
+        IBackingToken backingToken;
+    }
+
+    struct AssetConfig {
+        uint256 strikePricePercent;
+    }
 
     constructor(address _owner) Ownable(_owner) {
         currentEpoch = 1;
