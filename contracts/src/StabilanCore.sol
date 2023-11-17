@@ -1,14 +1,33 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.18;
 
-contract Counter {
-    uint256 public number;
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+contract StabilanCore is Ownable {
+
+    uint256 currentEpoch;
+
+    constructor(address _owner) Ownable(_owner) {
+        currentEpoch = 1;
     }
 
-    function increment() public {
-        number++;
+    function setupAsset(address assetAddress, uint256 expectedApy) external onlyOwner {
+
+    }
+
+    function buyOptions(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {
+
+    }
+
+    function executeOptions(address optionAddress, uint256 amount) external {
+
+    }
+
+    function backing(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {
+
+    }
+
+    function claimBackingRewards(address backingToken) external {
+
     }
 }
