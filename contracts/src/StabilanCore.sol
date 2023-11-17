@@ -7,24 +7,53 @@ import "./interfaces/IPriceFeedAggregator.sol";
 import "./interfaces/IBackingToken.sol";
 import "./interfaces/IOptionToken.sol";
 import "./interfaces/IStabilanCore.sol";
+import "./interfaces/ITokenFactory.sol";
 
 contract StabilanCore is IStabilanCore, Ownable {
+    uint256 public constant MAX_EPOCH_DURATION = 6; // in months
+
     uint256 public currentEpoch;
+    ITokenFactory public tokenFactory;
     IPriceFeedAggregator public priceFeedAggregator;
 
     mapping(address => mapping(uint256 => AssetEpochData)) assetsData;
+    mapping(address => AssetConfig) public assetsConfig;
 
-    constructor(address _owner) Ownable(_owner) {
+    address[] public supportedAssets;
+
+    constructor(ITokenFactory _tokenFactory, address _owner) Ownable(_owner) {
+        tokenFactory = _tokenFactory;
         currentEpoch = 1;
     }
 
     function setupAsset(address assetAddress, uint256 expectedApy) external onlyOwner {}
 
+    function updateEpoch() external {
+        currentEpoch++;
+
+        for (uint256 i = 0; i < supportedAssets.length; i++) {
+            address assetAddress = supportedAssets[i];
+
+            AssetConfig storage assetConfig = assetsConfig[assetAddress];
+            AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + MAX_EPOCH_DURATION];
+
+            assetData.optionToken =
+                tokenFactory.deployOptionToken("Option", "OPT", assetAddress, currentEpoch + MAX_EPOCH_DURATION);
+            assetData.backingToken =
+                tokenFactory.deployBackingToken("Backing", "BCK", assetAddress, currentEpoch + MAX_EPOCH_DURATION);
+
+            uint256 currAssetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
+            assetsData[assetAddress][currentEpoch].strikePrice =
+                Math.mulDiv(currAssetPrice, assetConfig.strikePricePercent, 1e18);
+        }
+    }
+
     function buyOptions(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {
         AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + durationEpochs - 1];
+        AssetConfig storage assetConfig = assetsConfig[assetAddress];
 
         uint256 collateralAssetPrice = priceFeedAggregator.getLatestPrice(address(assetData.backingToken.underlying()));
-        uint256 totalAvailableCollateral = Math.mulDiv(assetData.collateralAmount, assetData.collateralRatio, 1e18);
+        uint256 totalAvailableCollateral = Math.mulDiv(assetData.collateralAmount, assetConfig.collateralRatio, 1e18);
         uint256 totalAvailableCollateralValue = Math.mulDiv(totalAvailableCollateral, collateralAssetPrice, 1e18);
         uint256 currStrikePrice = assetsData[assetAddress][currentEpoch].strikePrice;
         uint256 insuringAssetValue = Math.mulDiv(amount, currStrikePrice, 1e18);

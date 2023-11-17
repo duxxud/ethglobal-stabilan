@@ -11,13 +11,13 @@ interface IStabilanCore {
         uint256 strikePrice;
         uint256 collateralAmount; // in backing tokens
         uint256 reservedAmount; // in insurance tokens
-        uint256 collateralRatio;
         uint256 activeUntilTimestamp;
         IOptionToken optionToken;
         IBackingToken backingToken;
     }
 
     struct AssetConfig {
+        uint256 collateralRatio;
         uint256 strikePricePercent;
     }
 }
