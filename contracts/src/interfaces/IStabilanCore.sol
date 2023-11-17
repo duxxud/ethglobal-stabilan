@@ -6,6 +6,7 @@ import "./IOptionToken.sol";
 
 interface IStabilanCore {
     error NotEnoughBacking();
+    error CannotExecute();
 
     struct AssetEpochData {
         uint256 strikePrice;

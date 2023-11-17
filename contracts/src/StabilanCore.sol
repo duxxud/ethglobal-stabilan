@@ -69,7 +69,30 @@ contract StabilanCore is IStabilanCore, Ownable {
         assetData.optionToken.mint(msg.sender, amount);
     }
 
-    function executeOptions(address optionAddress, uint256 amount) external {}
+    function executeOptions(IOptionToken option, uint256 amount) external {
+        address underlyingAsset = address(option.underlying());
+        uint256 underlyingAssetPrice = priceFeedAggregator.getLatestPrice(underlyingAsset);
+
+        AssetEpochData storage assetData = assetsData[underlyingAsset][currentEpoch];
+
+        if (assetData.strikePrice > underlyingAssetPrice) {
+            revert CannotExecute();
+        }
+
+        address collateralAsset = address(assetData.backingToken.underlying());
+        uint256 collateralAssetPrice = priceFeedAggregator.getLatestPrice(collateralAsset);
+        uint256 collateralAmount = Math.mulDiv(amount, assetData.strikePrice, collateralAssetPrice);
+
+        for (uint256 i = currentEpoch; i < option.endEpoch(); i++) {
+            assetsData[underlyingAsset][i].reservedAmount -= amount;
+            assetsData[underlyingAsset][i].collateralAmount -= collateralAmount;
+        }
+
+        //TODO: implement burn from because burnFrom will require allowance
+        //TODO: add safe ERC20 library
+        option.burn(msg.sender, amount);
+        IERC20(collateralAsset).transfer(msg.sender, collateralAmount);
+    }
 
     function backing(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {}
 
