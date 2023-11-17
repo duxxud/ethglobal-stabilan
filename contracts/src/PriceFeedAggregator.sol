@@ -10,18 +10,13 @@ contract PriceFeedAggregator is IPriceFeedAggregator, Ownable {
 
     constructor(address initialOwner) Ownable(initialOwner) {}
 
-    function setPriceFeed(
-        address asset,
-        IChainlinkOracle oracle
-    ) external onlyOwner {
+    function setPriceFeed(address asset, IChainlinkOracle oracle) external onlyOwner {
         priceFeed[asset] = oracle;
     }
 
-    function getLatestPrice(
-        address asset
-    ) external view override returns (uint256) {
+    function getLatestPrice(address asset) external view override returns (uint256) {
         IChainlinkOracle oracle = priceFeed[asset];
-        (, int256 price, , , ) = oracle.latestRoundData();
+        (, int256 price,,,) = oracle.latestRoundData();
         return uint256(price);
     }
 }

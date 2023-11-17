@@ -5,11 +5,12 @@ import "./IBackingToken.sol";
 import "./IOptionToken.sol";
 
 interface IStabilanCore {
+    error NotEnoughBacking();
 
     struct AssetEpochData {
-        int256 strikePrice;
-        uint256 collateralAmount;
-        uint256 reservedAmount;
+        uint256 strikePrice;
+        uint256 collateralAmount; // in backing tokens
+        uint256 reservedAmount; // in insurance tokens
         uint256 collateralRatio;
         uint256 activeUntilTimestamp;
         IOptionToken optionToken;
@@ -19,5 +20,4 @@ interface IStabilanCore {
     struct AssetConfig {
         uint256 strikePricePercent;
     }
-
 }
