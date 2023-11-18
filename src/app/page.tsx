@@ -45,7 +45,10 @@ export default function Home() {
   return (
     <div>
       <MainContent />
-      <div className="my-10">
+      <div className="my-48">
+        <div className="w-full text-center">
+          <Typography type="h2">Stabilan - some more text here</Typography>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mx-20 mt-20">
           {features.map((feature, index) => (
             <div key={index} className="bg-white shadow-sm rounded-3xl p-4">

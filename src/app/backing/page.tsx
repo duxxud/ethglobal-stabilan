@@ -80,7 +80,9 @@ export default function Page() {
                 className="h-6 w-6 text-primary z-10"
               />
             )}
-            <Icon src={token.icon} width={64} height={64} />
+            <div className="min-h-[80px]">
+              <Icon src={token.icon} width={64} height={64} />
+            </div>
             <div className="flex flex-col gap-3">
               <Typography type="body-bold">{token.name}</Typography>
               <Typography type="meta">Protocol</Typography>
