@@ -16,3 +16,23 @@
   transform: translate(-50%, -50%);
   z-index: 10;
 }
+
+@keyframes rotateImage {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(360deg);
+  }
+  50% {
+    transform: rotate(-360deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+}
+
+.rotatingImage {
+  animation: rotateImage 20s infinite;
+}

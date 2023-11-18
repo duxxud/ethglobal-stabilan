@@ -6,9 +6,9 @@ import style from "./MainContent.module.css";
 import { FlexCol, ImageWrapper, Typography } from "lib";
 import { Images } from "lib/meta/images";
 
-
 export const MainContent = () => {
   const floating = cn(style.floating);
+  const rotatingImage = cn(style.rotatingImage);
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
@@ -49,9 +49,18 @@ export const MainContent = () => {
 
         <FlexCol className="gap-12">
           <FlexCol className="gap-2 md:gap-3 lg:gap-4 xl:gap-6">
-            <Typography type="h1" className="font-bold">
-              Welcome to Stabilan
-            </Typography>
+            <div className="flex items-start">
+              <Typography type="h1" className="font-bold">
+                Welcome to Stabilan
+              </Typography>
+              <ImageWrapper
+                className={`mt-[38px] ${rotatingImage}`}
+                src={Images.fkejh}
+                alt="Your Image Description"
+                width={50} // Set width as needed
+                height={50} // Set height as needed
+              />
+            </div>
             <Typography type="body-regular">
               We make it super easy for you to keep your money safe! Think of it
               like a magic shield for your coins. 🛡️

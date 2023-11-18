@@ -11,4 +11,5 @@ export const Images = {
   stabilanLandingBitcoin: "/stabilan-landing/bitcoinlanding.png",
   stabilanLandingCrypto: "/stabilan-landing/cryptohand.png",
   stabilanObjectnobg: "/stabilan-landing/objectnobg.png",
+  fkejh: "/stabilan-landing/fkejh.png",
 };
