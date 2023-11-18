@@ -67,24 +67,32 @@ contract StabilanCore is IStabilanCore, Ownable {
         AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + durationEpochs - 1];
         AssetConfig storage assetConfig = assetsConfig[assetAddress];
 
-        uint256 collateralAssetPrice = priceFeedAggregator.getLatestPrice(address(assetData.backingToken.underlying()));
-        uint256 totalAvailableCollateral = Math.mulDiv(assetData.collateralAmount, assetConfig.collateralRatio, 1e18);
-        uint256 totalAvailableCollateralValue = Math.mulDiv(totalAvailableCollateral, collateralAssetPrice, 1e18);
-        uint256 currStrikePrice = assetsData[assetAddress][currentEpoch].strikePrice;
-        uint256 insuringAssetValue = Math.mulDiv(amount, currStrikePrice, 1e18);
-
-        if (insuringAssetValue > totalAvailableCollateralValue) {
-            revert NotEnoughBacking();
+        uint256 optionsPrice = getOptionsPrice(assetAddress, amount, durationEpochs, address(assetData.backingToken.underlying()));
+        if(msg.value < optionsPrice) {
+            revert NotEnoughETHSent(msg.value, optionsPrice);
         }
 
+        uint256 collateralAssetPrice = priceFeedAggregator.getLatestPrice(address(assetData.backingToken.underlying()));
+        uint256 currStrikePrice = assetsData[assetAddress][currentEpoch].strikePrice;
+        uint256 insuringAssetValue = amount.wadMul(currStrikePrice);
+
         for (uint256 i = 0; i < durationEpochs; i++) {
-            assetsData[assetAddress][currentEpoch + i].reservedAmount += amount;
+            AssetEpochData storage epochData = assetsData[assetAddress][currentEpoch + i];
+
+            uint256 totalAvailableCollateral = epochData.collateralAmount.wadDiv(assetConfig.collateralRatio);
+            uint256 totalAvailableCollateralUSD = totalAvailableCollateral.wadMul(collateralAssetPrice);
+
+            if (insuringAssetValue > totalAvailableCollateralUSD) {
+                revert NotEnoughBacking(currentEpoch + i, insuringAssetValue, totalAvailableCollateralUSD);
+            }
+
+            epochData.reservedAmount += amount;
         }
 
         assetData.optionToken.mint(msg.sender, amount);
     }
 
-    function getYearlyCost(address assetAddress, uint256 amount, uint256 durationEpochs, uint256 payingToken)
+    function getYearlyCost(address assetAddress, uint256 amount, uint256 durationEpochs, address payingToken)
         public
         view
         returns (uint256)
@@ -102,8 +110,8 @@ contract StabilanCore is IStabilanCore, Ownable {
         for (uint256 i = 0; i < durationEpochs; i++) {
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
 
-            uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice.usdToWad());
-            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice.usdToWad());
+            uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice);
+            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice);
             uint256 util = reservedUSD.wadDiv(collateralUSD).wadDiv(assetConfig.collateralRatio);
             utilAvg += util;
         }
@@ -113,13 +121,26 @@ contract StabilanCore is IStabilanCore, Ownable {
         return yearlyCost;
     }
 
-    function getOptionsPrice(address assetAddress, uint256 amount, uint256 durationEpochs, uint256 payingToken)
+    function getOptionsPrice(address assetAddress, uint256 amount, uint256 durationEpochs, address payingToken)
         public
         view
         returns (uint256)
     {
+        AssetEpochData storage currEpochData = assetsData[assetAddress][currentEpoch];
+
         uint256 yearlyCost = getYearlyCost(assetAddress, amount, durationEpochs, payingToken);
         uint256 pricePercent = (yearlyCost * durationEpochs) / 12;
+
+        uint256 totalPriceUSD = amount.wadMul(currEpochData.strikePrice).wadMul(pricePercent);
+
+        uint256 payingTokenPrice = priceFeedAggregator.getLatestPrice(payingToken);
+        uint256 totalPrice = amount.wadDiv(payingTokenPrice);
+
+        return totalPrice;
+    }
+
+    function getAssetAPY(address assetAddress) public view returns(uint256) {
+        return assetsConfig[assetAddress].expectedApy;
     }
 
     function executeOptions(IOptionToken option, uint256 amount) external {

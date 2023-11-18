@@ -5,8 +5,9 @@ import "./IBackingToken.sol";
 import "./IOptionToken.sol";
 
 interface IStabilanCore {
-    error NotEnoughBacking();
     error CannotExecute();
+    error NotEnoughETHSent(uint256 msgValue, uint256 optionsPrice);
+    error NotEnoughBacking(uint256 inEpochId, uint256 insuringAssetValue, uint256 totalAvailableCollateralUSD);
 
     struct AssetEpochData {
         uint256 strikePrice; // in USD 8 decimals

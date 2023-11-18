@@ -12,11 +12,12 @@ contract DataProvider {
   }
   struct UserToken {
     TokenType tokenType;
-    address tokenAddress;
+    address stabilanTokenAddress;
+    address undelyingAssetAddress;
     uint256 endEpoch;
     uint256 balance;
   }
-  
+
   function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
 
     UserToken[] memory userTokensTemp = new UserToken[](100);
@@ -31,7 +32,8 @@ contract DataProvider {
       if (balance > 0) {
         userTokensTemp[userTokenLen++] = UserToken({
           tokenType: TokenType.OPTION,
-          tokenAddress: address(optionTokens[i]),
+          stabilanTokenAddress: address(optionTokens[i]),
+          undelyingAssetAddress: address(optionTokens[i].underlying()),
           endEpoch: optionTokens[i].endEpoch(),
           balance: balance
         });
@@ -43,7 +45,8 @@ contract DataProvider {
       if (balance > 0) {
         userTokensTemp[userTokenLen++] = UserToken({
           tokenType: TokenType.BACKING,
-          tokenAddress: address(backingTokens[i]),
+          stabilanTokenAddress: address(backingTokens[i]),
+          undelyingAssetAddress: address(backingTokens[i].underlying()),
           endEpoch: backingTokens[i].endEpoch(),
           balance: balance
         });
