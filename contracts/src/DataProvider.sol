@@ -13,6 +13,7 @@ contract DataProvider {
   struct UserToken {
     TokenType tokenType;
     address tokenAddress;
+    uint256 endEpoch;
     uint256 balance;
   }
   function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
@@ -30,6 +31,7 @@ contract DataProvider {
         userTokensTemp[userTokenLen++] = UserToken({
           tokenType: TokenType.OPTION,
           tokenAddress: address(optionTokens[i]),
+          endEpoch: optionTokens[i].endEpoch(),
           balance: balance
         });
       }
@@ -41,6 +43,7 @@ contract DataProvider {
         userTokensTemp[userTokenLen++] = UserToken({
           tokenType: TokenType.BACKING,
           tokenAddress: address(backingTokens[i]),
+          endEpoch: backingTokens[i].endEpoch(),
           balance: balance
         });
       }

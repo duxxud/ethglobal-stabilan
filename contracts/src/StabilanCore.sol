@@ -27,9 +27,10 @@ contract StabilanCore is IStabilanCore, Ownable {
     IOptionToken[] public allOptionTokens;
     IBackingToken[] public allBackingTokens;
 
-    constructor(ITokenFactory _tokenFactory, address _owner) Ownable(_owner) {
+    constructor(ITokenFactory _tokenFactory, address _owner, IPriceFeedAggregator _priceFeedAggregator) Ownable(_owner) {
         tokenFactory = _tokenFactory;
         currentEpoch = 1;
+        priceFeedAggregator = _priceFeedAggregator;
     }
 
     function setupAsset(address assetAddress, uint256 expectedApy) external onlyOwner {}
@@ -86,7 +87,7 @@ contract StabilanCore is IStabilanCore, Ownable {
         AssetEpochData storage currEpochData = assetsData[assetAddress][currentEpoch];
 
         uint256 currStrikePrice = currEpochData.strikePrice;
-        uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.underlying()));
+        uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.backingToken.underlying()));
         
         uint256 utilAvg = 0;
         for(uint256 i=0; i<durationEpochs; i++) {
@@ -94,7 +95,7 @@ contract StabilanCore is IStabilanCore, Ownable {
             
             uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice.usdToWad());
             uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice.usdToWad());
-            uint256 util = reservedUSD.wadDiv(collateralUSD)().wadDiv(assetConfig.collateralRatio);
+            uint256 util = reservedUSD.wadDiv(collateralUSD).wadDiv(assetConfig.collateralRatio);
             utilAvg += util;
         }
         utilAvg /= durationEpochs;
