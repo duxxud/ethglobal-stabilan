@@ -18,6 +18,7 @@ interface ITokenFactory {
         string memory symbol,
         address underyling,
         uint256 expireTimestamp,
-        address coreContract
+        address coreContract,
+        address backedAsset
     ) external returns (IBackingToken);
 }

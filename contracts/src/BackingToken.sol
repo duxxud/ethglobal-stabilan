@@ -7,11 +7,16 @@ import "./interfaces/IBackingToken.sol";
 import "./StabilanToken.sol";
 
 contract BackingToken is IBackingToken, StabilanToken {
+    address backedAsset;
+
     constructor(
         string memory _name,
         string memory _symbol,
         IERC20 _underlying,
         uint256 _endEpoch,
-        address _coreContract
-    ) StabilanToken(_name, _symbol, _underlying, _endEpoch, _coreContract) {}
+        address _coreContract,
+        address _backedAsset
+    ) StabilanToken(_name, _symbol, _underlying, _endEpoch, _coreContract) {
+        backedAsset = _backedAsset;
+    }
 }

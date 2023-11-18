@@ -10,6 +10,7 @@ import "./interfaces/IOptionToken.sol";
 import "./interfaces/IStabilanCore.sol";
 import "./interfaces/ITokenFactory.sol";
 import "./libraries/WadRayMath.sol";
+import "./libraries/StringLib.sol";
 
 contract StabilanCore is IStabilanCore, Ownable {
     using WadRayMath for uint256;
@@ -36,14 +37,18 @@ contract StabilanCore is IStabilanCore, Ownable {
         currentEpoch = 1;
     }
 
-    function setupAsset(address assetAddress, uint256 collateralRatio, uint256 strikePricePercent, uint256 expectedApy)
-        external
-        onlyOwner
-    {
+    function setupAsset(
+        address assetAddress,
+        uint256 collateralRatio,
+        uint256 strikePricePercent,
+        uint256 expectedApy,
+        address collateralAddress
+    ) external onlyOwner {
         AssetConfig storage assetConfig = assetsConfig[assetAddress];
         assetConfig.collateralRatio = collateralRatio;
         assetConfig.strikePricePercent = strikePricePercent;
         assetConfig.expectedApy = expectedApy;
+        assetConfig.collateralAsset = collateralAddress;
 
         supportedAssets.push(assetAddress);
 
@@ -53,15 +58,8 @@ contract StabilanCore is IStabilanCore, Ownable {
         assetData.strikePrice = Math.mulDiv(assetPrice, strikePricePercent, 1e18);
 
         for (uint256 i = 0; i < MAX_EPOCH_DURATION; i++) {
-            AssetEpochData storage assetEpochData = assetsData[assetAddress][currentEpoch + i];
-
             (IOptionToken optionToken, IBackingToken backingToken) =
-                _deployOptionBackingTokenPair(assetAddress, currentEpoch + i);
-            assetEpochData.optionToken = optionToken;
-            assetEpochData.backingToken = backingToken;
-
-            allOptionTokens.push(optionToken);
-            allBackingTokens.push(backingToken);
+                _deployOptionBackingTokenPair(assetAddress, collateralAddress, currentEpoch + i);
         }
     }
 
@@ -72,19 +70,13 @@ contract StabilanCore is IStabilanCore, Ownable {
             address assetAddress = supportedAssets[i];
 
             AssetConfig storage assetConfig = assetsConfig[assetAddress];
-            AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + MAX_EPOCH_DURATION];
 
-            (IOptionToken optionToken, IBackingToken backingToken) =
-                _deployOptionBackingTokenPair(assetAddress, currentEpoch);
-            assetData.optionToken = optionToken;
-            assetData.backingToken = backingToken;
-
-            allOptionTokens.push(assetData.optionToken);
-            allBackingTokens.push(assetData.backingToken);
+            (IOptionToken optionToken, IBackingToken backingToken) = _deployOptionBackingTokenPair(
+                assetAddress, assetConfig.collateralAsset, currentEpoch + MAX_EPOCH_DURATION
+            );
 
             uint256 currAssetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
-            assetsData[assetAddress][currentEpoch].strikePrice =
-                Math.mulDiv(currAssetPrice, assetConfig.strikePricePercent, 1e18);
+            assetsData[assetAddress][currentEpoch].strikePrice = currAssetPrice.wadMul(assetConfig.strikePricePercent);
         }
     }
 
@@ -211,39 +203,54 @@ contract StabilanCore is IStabilanCore, Ownable {
         return (allOptionTokens, allBackingTokens);
     }
 
-    function _deployOptionBackingTokenPair(address assetAddress, uint256 offset)
+    function _deployOptionBackingTokenPair(address assetAddress, address collateralAddress, uint256 endingEpoch)
         private
         returns (IOptionToken, IBackingToken)
     {
-        string memory endMonthSymbol = _getMonthSymbol((11 + offset + MAX_EPOCH_DURATION) % 12);
-        string memory yearSymbol = _getYearSymbol((11 + offset + MAX_EPOCH_DURATION) / 12);
-        string memory tokenSuffix = string.concat(" ", endMonthSymbol, " ", yearSymbol);
+        string memory tokenSuffix = string.concat(
+            " ",
+            StringLib.getMonthSymbol((10 + endingEpoch) % 12),
+            " ",
+            StringLib.getYearSymbol((10 + endingEpoch) / 12)
+        );
 
         IOptionToken optionToken = tokenFactory.deployOptionToken(
             string.concat("Option ", IERC20Metadata(assetAddress).name(), tokenSuffix),
             string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), tokenSuffix),
             assetAddress,
-            offset,
+            endingEpoch,
             address(this)
         );
+
         IBackingToken backingToken = tokenFactory.deployBackingToken(
-            string.concat("Backing ", IERC20Metadata(assetAddress).name(), tokenSuffix),
-            string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), tokenSuffix),
-            assetAddress,
-            offset,
-            address(this)
+            string.concat(
+                "Backing ",
+                IERC20Metadata(assetAddress).name(),
+                "-",
+                IERC20Metadata(collateralAddress).name(),
+                tokenSuffix
+            ),
+            string.concat(
+                "BCK ",
+                IERC20Metadata(assetAddress).symbol(),
+                "-",
+                IERC20Metadata(collateralAddress).symbol(),
+                tokenSuffix
+            ),
+            collateralAddress,
+            endingEpoch,
+            address(this),
+            assetAddress
         );
+
+        AssetEpochData storage assetData = assetsData[assetAddress][endingEpoch];
+
+        assetData.optionToken = optionToken;
+        assetData.backingToken = backingToken;
+
+        allOptionTokens.push(assetData.optionToken);
+        allBackingTokens.push(assetData.backingToken);
 
         return (optionToken, backingToken);
-    }
-
-    function _getMonthSymbol(uint256 index) private pure returns (string memory) {
-        string[12] memory months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"];
-        return months[index];
-    }
-
-    function _getYearSymbol(uint256 index) private pure returns (string memory) {
-        string[7] memory _years = ["2023", "2024", "2025", "2026", "2027", "2028", "2029"];
-        return _years[index];
     }
 }

@@ -19,6 +19,7 @@ interface IStabilanCore {
     }
 
     struct AssetConfig {
+        address collateralAsset;
         uint256 collateralRatio;
         uint256 strikePricePercent;
         uint256 expectedApy;

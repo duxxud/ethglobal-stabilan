@@ -32,7 +32,8 @@ contract TokenFactory is ITokenFactory {
         string memory symbol,
         address underyling,
         uint256 expireTimestamp,
-        address coreContract
+        address coreContract,
+        address backedAsset
     ) external returns (IBackingToken) {
         return IBackingToken(
             new BackingToken(
@@ -40,7 +41,8 @@ contract TokenFactory is ITokenFactory {
                     symbol,
                     IERC20(underyling),
                     expireTimestamp,
-                    coreContract
+                    coreContract,
+                    backedAsset
                 )
         );
     }
