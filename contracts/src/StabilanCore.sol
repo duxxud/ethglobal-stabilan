@@ -21,6 +21,9 @@ contract StabilanCore is IStabilanCore, Ownable {
 
     address[] public supportedAssets;
 
+    IOptionToken[] public allOptionTokens;
+    IBackingToken[] public allBackingTokens;
+
     constructor(ITokenFactory _tokenFactory, address _owner) Ownable(_owner) {
         tokenFactory = _tokenFactory;
         currentEpoch = 1;
@@ -41,6 +44,9 @@ contract StabilanCore is IStabilanCore, Ownable {
                 tokenFactory.deployOptionToken("Option", "OPT", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this));
             assetData.backingToken =
                 tokenFactory.deployBackingToken("Backing", "BCK", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this));
+
+            allOptionTokens.push(assetData.optionToken);
+            allBackingTokens.push(assetData.backingToken);
 
             uint256 currAssetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
             assetsData[assetAddress][currentEpoch].strikePrice =
@@ -106,4 +112,8 @@ contract StabilanCore is IStabilanCore, Ownable {
     }
 
     function claimBackingRewards(address backingToken) external {}
+
+    function allStabilanTokens() external view returns(IOptionToken[] memory, IBackingToken[] memory) {
+        return (allOptionTokens, allBackingTokens);
+    }
 }

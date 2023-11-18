@@ -21,4 +21,6 @@ interface IStabilanCore {
         uint256 collateralRatio;
         uint256 strikePricePercent;
     }
+
+    function allStabilanTokens() external view returns(IOptionToken[] memory, IBackingToken[] memory);
 }
