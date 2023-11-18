@@ -3,6 +3,7 @@ pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/interfaces/IERC20Metadata.sol";
 import "./interfaces/IPriceFeedAggregator.sol";
 import "./interfaces/IBackingToken.sol";
 import "./interfaces/IOptionToken.sol";
@@ -36,7 +37,54 @@ contract StabilanCore is IStabilanCore, Ownable {
         priceFeedAggregator = _priceFeedAggregator;
     }
 
-    function setupAsset(address assetAddress, uint256 expectedApy) external onlyOwner {}
+    function setupAsset(address assetAddress, uint256 collateralRatio, uint256 strikePricePercent, uint256 expectedApy)
+        external
+        onlyOwner
+    {
+        AssetConfig storage assetConfig = assetsConfig[assetAddress];
+        assetConfig.collateralRatio = collateralRatio;
+        assetConfig.strikePricePercent = strikePricePercent;
+        assetConfig.expectedApy = expectedApy;
+
+        supportedAssets.push(assetAddress);
+
+        AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch];
+
+        uint256 assetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
+        assetData.strikePrice = Math.mulDiv(assetPrice, strikePricePercent, 1e18);
+
+        for (uint256 i = 0; i < MAX_EPOCH_DURATION; i++) {
+            AssetEpochData storage assetEpochData = assetsData[assetAddress][currentEpoch + i];
+
+            IOptionToken optionToken = tokenFactory.deployOptionToken(
+                string.concat(
+                    "Option ", IERC20Metadata(assetAddress).name(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
+                ),
+                string.concat(
+                    "OPT ", IERC20Metadata(assetAddress).symbol(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
+                ),
+                assetAddress,
+                currentEpoch + i,
+                address(this)
+            );
+            IBackingToken backingToken = tokenFactory.deployBackingToken(
+                string.concat(
+                    "Backing ", IERC20Metadata(assetAddress).name(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
+                ),
+                string.concat(
+                    "BCK ", IERC20Metadata(assetAddress).symbol(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
+                ),
+                assetAddress,
+                currentEpoch + i,
+                address(this)
+            );
+            assetEpochData.optionToken = optionToken;
+            assetEpochData.backingToken = backingToken;
+
+            allOptionTokens.push(optionToken);
+            allBackingTokens.push(backingToken);
+        }
+    }
 
     function updateEpoch() external {
         currentEpoch++;
@@ -47,11 +95,21 @@ contract StabilanCore is IStabilanCore, Ownable {
             AssetConfig storage assetConfig = assetsConfig[assetAddress];
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + MAX_EPOCH_DURATION];
 
+            string memory endMonthSymbol = getMonthSymbol((11 + currentEpoch + MAX_EPOCH_DURATION) % 12);
+
             assetData.optionToken = tokenFactory.deployOptionToken(
-                "Option", "OPT", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this)
+                string.concat("Option ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
+                string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
+                assetAddress,
+                currentEpoch + MAX_EPOCH_DURATION,
+                address(this)
             );
             assetData.backingToken = tokenFactory.deployBackingToken(
-                "Backing", "BCK", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this)
+                string.concat("Backing ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
+                string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
+                assetAddress,
+                currentEpoch + MAX_EPOCH_DURATION,
+                address(this)
             );
 
             allOptionTokens.push(assetData.optionToken);
@@ -97,13 +155,13 @@ contract StabilanCore is IStabilanCore, Ownable {
 
         uint256 currStrikePrice = currEpochData.strikePrice;
         uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.backingToken.underlying()));
-        
+
         uint256 utilAvg = 0;
         for (uint256 i = 0; i < durationEpochs; i++) {
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
 
-            uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice.usdToWad());
-            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice.usdToWad());
+            uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice);
+            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice);
             uint256 util = reservedUSD.wadDiv(collateralUSD).wadDiv(assetConfig.collateralRatio);
             utilAvg += util;
         }
@@ -162,5 +220,11 @@ contract StabilanCore is IStabilanCore, Ownable {
 
     function allStabilanTokens() external view returns (IOptionToken[] memory, IBackingToken[] memory) {
         return (allOptionTokens, allBackingTokens);
+    }
+
+    function getMonthSymbol(uint256 index) private pure returns (string memory) {
+        string[12] memory months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"];
+
+        return months[index];
     }
 }
