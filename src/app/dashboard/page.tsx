@@ -57,7 +57,7 @@ export default function Page() {
                   Until
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Action
+                  #
                 </th>
               </tr>
             </thead>
