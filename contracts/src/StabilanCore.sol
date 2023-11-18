@@ -118,8 +118,9 @@ contract StabilanCore is IStabilanCore, Ownable {
         AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + durationEpochs - 1];
         AssetConfig storage assetConfig = assetsConfig[assetAddress];
 
-        uint256 optionsPrice = getOptionsPrice(assetAddress, amount, durationEpochs, address(assetData.backingToken.underlying()));
-        if(msg.value < optionsPrice) {
+        uint256 optionsPrice =
+            getOptionsPrice(assetAddress, amount, durationEpochs, address(assetData.backingToken.underlying()));
+        if (msg.value < optionsPrice) {
             revert NotEnoughETHSent(msg.value, optionsPrice);
         }
 
@@ -190,7 +191,7 @@ contract StabilanCore is IStabilanCore, Ownable {
         return totalPrice;
     }
 
-    function getAssetAPY(address assetAddress) public view returns(uint256) {
+    function getAssetAPY(address assetAddress) public view returns (uint256) {
         return assetsConfig[assetAddress].expectedApy;
     }
 
