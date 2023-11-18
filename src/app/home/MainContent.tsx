@@ -49,6 +49,13 @@ export const MainContent = () => {
 
         <FlexCol className="gap-12">
           <FlexCol className="gap-2 md:gap-3 lg:gap-4 xl:gap-6">
+            <div>
+              <Typography type="body-bold">
+                <span className="border-2 rounded-3xl px-4 py-1">
+                  🚀 Stabilan built with ❤️
+                </span>
+              </Typography>
+            </div>
             <div className="flex items-start">
               <Typography type="h1" className="font-bold">
                 Welcome to Stabilan
