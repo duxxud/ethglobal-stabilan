@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Card, FlexCol, InputFieldS, Typography } from "../../lib";
-import { InputSliderField } from "../../lib/components/form/input/InputSliderField/InputSliderField";
+import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
 
 export default function Page() {
   const [days, setDays] = useState(28);
@@ -17,42 +17,50 @@ export default function Page() {
           Enter the amount you want to cover and for how long.
         </Typography>
       </FlexCol>
-      <div className="grid grid-cols-5 gap-20">
-        <div className="md:col-span-3 col-span-5 gap-12 flex flex-col">
+      <div className="grid grid-cols-12 gap-20">
+        <div className="md:col-span-8 col-span-12 gap-12 flex flex-col">
           <Card size="big">
             <Typography type="h6">Quote details</Typography>
             <br />
             <div className="flex flex-col gap-12">
-              <Typography type="body-regular">
-                This product covers any token or combination of tokens you have
-                in the Protocol. In case of a claim, you`ll receive the
-                equivalent of your lost funds in ETH up to the covered amount.
-                Alternatively you can select DAI.
-              </Typography>
               <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-1">
-                  <InputSliderField
-                    label="Duration (Days)"
-                    valueLabel="Days"
-                    value={days}
-                    name="days"
-                    min={28}
-                    max={380}
-                    onChange={(e) => {
-                      setDays(Number(e.target.value));
-                    }}
-                  />
+                <div className="p-4 rounded-xl shadow-[inset_-12px_-8px_40px_#46464620]">
+                  <Typography type="body-regular">
+                    This product covers any token or combination of tokens you
+                    have in the Protocol. In case of a claim, you`ll receive the
+                    equivalent of your lost funds in ETH up to the covered
+                    amount. Alternatively you can select DAI.
+                  </Typography>
                 </div>
-                <div className="col-span-1">
-                  <InputFieldS
-                    rightLabel="ETH"
-                    leftLabel={<div>Amount</div>}
-                    value={amount}
-                    name="amount"
-                    onChange={(e) => {
-                      setAmount(Number(e.target.value));
-                    }}
-                  />
+                <div className="flex flex-col gap-4">
+                  <div className="col-span-1">
+                    <InputSliderFieldS
+                      label={<Typography type="body-bold">Duration</Typography>}
+                      rightLabel={
+                        <Typography type="body-regular">Days</Typography>
+                      }
+                      value={days}
+                      name="days"
+                      min={28}
+                      max={380}
+                      onChange={(e) => {
+                        setDays(Number(e.target.value));
+                      }}
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <InputFieldS
+                      label={<Typography type="body-bold">Amount</Typography>}
+                      rightLabel={
+                        <Typography type="body-regular">ETH</Typography>
+                      }
+                      value={amount}
+                      name="amount"
+                      onChange={(e: any) => {
+                        setAmount(Number(e.target.value));
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -79,7 +87,7 @@ export default function Page() {
             </Typography>
           </Card>
         </div>
-        <div className="md:col-span-2 col-span-5">
+        <div className="md:col-span-4 col-span-12">
           <Card size="big" className="bg-white">
             Summary
           </Card>

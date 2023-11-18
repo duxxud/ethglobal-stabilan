@@ -12,7 +12,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   value?: string | number | readonly string[] | undefined;
   onChange: ChangeEventHandler<HTMLInputElement> | undefined;
   rightLabel?: ReactNode;
-  leftLabel?: ReactNode;
+  label?: ReactNode;
   placeholder?: string;
   fullWidth?: boolean;
 }
@@ -24,7 +24,7 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
       onChange,
       name,
       rightLabel,
-      leftLabel,
+      label,
       placeholder,
       fullWidth,
       className,
@@ -33,24 +33,24 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
     ref
   ) => {
     const classes = cn(styles.container, { ["w-full"]: fullWidth }, className);
-    const inputClasses = cn(styles.inputFont, styles.inputRoot);
 
     return (
-      <div className={classes}>
-        {leftLabel && <span className="w-32">{leftLabel}</span>}
-        <input
-          ref={ref}
-          className={inputClasses}
-          autoComplete="off"
-          value={value}
-          name={name}
-          onChange={onChange}
-          placeholder={placeholder}
-          // todo: review this
-          min={0}
-          {...rest}
-        />
-        {rightLabel && <span>{rightLabel}</span>}
+      <div className={`${classes} border focus-within:border-success`}>
+        {label && <div className="flex mb-4">{label}</div>}
+        <div className="flex flex-row items-center flex-wrap">
+          <input
+            ref={ref}
+            className="text-2xl flex-1 outline-none bg-transparent not-italic"
+            autoComplete="off"
+            value={value}
+            name={name}
+            onChange={onChange}
+            placeholder={placeholder}
+            min={0}
+            {...rest}
+          />
+          {rightLabel && <div className="flex-shrink-0">{rightLabel}</div>}
+        </div>
       </div>
     );
   }
