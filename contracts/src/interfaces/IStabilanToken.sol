@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 interface IStabilanToken is IERC20 {
     error NotCore();
-    
+
     function endEpoch() external view returns (uint256);
 
     function underlying() external view returns (IERC20);

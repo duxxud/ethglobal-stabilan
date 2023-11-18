@@ -5,11 +5,19 @@ import {IOptionToken} from "./IOptionToken.sol";
 import {IBackingToken} from "./IBackingToken.sol";
 
 interface ITokenFactory {
-    function deployOptionToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
-        external
-        returns (IOptionToken);
+    function deployOptionToken(
+        string memory name,
+        string memory symbol,
+        address underyling,
+        uint256 expireTimestamp,
+        address coreContract
+    ) external returns (IOptionToken);
 
-    function deployBackingToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
-        external
-        returns (IBackingToken);
+    function deployBackingToken(
+        string memory name,
+        string memory symbol,
+        address underyling,
+        uint256 expireTimestamp,
+        address coreContract
+    ) external returns (IBackingToken);
 }

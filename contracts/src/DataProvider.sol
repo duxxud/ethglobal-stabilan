@@ -16,6 +16,7 @@ contract DataProvider {
     uint256 endEpoch;
     uint256 balance;
   }
+  
   function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
 
     UserToken[] memory userTokensTemp = new UserToken[](100);
@@ -48,12 +49,5 @@ contract DataProvider {
         });
       }
     }
-
-    UserToken[] memory userTokens = new UserToken[](userTokenLen);
-    for(uint256 i=0; i<userTokenLen; i++) {
-      userTokens[i] = userTokensTemp[i];
-    }
-
-    return userTokens;
   }
 }

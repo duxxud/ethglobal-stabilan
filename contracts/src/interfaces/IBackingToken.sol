@@ -3,5 +3,4 @@ pragma solidity ^0.8.18;
 
 import "./IStabilanToken.sol";
 
-interface IBackingToken is IStabilanToken {
-}
+interface IBackingToken is IStabilanToken {}
