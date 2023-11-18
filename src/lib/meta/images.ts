@@ -8,4 +8,7 @@ export const Images = {
   fullGraphFinal: "/full-graph-final.svg",
   dotsBgSvg: "/dotsBgSvg.svg",
   stabilanLogo: "/logo/stabilan-logo.png",
+  stabilanLandingBitcoin: "/stabilan-landing/bitcoinlanding.png",
+  stabilanLandingCrypto: "/stabilan-landing/cryptohand.png",
+  stabilanObjectnobg: "/stabilan-landing/objectnobg.png",
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { usePathname } from "next/navigation";
-import { Button, ImageWrapper, SidebarItem, Typography } from "../../lib";
+import { Button, Icon, Icons, SidebarItem, Typography } from "../../lib";
 
 interface NavBarProps {
   items: SidebarItem[];
@@ -43,13 +43,7 @@ const NavBar = ({ items }: NavBarProps) => {
           href="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <ImageWrapper
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Flowbite Logo"
-            width={48}
-            height={48}
-          />
+          <Icon src={Icons.logo} alt="Flowbite Logo" width={48} height={48} />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             <Typography type="h6">Stabilan</Typography>
           </span>

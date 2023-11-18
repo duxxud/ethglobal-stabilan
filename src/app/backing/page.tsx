@@ -24,7 +24,7 @@ interface IToken {
 }
 
 export default function Page() {
-  const [days, setDays] = useState(28);
+  const [months, setMonths] = useState(28);
   const [amount, setAmount] = useState(0);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
@@ -56,7 +56,7 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-5">
       <FlexCol className="mb-12 gap-5">
-        <Typography type="h1">Back asset</Typography>
+        <Typography type="h2">Back asset</Typography>
         <Typography type="meta">
           <strong>Select Token </strong>& Enter the amount you want to cover and
           for how long.
@@ -107,15 +107,15 @@ export default function Page() {
                     label={<Typography type="body-bold">Duration</Typography>}
                     rightLabel={
                       <Typography type="h6" className="text-info">
-                        Days
+                        Months
                       </Typography>
                     }
-                    value={days}
-                    name="days"
+                    value={months}
+                    name="months"
                     min={28}
                     max={365}
                     onChange={(e) => {
-                      setDays(Number(e.target.value));
+                      setMonths(Number(e.target.value));
                     }}
                   />
                 </div>

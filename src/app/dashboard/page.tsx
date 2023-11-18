@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <div>
       <FlexCol className="mb-12 gap-5">
-        <Typography type="h1">Dashboard</Typography>
+        <Typography type="h2">Dashboard</Typography>
         <Typography type="meta">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
           cumque in dolorum exercitationem
