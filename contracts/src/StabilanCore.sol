@@ -55,25 +55,18 @@ contract StabilanCore is IStabilanCore, Ownable {
 
         for (uint256 i = 0; i < MAX_EPOCH_DURATION; i++) {
             AssetEpochData storage assetEpochData = assetsData[assetAddress][currentEpoch + i];
+            string memory endMonthSymbol = getMonthSymbol((11 + currentEpoch + i) % 12);
 
             IOptionToken optionToken = tokenFactory.deployOptionToken(
-                string.concat(
-                    "Option ", IERC20Metadata(assetAddress).name(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
-                ),
-                string.concat(
-                    "OPT ", IERC20Metadata(assetAddress).symbol(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
-                ),
+                string.concat("Option ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
+                string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
                 assetAddress,
                 currentEpoch + i,
                 address(this)
             );
             IBackingToken backingToken = tokenFactory.deployBackingToken(
-                string.concat(
-                    "Backing ", IERC20Metadata(assetAddress).name(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
-                ),
-                string.concat(
-                    "BCK ", IERC20Metadata(assetAddress).symbol(), " ", getMonthSymbol((11 + currentEpoch + i) % 12)
-                ),
+                string.concat("Backing ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
+                string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
                 assetAddress,
                 currentEpoch + i,
                 address(this)
