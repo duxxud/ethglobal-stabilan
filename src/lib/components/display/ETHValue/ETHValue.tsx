@@ -1,10 +1,12 @@
+import React from "react";
+import { parseUnits } from "viem";
+
+import { FlexRow, Typography } from "../..";
+
 import {
   DisplayTokensOptions,
   displayTokens,
 } from "lib/utils/tokens/display-tokens";
-import React from "react";
-import { parseUnits } from "viem";
-import { FlexRow, Typography } from "../..";
 
 interface Props extends DisplayTokensOptions {
   value: string;

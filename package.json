@@ -6,7 +6,8 @@
     "dev": "next dev -p 3030",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "yarn eslint --fix src/"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",

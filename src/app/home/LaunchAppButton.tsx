@@ -1,7 +1,8 @@
 "use client";
 
-import { Button } from "lib";
 import { useRouter } from "next/navigation";
+
+import { Button } from "lib";
 
 interface Props {
   label: string;

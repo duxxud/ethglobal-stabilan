@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
 import { CheckmarkIcon } from "react-hot-toast";
+
 import {
   Button,
   Card,
@@ -187,7 +187,7 @@ export default function Page() {
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">
-                  <Typography>You'll pay:</Typography>
+                  <Typography>You`ll pay:</Typography>
                   <Typography type="body-bold" className="text-info">
                     0.001 ETH
                   </Typography>

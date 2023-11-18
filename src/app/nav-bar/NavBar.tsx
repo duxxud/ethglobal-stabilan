@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
 import { usePathname } from "next/navigation";
+
 import { Button, Icon, Icons, SidebarItem, Typography } from "../../lib";
 
 interface NavBarProps {

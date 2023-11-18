@@ -1,9 +1,11 @@
 import cn from "classnames";
-import { FlexCol, ImageWrapper, Typography } from "lib";
-import { Images } from "lib/meta/images";
 
 import { LaunchAppButton } from "./LaunchAppButton";
 import style from "./MainContent.module.css";
+
+import { FlexCol, ImageWrapper, Typography } from "lib";
+import { Images } from "lib/meta/images";
+
 
 export const MainContent = () => {
   const floating = cn(style.floating);

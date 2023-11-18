@@ -1,4 +1,4 @@
-import { Card, FlexCol, Typography } from "lib";
+import { Card, FlexCol, ImageWrapper, Typography } from "lib";
 
 function getRandomBalance() {
   return (Math.random() * 100).toFixed(2);
@@ -68,7 +68,7 @@ export default function Page() {
                   className="bg-white dark:bg-gray-800 border-b border-dashed border-[rgba(145,158,171,0.2)] "
                 >
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center">
-                    <img
+                    <ImageWrapper
                       src={token.icon}
                       alt={token.name}
                       width="30"

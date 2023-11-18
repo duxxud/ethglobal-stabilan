@@ -1,5 +1,6 @@
-import { Icons, ImageWrapper, Typography } from "lib";
 import { MainContent } from "./home/MainContent";
+
+import { Icons, ImageWrapper, Typography } from "lib";
 
 const features = [
   {
