@@ -54,22 +54,9 @@ contract StabilanCore is IStabilanCore, Ownable {
 
         for (uint256 i = 0; i < MAX_EPOCH_DURATION; i++) {
             AssetEpochData storage assetEpochData = assetsData[assetAddress][currentEpoch + i];
-            string memory endMonthSymbol = getMonthSymbol((11 + currentEpoch + i) % 12);
 
-            IOptionToken optionToken = tokenFactory.deployOptionToken(
-                string.concat("Option ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
-                string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
-                assetAddress,
-                currentEpoch + i,
-                address(this)
-            );
-            IBackingToken backingToken = tokenFactory.deployBackingToken(
-                string.concat("Backing ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
-                string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
-                assetAddress,
-                currentEpoch + i,
-                address(this)
-            );
+            (IOptionToken optionToken, IBackingToken backingToken) =
+                _deployOptionBackingTokenPair(assetAddress, currentEpoch + i);
             assetEpochData.optionToken = optionToken;
             assetEpochData.backingToken = backingToken;
 
@@ -87,22 +74,10 @@ contract StabilanCore is IStabilanCore, Ownable {
             AssetConfig storage assetConfig = assetsConfig[assetAddress];
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + MAX_EPOCH_DURATION];
 
-            string memory endMonthSymbol = getMonthSymbol((11 + currentEpoch + MAX_EPOCH_DURATION) % 12);
-
-            assetData.optionToken = tokenFactory.deployOptionToken(
-                string.concat("Option ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
-                string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
-                assetAddress,
-                currentEpoch + MAX_EPOCH_DURATION,
-                address(this)
-            );
-            assetData.backingToken = tokenFactory.deployBackingToken(
-                string.concat("Backing ", IERC20Metadata(assetAddress).name(), " ", endMonthSymbol),
-                string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), " ", endMonthSymbol),
-                assetAddress,
-                currentEpoch + MAX_EPOCH_DURATION,
-                address(this)
-            );
+            (IOptionToken optionToken, IBackingToken backingToken) =
+                _deployOptionBackingTokenPair(assetAddress, currentEpoch);
+            assetData.optionToken = optionToken;
+            assetData.backingToken = backingToken;
 
             allOptionTokens.push(assetData.optionToken);
             allBackingTokens.push(assetData.backingToken);
@@ -236,9 +211,39 @@ contract StabilanCore is IStabilanCore, Ownable {
         return (allOptionTokens, allBackingTokens);
     }
 
-    function getMonthSymbol(uint256 index) private pure returns (string memory) {
-        string[12] memory months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"];
+    function _deployOptionBackingTokenPair(address assetAddress, uint256 offset)
+        private
+        returns (IOptionToken, IBackingToken)
+    {
+        string memory endMonthSymbol = _getMonthSymbol((11 + offset + MAX_EPOCH_DURATION) % 12);
+        string memory yearSymbol = _getYearSymbol((11 + offset + MAX_EPOCH_DURATION) / 12);
+        string memory tokenSuffix = string.concat(" ", endMonthSymbol, " ", yearSymbol);
 
+        IOptionToken optionToken = tokenFactory.deployOptionToken(
+            string.concat("Option ", IERC20Metadata(assetAddress).name(), tokenSuffix),
+            string.concat("OPT ", IERC20Metadata(assetAddress).symbol(), tokenSuffix),
+            assetAddress,
+            offset,
+            address(this)
+        );
+        IBackingToken backingToken = tokenFactory.deployBackingToken(
+            string.concat("Backing ", IERC20Metadata(assetAddress).name(), tokenSuffix),
+            string.concat("BCK ", IERC20Metadata(assetAddress).symbol(), tokenSuffix),
+            assetAddress,
+            offset,
+            address(this)
+        );
+
+        return (optionToken, backingToken);
+    }
+
+    function _getMonthSymbol(uint256 index) private pure returns (string memory) {
+        string[12] memory months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"];
         return months[index];
+    }
+
+    function _getYearSymbol(uint256 index) private pure returns (string memory) {
+        string[7] memory _years = ["2023", "2024", "2025", "2026", "2027", "2028", "2029"];
+        return _years[index];
     }
 }
