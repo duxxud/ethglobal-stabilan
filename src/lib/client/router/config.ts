@@ -2,12 +2,17 @@ import { SidebarItem } from "../../types";
 
 export const navigationBarConfig: SidebarItem[] = [
   {
-    title: "Cover",
-    path: "/cover",
+    title: "Insurance",
+    path: "/insurance",
     iconName: "",
   },
   {
-    title: "Test",
-    path: "/test",
+    title: "Backing",
+    path: "/backing",
+    iconName: "",
+  },
+  {
+    title: "Dashboard",
+    path: "/dashboard",
   },
 ];

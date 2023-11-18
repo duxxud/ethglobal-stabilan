@@ -26,10 +26,9 @@ interface IToken {
 export default function Page() {
   const [days, setDays] = useState(28);
   const [amount, setAmount] = useState(0);
-  const [selectedToken, setSelectedToken] = useState<IToken>({
-    name: "Uniswap v3",
-    icon: "https://app.nexusmutual.io/logos/uniswapv2.svg",
-  });
+  const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
+    undefined
+  );
 
   const tokens = [
     {
@@ -57,7 +56,7 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-5">
       <FlexCol className="mb-12 gap-5">
-        <Typography type="h1">Buy cover</Typography>
+        <Typography type="h1">Buy insurance</Typography>
         <Typography type="meta">
           <strong>Select Token </strong>& Enter the amount you want to cover and
           for how long.
@@ -71,7 +70,7 @@ export default function Page() {
             className="cursor-pointer flex flex-col flex-grow items-center rounded-2xl p-4 border border-dashed border-[rgba(145,158,171,0.2)] relative"
             onClick={() => selectToken(token)}
           >
-            {selectedToken.name === token.name && (
+            {selectedToken?.name === token.name && (
               <CheckmarkIcon
                 style={{
                   position: "absolute",
@@ -162,40 +161,50 @@ export default function Page() {
         </div>
         <div className="md:col-span-4 col-span-12">
           <Card size="big">
-            <FlexCol className="gap-6">
-              <Typography type="h5">Summary</Typography>
-              <FlexRow className="gap-3 items-center">
-                <Icon src={selectedToken.icon} width={64} height={64} />
-                <FlexCol className="gap-3">
-                  <Typography type="body-bold">{selectedToken.name}</Typography>
-                  <Typography type="meta">Protocol</Typography>
-                </FlexCol>
-              </FlexRow>
-              <Divider />
-              <FlexRow className="justify-between">
-                <Typography>Pay in:</Typography>
-                <Typography type="body-bold" className="text-info">
-                  ETH
-                </Typography>
-              </FlexRow>
-              <FlexRow className="justify-between">
-                <Typography>You'll pay:</Typography>
-                <Typography type="body-bold" className="text-info">
-                  0.001 ETH
-                </Typography>
-              </FlexRow>
-              <FlexRow className="justify-between">
-                <Typography>Yearly cost:</Typography>
-                <Typography type="body-bold" className="text-info">
-                  1.1896%
-                </Typography>
-              </FlexRow>
-              <Divider />
+            {selectedToken === undefined && (
+              <FlexCol className="gap-6">
+                <Typography type="h5">Summary</Typography>
+                <Typography type="meta">Please select token</Typography>
+              </FlexCol>
+            )}
+            {selectedToken && (
+              <FlexCol className="gap-6">
+                <Typography type="h5">Summary</Typography>
+                <FlexRow className="gap-3 items-center">
+                  <Icon src={selectedToken.icon} width={64} height={64} />
+                  <FlexCol className="gap-3">
+                    <Typography type="body-bold">
+                      {selectedToken.name}
+                    </Typography>
+                    <Typography type="meta">Protocol</Typography>
+                  </FlexCol>
+                </FlexRow>
+                <Divider />
+                <FlexRow className="justify-between">
+                  <Typography>Pay in:</Typography>
+                  <Typography type="body-bold" className="text-info">
+                    ETH
+                  </Typography>
+                </FlexRow>
+                <FlexRow className="justify-between">
+                  <Typography>You'll pay:</Typography>
+                  <Typography type="body-bold" className="text-info">
+                    0.001 ETH
+                  </Typography>
+                </FlexRow>
+                <FlexRow className="justify-between">
+                  <Typography>Yearly cost:</Typography>
+                  <Typography type="body-bold" className="text-info">
+                    1.1896%
+                  </Typography>
+                </FlexRow>
+                <Divider />
 
-              <Button color="success" size="big">
-                Pay
-              </Button>
-            </FlexCol>
+                <Button color="success" size="big">
+                  Pay
+                </Button>
+              </FlexCol>
+            )}
           </Card>
         </div>
       </div>
