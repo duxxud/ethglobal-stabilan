@@ -17,9 +17,13 @@ contract StabilanToken is IStabilanToken, ERC20 {
         _;
     }
 
-    constructor(string memory _name, string memory _symbol, IERC20 _underlying, uint256 _endEpoch, address _coreContract)
-        ERC20(_name, _symbol)
-    {
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        IERC20 _underlying,
+        uint256 _endEpoch,
+        address _coreContract
+    ) ERC20(_name, _symbol) {
         underlying = _underlying;
         endEpoch = _endEpoch;
         coreContract = _coreContract;
@@ -32,5 +36,4 @@ contract StabilanToken is IStabilanToken, ERC20 {
     function burn(address account, uint256 amount) external override onlyCore {
         _burn(account, amount);
     }
-
 }

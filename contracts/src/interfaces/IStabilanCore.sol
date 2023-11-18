@@ -23,5 +23,5 @@ interface IStabilanCore {
         uint256 expectedApy;
     }
 
-    function allStabilanTokens() external view returns(IOptionToken[] memory, IBackingToken[] memory);
+    function allStabilanTokens() external view returns (IOptionToken[] memory, IBackingToken[] memory);
 }

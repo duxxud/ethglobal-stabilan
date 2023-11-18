@@ -8,10 +8,13 @@ import "./OptionToken.sol";
 import "./BackingToken.sol";
 
 contract TokenFactory {
-    function deployOptionToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
-        external
-        returns (IOptionToken)
-    {
+    function deployOptionToken(
+        string memory name,
+        string memory symbol,
+        address underyling,
+        uint256 expireTimestamp,
+        address coreContract
+    ) external returns (IOptionToken) {
         return IOptionToken(
             new OptionToken(
                     name,
@@ -23,10 +26,13 @@ contract TokenFactory {
         );
     }
 
-    function deployBackingToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
-        external
-        returns (IBackingToken)
-    {
+    function deployBackingToken(
+        string memory name,
+        string memory symbol,
+        address underyling,
+        uint256 expireTimestamp,
+        address coreContract
+    ) external returns (IBackingToken) {
         return IBackingToken(
             new BackingToken(
                     name,
