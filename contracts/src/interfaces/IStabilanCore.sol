@@ -14,6 +14,7 @@ interface IStabilanCore {
         uint256 collateralAmount; // in backing tokens
         uint256 reservedAmount; // in insurance tokens
         uint256 activeUntilTimestamp;
+        uint256 totalPremium;
         IOptionToken optionToken;
         IBackingToken backingToken;
     }
