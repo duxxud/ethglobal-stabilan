@@ -12,7 +12,7 @@ export const colors = {
   // info (light blue)
   info: {
     DEFAULT: "#6184D8",
-    hover: "#111111",
+    hover: "#6184D8",
   },
   // warning orange
   warning: {
@@ -38,6 +38,10 @@ export const colors = {
   success: {
     DEFAULT: "#4D5CE5",
     hover: "#111111",
+  },
+  white: {
+    DEFAULT: "#FFFFFF",
+    hover: "#FFFFFF",
   },
   // dark: {
   //   // primary (black)

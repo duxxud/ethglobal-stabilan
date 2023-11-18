@@ -60,10 +60,10 @@ export const Card: React.FC<CardProps> = ({
   size = "normal",
   ...props
 }) => {
-  const classes = cn(style.root, style[size]);
+  const classes = cn(style.root, style[size], className);
 
   return (
-    <div className={classes} {...props}>
+    <div className={`bg-white ${classes}`} {...props}>
       {children}
     </div>
   );

@@ -1,5 +1,5 @@
 .root {
-  @apply border rounded-2xl border-disabled border-opacity-50;
+  @apply border rounded-2xl;
 }
 
 /* SIZES */

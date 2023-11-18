@@ -35,7 +35,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {}
  */
 
 export const FlexRow: React.FC<Props> = ({ children, ...rest }) => {
-  const classes = cn("flex flex-row gap-3", rest.className);
+  const classes = cn("flex flex-row", rest.className);
 
   return (
     <div {...rest} className={classes}>

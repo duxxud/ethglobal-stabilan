@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { Button, ImageWrapper, SidebarItem } from "../../lib";
+import { Button, ImageWrapper, SidebarItem, Typography } from "../../lib";
 
 interface NavBarProps {
   items: SidebarItem[];
@@ -49,7 +49,7 @@ const NavBar = ({ items }: NavBarProps) => {
             height={48}
           />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Stabilan
+            <Typography type="h6">Stabilan</Typography>
           </span>
         </Link>
         <div className="flex md:order-2">
@@ -135,7 +135,7 @@ const NavBar = ({ items }: NavBarProps) => {
                   href={item.path}
                   className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {item.title}
+                  <Typography type="body-bold">{item.title}</Typography>
                 </Link>
               </li>
             ))}

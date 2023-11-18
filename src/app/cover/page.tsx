@@ -2,65 +2,138 @@
 
 import { useState } from "react";
 
-import { Card, FlexCol, InputFieldS, Typography } from "../../lib";
+import { CheckmarkIcon } from "react-hot-toast";
+import {
+  Button,
+  Card,
+  Divider,
+  FlexCol,
+  FlexRow,
+  Icon,
+  InputFieldS,
+  Typography,
+} from "../../lib";
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
+
+interface IToken {
+  name: string;
+  icon: string;
+}
+{
+  /* <CheckmarkIcon className="absolute top-0 right-0 h-6 w-6 text-green-500" /> */
+}
 
 export default function Page() {
   const [days, setDays] = useState(28);
   const [amount, setAmount] = useState(0);
+  const [selectedToken, setSelectedToken] = useState<IToken>({
+    name: "Uniswap v3",
+    icon: "https://app.nexusmutual.io/logos/uniswapv2.svg",
+  });
+
+  const tokens = [
+    {
+      name: "Uniswap v3",
+      icon: "https://app.nexusmutual.io/logos/uniswapv2.svg",
+    },
+    {
+      name: "Goldfinch",
+      icon: "https://app.nexusmutual.io/logos/goldfinch.svg",
+    },
+    {
+      name: "Oneinch",
+      icon: "https://app.nexusmutual.io/logos/oneinch.svg",
+    },
+    {
+      name: "Beefy",
+      icon: "https://app.nexusmutual.io/logos/beefy.svg",
+    },
+  ];
+
+  const selectToken = (token: IToken) => {
+    setSelectedToken(token);
+  };
 
   return (
-    <div>
-      <FlexCol className="mb-12">
+    <div className="flex flex-col gap-5">
+      <FlexCol className="mb-12 gap-5">
         <Typography type="h1">Buy cover</Typography>
         <Typography type="meta">
-          Enter the amount you want to cover and for how long.
+          <strong>Select Token </strong>& Enter the amount you want to cover and
+          for how long.
         </Typography>
       </FlexCol>
-      <div className="grid grid-cols-12 gap-20">
+
+      <div className="flex flex-wrap gap-3">
+        {tokens.map((token, index) => (
+          <div
+            key={index}
+            className="cursor-pointer flex flex-col flex-grow items-center rounded-2xl p-4 border border-dashed border-[rgba(145,158,171,0.2)] relative"
+            onClick={() => selectToken(token)}
+          >
+            {selectedToken.name === token.name && (
+              <CheckmarkIcon
+                style={{
+                  position: "absolute",
+                  left: "185px",
+                  top: "50px",
+                }}
+                className="h-6 w-6 text-primary z-10"
+              />
+            )}
+            <Icon src={token.icon} width={64} height={64} />
+            <div className="flex flex-col gap-3">
+              <Typography type="body-bold">{token.name}</Typography>
+              <Typography type="meta">Protocol</Typography>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-12 gap-4">
         <div className="md:col-span-8 col-span-12 gap-12 flex flex-col">
           <Card size="big">
-            <Typography type="h6">Quote details</Typography>
+            <Typography type="h5">Quote details</Typography>
             <br />
             <div className="flex flex-col gap-12">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl border border-dashed border-[rgba(145,158,171,0.2)]">
-                  <Typography type="body-regular">
-                    This product covers any token or combination of tokens you
-                    have in the Protocol. In case of a claim, you`ll receive the
-                    equivalent of your lost funds in ETH up to the covered
-                    amount. Alternatively you can select DAI.
-                  </Typography>
+              <Typography type="body-regular">
+                This product covers any token or combination of tokens you have
+                in the Protocol. In case of a claim, you`ll receive the
+                equivalent of your lost funds in ETH up to the covered amount.
+                Alternatively you can select DAI.
+              </Typography>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="col-span-1">
+                  <InputSliderFieldS
+                    label={<Typography type="body-bold">Duration</Typography>}
+                    rightLabel={
+                      <Typography type="h6" className="text-info">
+                        Days
+                      </Typography>
+                    }
+                    value={days}
+                    name="days"
+                    min={28}
+                    max={365}
+                    onChange={(e) => {
+                      setDays(Number(e.target.value));
+                    }}
+                  />
                 </div>
-                <div className="flex flex-col gap-4">
-                  <div className="col-span-1">
-                    <InputSliderFieldS
-                      label={<Typography type="body-bold">Duration</Typography>}
-                      rightLabel={
-                        <Typography type="body-regular">Days</Typography>
-                      }
-                      value={days}
-                      name="days"
-                      min={28}
-                      max={380}
-                      onChange={(e) => {
-                        setDays(Number(e.target.value));
-                      }}
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <InputFieldS
-                      label={<Typography type="body-bold">Amount</Typography>}
-                      rightLabel={
-                        <Typography type="body-regular">ETH</Typography>
-                      }
-                      value={amount}
-                      name="amount"
-                      onChange={(e: any) => {
-                        setAmount(Number(e.target.value));
-                      }}
-                    />
-                  </div>
+                <div className="col-span-1">
+                  <InputFieldS
+                    label={<Typography type="body-bold">Amount</Typography>}
+                    rightLabel={
+                      <Typography type="h6" className="text-info">
+                        ETH
+                      </Typography>
+                    }
+                    value={amount}
+                    name="amount"
+                    onChange={(e: any) => {
+                      setAmount(Number(e.target.value));
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -88,8 +161,41 @@ export default function Page() {
           </Card>
         </div>
         <div className="md:col-span-4 col-span-12">
-          <Card size="big" className="bg-white">
-            Summary
+          <Card size="big">
+            <FlexCol className="gap-6">
+              <Typography type="h5">Summary</Typography>
+              <FlexRow className="gap-3 items-center">
+                <Icon src={selectedToken.icon} width={64} height={64} />
+                <FlexCol className="gap-3">
+                  <Typography type="body-bold">{selectedToken.name}</Typography>
+                  <Typography type="meta">Protocol</Typography>
+                </FlexCol>
+              </FlexRow>
+              <Divider />
+              <FlexRow className="justify-between">
+                <Typography>Pay in:</Typography>
+                <Typography type="body-bold" className="text-info">
+                  ETH
+                </Typography>
+              </FlexRow>
+              <FlexRow className="justify-between">
+                <Typography>You'll pay:</Typography>
+                <Typography type="body-bold" className="text-info">
+                  0.001 ETH
+                </Typography>
+              </FlexRow>
+              <FlexRow className="justify-between">
+                <Typography>Yearly cost:</Typography>
+                <Typography type="body-bold" className="text-info">
+                  1.1896%
+                </Typography>
+              </FlexRow>
+              <Divider />
+
+              <Button color="success" size="big">
+                Pay
+              </Button>
+            </FlexCol>
           </Card>
         </div>
       </div>
