@@ -21,7 +21,7 @@ contract StabilanCore is IStabilanCore, Ownable {
     ITokenFactory public tokenFactory;
     IPriceFeedAggregator public priceFeedAggregator;
 
-    mapping(address => mapping(uint256 => AssetEpochData)) assetsData;
+    mapping(address => mapping(uint256 => AssetEpochData)) public assetsData;
     mapping(address => AssetConfig) public assetsConfig;
 
     address[] public supportedAssets;
@@ -55,12 +55,24 @@ contract StabilanCore is IStabilanCore, Ownable {
         AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch];
 
         uint256 assetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
-        assetData.strikePrice = Math.mulDiv(assetPrice, strikePricePercent, 1e18);
+        assetData.strikePrice = assetPrice.wadMul(strikePricePercent);
 
         for (uint256 i = 0; i < MAX_EPOCH_DURATION; i++) {
             (IOptionToken optionToken, IBackingToken backingToken) =
                 _deployOptionBackingTokenPair(assetAddress, collateralAddress, currentEpoch + i);
         }
+    }
+
+    function updateAssetConfig(
+        address assetAddress,
+        uint256 collateralRatio,
+        uint256 strikePricePercent,
+        uint256 expectedApy
+    ) external onlyOwner {
+        AssetConfig storage assetConfig = assetsConfig[assetAddress];
+        assetConfig.collateralRatio = collateralRatio;
+        assetConfig.strikePricePercent = strikePricePercent;
+        assetConfig.expectedApy = expectedApy;
     }
 
     function updateEpoch() external {
@@ -88,7 +100,7 @@ contract StabilanCore is IStabilanCore, Ownable {
             getOptionsPrice(assetAddress, amount, durationEpochs, address(assetData.backingToken.underlying()));
 
         IERC20(assetConfig.collateralAsset).transferFrom(msg.sender, address(this), optionsPrice);
-        
+
         uint256 collateralAssetPrice = priceFeedAggregator.getLatestPrice(address(assetData.backingToken.underlying()));
         uint256 currStrikePrice = assetsData[assetAddress][currentEpoch].strikePrice;
         uint256 insuringAssetValue = amount.wadMul(currStrikePrice);
@@ -121,20 +133,45 @@ contract StabilanCore is IStabilanCore, Ownable {
         AssetEpochData storage currEpochData = assetsData[assetAddress][currentEpoch];
 
         uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.backingToken.underlying()));
+        uint256 assetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
 
         for (uint256 i = 0; i < durationEpochs; i++) {
+            uint256 _amount = amount;
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
 
-            uint256 reservedUSD = (assetData.reservedAmount + amount).wadMul(currEpochData.strikePrice);
+            uint256 reservedUSD = (assetData.reservedAmount + _amount / 2).wadMul(currEpochData.strikePrice);
             uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice);
             uint256 util = reservedUSD.wadDiv(collateralUSD).wadDiv(assetConfig.collateralRatio);
-            uint256 assetAmountCost = (2 * util).wadMul(assetConfig.expectedApy).wadMul(amount) / 12;
+            uint256 assetAmountCost = (2 * util).wadMul(assetConfig.expectedApy).wadMul(_amount) / 12;
 
-            epochCosts[i] = assetAmountCost.wadMul(currEpochData.strikePrice).wadDiv(collateralPrice);
+            epochCosts[i] = assetAmountCost.wadMul(assetPrice).wadDiv(collateralPrice);
             totalCost += epochCosts[i];
         }
 
         return (totalCost, epochCosts);
+    }
+
+    function getMaxOptionAmount(address assetAddress, uint256 durationEpochs) external view returns (uint256) {
+        AssetConfig storage assetConfig = assetsConfig[assetAddress];
+        AssetEpochData storage currEpochData = assetsData[assetAddress][currentEpoch];
+
+        uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.backingToken.underlying()));
+        uint256 assetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
+
+        uint256 minAvailable = type(uint256).max;
+        for (uint256 i = 0; i < durationEpochs; i++) {
+            AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
+
+            uint256 reservedUSD = (assetData.reservedAmount).wadMul(currEpochData.strikePrice);
+            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice);
+            uint256 availableCollateralUSD = collateralUSD.wadMul(assetConfig.collateralRatio) - reservedUSD;
+            uint256 availableCollateralInAssets = availableCollateralUSD.wadDiv(currEpochData.strikePrice);
+            if (availableCollateralInAssets < minAvailable) {
+                minAvailable = availableCollateralInAssets;
+            }
+        }
+
+        return minAvailable;
     }
 
     function getAssetAPY(address assetAddress) public view returns (uint256) {
@@ -167,7 +204,6 @@ contract StabilanCore is IStabilanCore, Ownable {
     }
 
     function backing(address assetAddress, uint256 amount, uint256 durationEpochs) external {
-
         AssetConfig storage assetConfig = assetsConfig[assetAddress];
         IERC20(assetConfig.collateralAsset).transferFrom(msg.sender, address(this), amount);
 
