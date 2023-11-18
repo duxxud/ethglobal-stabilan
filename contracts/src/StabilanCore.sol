@@ -8,8 +8,11 @@ import "./interfaces/IBackingToken.sol";
 import "./interfaces/IOptionToken.sol";
 import "./interfaces/IStabilanCore.sol";
 import "./interfaces/ITokenFactory.sol";
+import "./libraries/WadRayMath.sol";
 
 contract StabilanCore is IStabilanCore, Ownable {
+    using WadRayMath for uint256;
+
     uint256 public constant MAX_EPOCH_DURATION = 6; // in months
 
     uint256 public currentEpoch;
@@ -73,6 +76,37 @@ contract StabilanCore is IStabilanCore, Ownable {
         }
 
         assetData.optionToken.mint(msg.sender, amount);
+    }
+
+    function getYearlyCost(address assetAddress, uint256 amount, uint256 durationEpochs, uint256 payingToken) public view returns(uint256) {
+        // util = (reserved/collateral) / collateralRatio
+        // avgUtil = average in next durationEpochs
+
+        AssetConfig storage assetConfig = assetsConfig[assetAddress];
+        AssetEpochData storage currEpochData = assetsData[assetAddress][currentEpoch];
+
+        uint256 currStrikePrice = currEpochData.strikePrice;
+        uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.underlying()));
+        
+        uint256 utilAvg = 0;
+        for(uint256 i=0; i<durationEpochs; i++) {
+            AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
+            
+            uint256 reservedUSD = assetData.reservedAmount.wadMul(currStrikePrice.usdToWad());
+            uint256 collateralUSD = assetData.collateralAmount.wadMul(collateralPrice.usdToWad());
+            uint256 util = reservedUSD.wadDiv(collateralUSD)().wadDiv(assetConfig.collateralRatio);
+            utilAvg += util;
+        }
+        utilAvg /= durationEpochs;
+
+        uint256 yearlyCost = (2 * utilAvg).wadMul(assetConfig.expectedApy);
+        return yearlyCost;
+    }
+
+    function getOptionsPrice(address assetAddress, uint256 amount, uint256 durationEpochs, uint256 payingToken) public view returns(uint256) {
+
+        uint256 yearlyCost = getYearlyCost(assetAddress, amount, durationEpochs, payingToken);
+        uint256 pricePercent = yearlyCost * durationEpochs / 12;
     }
 
     function executeOptions(IOptionToken option, uint256 amount) external {
