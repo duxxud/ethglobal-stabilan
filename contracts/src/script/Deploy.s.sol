@@ -65,13 +65,18 @@ contract Deploy is Script {
         daiPriceFeed.setPrice(1 ether);
         console.log("DAI price feed address: ", address(daiPriceFeed));
 
-        priceFeedAggregator.setPriceFeed(
-            externalAddresses.WETH_ADDRESS,
-            externalAddresses.WETH_PRICE_FEED
-        );
+        MockERC20 weth = new MockERC20("WETH", "WETH");
+        weth.mint(deployerAddress, 100000 ether);
+        console.log("WETH address: ", address(weth));
+
+        MockChainlinkOracle wethPriceFeed = new MockChainlinkOracle();
+        wethPriceFeed.setPrice(2000 ether);
+        console.log("WETH price feed address: ", address(wethPriceFeed));
+
         priceFeedAggregator.setPriceFeed(address(usdc), address(usdcPriceFeed));
         priceFeedAggregator.setPriceFeed(address(usdt), address(usdtPriceFeed));
         priceFeedAggregator.setPriceFeed(address(dai), address(daiPriceFeed));
+        priceFeedAggregator.setPriceFeed(address(weth), address(wethPriceFeed));
         console.log("Price feeds setted");
 
         TokenFactory tokenFactory = new TokenFactory();
@@ -83,6 +88,29 @@ contract Deploy is Script {
             deployerAddress
         );
         console.log("StabilanCore address: ", address(stabilanCore));
+
+        stabilanCore.setupAsset(
+            address(usdc),
+            0.8 ether,
+            0.97 ether,
+            1.1 ether,
+            address(weth)
+        );
+        stabilanCore.setupAsset(
+            address(usdt),
+            0.8 ether,
+            0.97 ether,
+            1.1 ether,
+            address(weth)
+        );
+        stabilanCore.setupAsset(
+            address(dai),
+            0.8 ether,
+            0.97 ether,
+            1.1 ether,
+            address(weth)
+        );
+        console.log("Assets setuped");
 
         vm.stopBroadcast();
     }
