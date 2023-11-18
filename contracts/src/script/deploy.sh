@@ -1,3 +1,4 @@
 #!/bin/bash
 
-forge script ./src/script/Deploy.s.sol --rpc-url='https://eth-sepolia.g.alchemy.com/v2/pJUaEHj5RxvoVAk4qU3GsvqpCy90vzt6'
+forge script ./src/script/Deploy.s.sol --rpc-url='https://rpc.tenderly.co/fork/a17874e0-2e8c-453b-a01d-82aa79514644' --broadcast --verify
+ 

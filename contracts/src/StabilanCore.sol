@@ -34,7 +34,6 @@ contract StabilanCore is IStabilanCore, Ownable {
         tokenFactory = _tokenFactory;
         priceFeedAggregator = _priceFeedAggregator;
         currentEpoch = 1;
-        priceFeedAggregator = _priceFeedAggregator;
     }
 
     function setupAsset(address assetAddress, uint256 collateralRatio, uint256 strikePricePercent, uint256 expectedApy)
