@@ -4,15 +4,13 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./interfaces/IBackingToken.sol";
+import "./StabilanToken.sol";
 
-contract BackingToken is IBackingToken, ERC20 {
-    IERC20 public underlying;
-    uint256 public expireTimestamp;
+contract BackingToken is IBackingToken, StabilanToken {
 
-    constructor(string memory _name, string memory _symbol, IERC20 _underlying, uint256 _expireTimestamp)
-        ERC20(_name, _symbol)
+    constructor(string memory _name, string memory _symbol, IERC20 _underlying, uint256 _endEpoch, address _coreContract)
+        StabilanToken(_name, _symbol, _underlying, _endEpoch, _coreContract)
     {
-        underlying = _underlying;
-        expireTimestamp = _expireTimestamp;
+        
     }
 }

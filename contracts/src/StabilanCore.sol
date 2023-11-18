@@ -38,9 +38,9 @@ contract StabilanCore is IStabilanCore, Ownable {
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + MAX_EPOCH_DURATION];
 
             assetData.optionToken =
-                tokenFactory.deployOptionToken("Option", "OPT", assetAddress, currentEpoch + MAX_EPOCH_DURATION);
+                tokenFactory.deployOptionToken("Option", "OPT", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this));
             assetData.backingToken =
-                tokenFactory.deployBackingToken("Backing", "BCK", assetAddress, currentEpoch + MAX_EPOCH_DURATION);
+                tokenFactory.deployBackingToken("Backing", "BCK", assetAddress, currentEpoch + MAX_EPOCH_DURATION, address(this));
 
             uint256 currAssetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
             assetsData[assetAddress][currentEpoch].strikePrice =
@@ -94,7 +94,16 @@ contract StabilanCore is IStabilanCore, Ownable {
         IERC20(collateralAsset).transfer(msg.sender, collateralAmount);
     }
 
-    function backing(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {}
+    function backing(address assetAddress, uint256 amount, uint256 durationEpochs) external payable {
+        for (uint256 i = 0; i < durationEpochs; i++) {
+            AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
+
+            assetData.collateralAmount += amount;
+        }
+
+        IBackingToken backingToken = assetsData[assetAddress][currentEpoch + durationEpochs - 1].backingToken;
+        backingToken.mint(msg.sender, amount);
+    }
 
     function claimBackingRewards(address backingToken) external {}
 }

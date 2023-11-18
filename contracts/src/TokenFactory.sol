@@ -8,7 +8,7 @@ import "./OptionToken.sol";
 import "./BackingToken.sol";
 
 contract TokenFactory {
-    function deployOptionToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp)
+    function deployOptionToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
         external
         returns (IOptionToken)
     {
@@ -17,12 +17,13 @@ contract TokenFactory {
                     name,
                     symbol,
                     IERC20(underyling),
-                    expireTimestamp
+                    expireTimestamp,
+                    coreContract
                 )
         );
     }
 
-    function deployBackingToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp)
+    function deployBackingToken(string memory name, string memory symbol, address underyling, uint256 expireTimestamp, address coreContract)
         external
         returns (IBackingToken)
     {
@@ -31,7 +32,8 @@ contract TokenFactory {
                     name,
                     symbol,
                     IERC20(underyling),
-                    expireTimestamp
+                    expireTimestamp,
+                    coreContract
                 )
         );
     }

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.18;
 
-import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "./IStabilanToken.sol";
 
-interface IBackingToken is IERC20 {
-    function underlying() external view returns (IERC20);
+interface IBackingToken is IStabilanToken {
 }
