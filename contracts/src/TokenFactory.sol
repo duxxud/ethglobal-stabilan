@@ -6,8 +6,9 @@ import "./interfaces/IBackingToken.sol";
 import "./interfaces/IOptionToken.sol";
 import "./OptionToken.sol";
 import "./BackingToken.sol";
+import "./interfaces/ITokenFactory.sol";
 
-contract TokenFactory {
+contract TokenFactory is ITokenFactory {
     function deployOptionToken(
         string memory name,
         string memory symbol,
