@@ -24,7 +24,7 @@ export default function Page() {
             <br />
             <div className="flex flex-col gap-12">
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl shadow-[inset_-12px_-8px_40px_#46464620]">
+                <div className="p-4 rounded-xl border border-dashed border-[rgba(145,158,171,0.2)]">
                   <Typography type="body-regular">
                     This product covers any token or combination of tokens you
                     have in the Protocol. In case of a claim, you`ll receive the
