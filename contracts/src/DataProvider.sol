@@ -51,5 +51,12 @@ contract DataProvider {
                 });
             }
         }
+
+        UserToken[] memory userTokens = new UserToken[](userTokenLen);
+        for(uint256 i = 0; i < userTokenLen; i++) {
+          userTokens[i] = userTokensTemp[i];
+        }
+
+        return userTokens;
     }
 }
