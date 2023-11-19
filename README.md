@@ -48,13 +48,27 @@ The price of the collateral asset is obtained from an external oracle. For the p
 
 Smart Contracts are deployed on the Polygon zkEVM testnet and Base testnet.<br/>
 
-#### Polygon zkEVM addresses
+#### Polygon zkEVM testnet addresses
 
 StabilanCore:  0xc7253058832346174170609fF60a25787Db20087<br/>
 DataProvider:  0x701bb47110870e256e8cF227Ecd16B91a4865547<br/>
 Insrd:  0x24026186C7Cc7741982543764a54cA3bBbDD9C0e<br/>
 InsurancePlugin:  0x6c302554Ef2A882d982b740d985Dc5EdF8635eC9<br/>
 
+#### Base goerli tesntet addresses
+
+StabilanCore:  0xd91403135D10F770A60147Ab32BcE845F08caeBf
+DataProvider:  0x343b8557F7dd059b668cbC5726Aa9257D5494CbC
+Insrd:  0xa61c1F4f1d550D1A25107F4241714bc0823Bf05c
+InsurancePlugin:  0xf66423533d8bA9ce2ACDf2F5F07F4fb9106e9AFb
+
+
 ### 1Inch Token Plugin
 We present the use case of the 1Inch Token Plugin - InsurancePlugin, which allows users to ensure assets are always insured in their wallet.<br/>
 The InsurancePlugin checks if both users have opted to be always insured, and on asset transfer between them, options (insurance tokens) are transferred automatically in the amount of the asset transfer.<br/>
+
+
+
+
+
+
