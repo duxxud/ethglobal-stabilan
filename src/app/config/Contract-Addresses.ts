@@ -59,24 +59,24 @@ export const contractAddressesByChain = {
   },
   polygonZkevmTestnet: {
     PriceFeedAggregator:
-      "0xfD7B453Ec27531b3b7c299C65f1759Fdb6Ddac5B" as Address0x,
-    USDC: "0x7ccd91b1900500b4B3b57104b7a472A6B88c95F3" as Address0x,
-    USDCPriceFeed: "0x26De5ECab9A69620A10F41F74A33c9d4791AAC76" as Address0x,
-    USDT: "0x4375d0d8bC08Aafc0e47bCbd0eA3aA74b26B76C0" as Address0x,
-    USDTPriceFeed: "0x5786C4046D5dF1e7250E5b32512399CDCDD477aA" as Address0x,
-    DAI: "0xc3f6c94aCE6e75677aDDe13c8B41660BC4701A0B" as Address0x,
-    DAIPriceFeed: "0x363053a56beFDA5c2fe15D8C27A887d3cCfB00c3" as Address0x,
-    WETH: "0x36a50b83139C8D383eb8ECD8Ab3Fe53bd541A2d0" as Address0x,
-    WETHPriceFeed: "0xc58d8BBC4eb5D8CA3FE651c1F0D51306E88F90f3" as Address0x,
-    TokenFactory: "0xFf22d3317c087Af18a54361581E2089cbBe0DDf5" as Address0x,
-    StabilanCore: "0x4438EcA40475EA4075f2f457Aa7DA4D7329F1B43" as Address0x,
-    DataProvider: "0x626F227E847308eaDAC33BaBCfe61862c24D79dd" as Address0x,
-    GHO: "0xdd7777135C4494e0dc6fB2059c63a5195E3D2B36" as Address0x,
-    GHOPriceFeed: "0xd0E1424340f217af99B2595194c6C35185105A74" as Address0x,
-    wBTC: "0xE9Ee3882B3F3Da5134D4Da4f9Cb1bCB05d4630aa" as Address0x,
-    wBTCPriceFeed: "0x790E5FDA0Ad2fF122Fc71926DD353FCffBcE5Ede" as Address0x,
-    INSRD: "0xB483091F91e00d9551136eb524AB012fE195a8Ba" as Address0x,
-    INSRDPriceFeed: "0xd4493d6559E2c89Dd624f1a256cD190b4Ece5761" as Address0x,
-    InsurancePlugin: "0x3B460a0522e5DdB7295666F6De87fe647b904C7f" as Address0x,
+      "0x33a6C9d81E5324544A3d6c41CBedB65091ba0665" as Address0x,
+    USDC: "0x55eF0864304a361D33c7c0a0083D153b2D26a7A9" as Address0x,
+    USDCPriceFeed: "0x419102Ee2543edf30B07705CAEF7af0889926cfD" as Address0x,
+    USDT: "0x49EF20e300925210def18fADaeb48635590Bc1Ee" as Address0x,
+    USDTPriceFeed: "0x1C2721DCF3288A90dF78B33D25Fb7cE2D4527E6c" as Address0x,
+    DAI: "0xc3f6c94aCE6e75677aDDe13c8B41660BC4701A0B" as Address0x, // unchanged
+    DAIPriceFeed: "0x363053a56beFDA5c2fe15D8C27A887d3cCfB00c3" as Address0x, // unchanged
+    WETH: "0x54A76081217A3FCD8E98bf405B38134Ba6353C2A" as Address0x,
+    WETHPriceFeed: "0x45aC55F407c73a4CCB852a900ccfceCA2a7e5353" as Address0x,
+    wBTC: "0x05C81b196AE4a8777C7eC101DfCCB156C17De6Fd" as Address0x,
+    wBTCPriceFeed: "0x14f3C97C35CFad5E4a0a584842414030dcF3C9c0" as Address0x,
+    TokenFactory: "0x683B20dFB3FBA67E3c80fbF4EE7BaCe26F45d719" as Address0x,
+    StabilanCore: "0xc7253058832346174170609fF60a25787Db20087" as Address0x,
+    DataProvider: "0x701bb47110870e256e8cF227Ecd16B91a4865547" as Address0x,
+    INSRD: "0x24026186C7Cc7741982543764a54cA3bBbDD9C0e" as Address0x,
+    INSRDPriceFeed: "0x5F8bC1976DcC59c44BBd8Afd8FC260b6A32131B1" as Address0x,
+    InsurancePlugin: "0x6c302554Ef2A882d982b740d985Dc5EdF8635eC9" as Address0x,
+    GHO: "0xdd7777135C4494e0dc6fB2059c63a5195E3D2B36" as Address0x, // unchanged
+    GHOPriceFeed: "0xd0E1424340f217af99B2595194c6C35185105A74" as Address0x, // unchanged
   },
 };
