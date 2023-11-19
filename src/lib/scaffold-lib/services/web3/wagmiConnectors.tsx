@@ -10,8 +10,10 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains } from "wagmi";
 import * as chains from "wagmi/chains";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+// import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { publicProvider } from "wagmi/providers/public";
 
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import scaffoldConfig from "../../../../../scaffold.config";
 import { getTargetNetwork } from "../../utils/scaffold-eth";
 
@@ -35,11 +37,10 @@ const enabledChains =
 export const appChains = configureChains(
   enabledChains,
   [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: process.env.NEXT_PUBLIC_RPC_URL || "",
-      }),
+    alchemyProvider({
+      apiKey: scaffoldConfig.alchemyApiKey,
     }),
+    publicProvider(),
   ],
   {
     stallTimeout: 3_000,

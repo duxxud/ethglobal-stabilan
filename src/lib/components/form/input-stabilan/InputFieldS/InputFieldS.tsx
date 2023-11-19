@@ -46,7 +46,6 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
             name={name}
             onChange={onChange}
             placeholder={placeholder}
-            min={0}
             {...rest}
           />
           {rightLabel && <div className="flex-shrink-0">{rightLabel}</div>}

@@ -37,6 +37,16 @@ export type AddressByChain = {
 export const contractAddressesByChain: AddressByChain = {
   sepolia: {
     ...contractAddresses,
+    PriceFeedAggregator:
+      "0x48AC85A71Cb5E1384A365fFf3D5f717B4eD411d0" as Address0x,
+    USDC: "0xA43D0B09A636DffB998d824b62117b83523289e6" as Address0x,
+    USDCPriceFeed: "0x343b8557F7dd059b668cbC5726Aa9257D5494CbC" as Address0x,
+    USDT: "0x9A0d06D999EED048700a9D2d7A39B47868905461" as Address0x,
+    USDTPriceFeed: "0x89369f1B135b13b625EdD4882f41A8a66892c958" as Address0x,
+    DAI: "0xD7e2b15E06C571155093257D08636b96bB8B1222" as Address0x,
+    DaiPriceFeed: "0x7117e2E8fb018D96C74Fa6D50dE717F6814A6A5E" as Address0x,
+    TokenFactory: "0x7E7D664e738412f5005D5e217D1318a60Ac442b6" as Address0x,
+    StabilanCore: "0xfdf2bF3688F0AF7B0Baef04afde43FBC72530b7f" as Address0x,
   },
   base: {
     ...contractAddresses,

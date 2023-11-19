@@ -79,6 +79,7 @@ export const Minterc20 = () => {
             name="amount"
             rightLabel="Amount"
             value={amount}
+            type="number"
             onChange={(e) => {
               setAmount(Number(e.target.value));
             }}

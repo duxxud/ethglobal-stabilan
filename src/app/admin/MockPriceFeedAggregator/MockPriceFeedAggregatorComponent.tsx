@@ -4,7 +4,11 @@ import { useState } from "react";
 import { etherUnits, parseUnits } from "viem";
 import { useAccount } from "wagmi";
 
-import { Address0x } from "app/config/Contract-Addresses";
+import {
+  Address0x,
+  AvailableChains,
+  contractAddressesByChain,
+} from "app/config/Contract-Addresses";
 import {
   AvailableTokens,
   getAddressByTokenAndNetwork,
@@ -19,33 +23,41 @@ interface IToken {
   icon: string;
 }
 
-export const PriceFeedAdresses = {
-  USDCPriceFeed: "0x5575166bE5043Ab5B6043D298Eb66A7C1Ce185Ce" as Address0x,
-  USDTPriceFeed: "0x4dd6EA4b4929b8c06D8434A9B9552d92500eE251" as Address0x,
-  DaiPriceFeed: "0xbC645ce455EaD9d230fbbe6E2cE2AFf848bD3a58" as Address0x,
-  PriceFeedAggregator:
-    "0x3e726C563500bC255CB858269D1862cc258491c3" as Address0x,
-};
-
-// Function to get the price feed address for a given token
-export function getPriceFeedAddressForToken(
-  tokenName?: AvailableTokens
-): Address0x | undefined {
-  if (!tokenName) return undefined;
-  const priceFeedMap: { [key in AvailableTokens]?: Address0x } = {
-    USDC: PriceFeedAdresses.USDCPriceFeed,
-    USDT: PriceFeedAdresses.USDTPriceFeed,
-    Dai: PriceFeedAdresses.DaiPriceFeed,
-    //gho nema pricefeedaggregator?
-    Gho: PriceFeedAdresses.PriceFeedAggregator,
-  };
-
-  return priceFeedMap[tokenName];
-}
-
 export const MockPriceFeedAggregatorComponent = () => {
   const network = getTargetNetwork();
   const { address } = useAccount();
+
+  const PriceFeedAdresses = {
+    USDCPriceFeed:
+      contractAddressesByChain[network.network as AvailableChains]
+        ?.USDCPriceFeed,
+    USDTPriceFeed:
+      contractAddressesByChain[network.network as AvailableChains]
+        ?.USDTPriceFeed,
+    DaiPriceFeed:
+      contractAddressesByChain[network.network as AvailableChains]
+        ?.DaiPriceFeed,
+    //gho?
+    PriceFeedAggregator:
+      contractAddressesByChain[network.network as AvailableChains]
+        ?.PriceFeedAggregator,
+  };
+
+  // Function to get the price feed address for a given token
+  function getPriceFeedAddressForToken(
+    tokenName?: AvailableTokens
+  ): Address0x | undefined {
+    if (!tokenName) return undefined;
+    const priceFeedMap: { [key in AvailableTokens]?: Address0x } = {
+      USDC: PriceFeedAdresses.USDCPriceFeed,
+      USDT: PriceFeedAdresses.USDTPriceFeed,
+      Dai: PriceFeedAdresses.DaiPriceFeed,
+      //gho nema pricefeedaggregator?
+      Gho: PriceFeedAdresses.PriceFeedAggregator,
+    };
+
+    return priceFeedMap[tokenName];
+  }
 
   const [amount, setAmount] = useState(0);
 
@@ -107,6 +119,7 @@ export const MockPriceFeedAggregatorComponent = () => {
             name="amount"
             rightLabel="Set price"
             value={amount}
+            type="number"
             onChange={(e) => {
               setAmount(Number(e.target.value));
             }}

@@ -184,6 +184,7 @@ export default function Page() {
                     }
                     value={amount}
                     name="amount"
+                    type="number"
                     onChange={(e: any) => {
                       setAmount(Number(e.target.value));
                     }}

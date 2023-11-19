@@ -17,6 +17,7 @@ import {
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
 
 import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
+import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
 import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
@@ -43,12 +44,12 @@ export default function Page() {
   };
 
   // ------------- Contract ---------- //
-  const getAssetAPY = 1n;
-  // const { data: getAssetAPY } = useWingsContractRead({
-  //   contractName: "StabilanCore",
-  //   functionName: "getAssetAPY",
-  //   args: [getAddressByTokenAndNetwork(selectedToken?.name, network.network)],
-  // });
+  // const getAssetAPY = 1n;
+  const { data: getAssetAPY } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "getAssetAPY",
+    args: [getAddressByTokenAndNetwork(selectedToken?.name, network.network)],
+  });
 
   const { writeAsync: backAsync, isLoading: isBacking } = useWingsContractWrite(
     {
@@ -158,6 +159,7 @@ export default function Page() {
                       </Typography>
                     }
                     value={amount}
+                    type="number"
                     name="amount"
                     onChange={(e: any) => {
                       setAmount(Number(e.target.value));
@@ -232,13 +234,15 @@ export default function Page() {
                 <FlexRow className="justify-between">
                   <Typography>You`ll invest:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    {amount}
+                    {amount} ETH
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">
                   <Typography>APY:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    {formatUnits(getAssetAPY, etherUnits.wei)}
+                    {getAssetAPY
+                      ? formatUnits(getAssetAPY, etherUnits.wei)
+                      : "0"}
                   </Typography>
                 </FlexRow>
                 <Divider />
