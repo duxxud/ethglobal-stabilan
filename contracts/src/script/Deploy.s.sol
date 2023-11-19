@@ -7,7 +7,7 @@ import "../TokenFactory.sol";
 import "../StabilanCore.sol";
 import "../libraries/Constants.sol";
 import "../mock/MockERC20.sol";
-import "../mock/MockChainlinkOracle.sol";
+import "../mock/MockChronicleOracle.sol";
 import "../Insrd.sol";
 import "../InsurancePlugin.sol";
 import "../DataProvider.sol";
@@ -56,7 +56,7 @@ contract Deploy is Script {
         insrd.mint(deployerAddress, 100000 ether);
         console.log("Insrd address: ", address(insrd));
 
-        MockChainlinkOracle insrdPriceFeed = new MockChainlinkOracle();
+        MockChronicleOracle insrdPriceFeed = new MockChronicleOracle();
         insrdPriceFeed.setPrice(1 ether);
         console.log("Insrd price feed address: ", address(insrdPriceFeed));
 
@@ -71,7 +71,7 @@ contract Deploy is Script {
         usdc.mint(deployerAddress, 100000 ether);
         console.log("USDC address: ", address(usdc));
 
-        MockChainlinkOracle usdcPriceFeed = new MockChainlinkOracle();
+        MockChronicleOracle usdcPriceFeed = new MockChronicleOracle();
         usdcPriceFeed.setPrice(1 ether);
         console.log("USDC price feed address: ", address(usdcPriceFeed));
 
@@ -79,7 +79,7 @@ contract Deploy is Script {
         usdt.mint(deployerAddress, 100000 ether);
         console.log("USDT address: ", address(usdt));
 
-        MockChainlinkOracle usdtPriceFeed = new MockChainlinkOracle();
+        MockChronicleOracle usdtPriceFeed = new MockChronicleOracle();
         usdtPriceFeed.setPrice(1 ether);
         console.log("USDT price feed address: ", address(usdtPriceFeed));
 
@@ -87,14 +87,14 @@ contract Deploy is Script {
         weth.mint(deployerAddress, 100000 ether);
         console.log("WETH address: ", address(weth));
 
-        MockChainlinkOracle wethPriceFeed = new MockChainlinkOracle();
+        MockChronicleOracle wethPriceFeed = new MockChronicleOracle();
         wethPriceFeed.setPrice(2000 ether);
         console.log("WETH price feed address: ", address(wethPriceFeed));
 
         MockERC20 wbtc = new MockERC20("Wrapped Bitcoin", "wBTC");
         console.log("WBTC address: ", address(wbtc));
 
-        MockChainlinkOracle wbtcPriceFeed = new MockChainlinkOracle();
+        MockChronicleOracle wbtcPriceFeed = new MockChronicleOracle();
         wbtcPriceFeed.setPrice(50000 ether);
         console.log("WBTC price feed address: ", address(wbtcPriceFeed));
 
