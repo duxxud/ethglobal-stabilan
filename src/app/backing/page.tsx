@@ -43,9 +43,6 @@ export default function Page() {
   };
 
   // ------------- Contract ---------- //
-  // StabilanCore.getAssetAPY(assetAddress)
-  // StabilanCore.backing(assetAddress, amount, durationEpochs)
-
   const getAssetAPY = 1n;
   // const { data: getAssetAPY } = useWingsContractRead({
   //   contractName: "StabilanCore",
@@ -235,7 +232,7 @@ export default function Page() {
                 <FlexRow className="justify-between">
                   <Typography>You`ll invest:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    0.001 ETH
+                    {amount}
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">

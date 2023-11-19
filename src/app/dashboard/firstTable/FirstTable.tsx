@@ -4,11 +4,8 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 
-import { Address0x, contractAddresses } from "app/config/Contract-Addresses";
-import {
-  findTokenByAddress,
-  getAddressByTokenAndNetwork,
-} from "app/config/tokens";
+import { contractAddressesByChain } from "app/config/Contract-Addresses";
+import { findTokenByAddress } from "app/config/tokens";
 import {
   Button,
   EmptyContent,
@@ -20,7 +17,6 @@ import {
   RHFInputField,
   Typography,
 } from "lib";
-import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { displayTokens } from "lib/utils/tokens/display-tokens";
 import { TokenType, formatUntilDate } from "../common";
@@ -29,21 +25,45 @@ interface FormData {
   amount: string;
 }
 
+const userTokens:
+  | readonly {
+      tokenType: number;
+      tokenAddress: `0x${string}`;
+      assetAddress: `0x${string}`;
+      endEpoch: bigint;
+      balance: bigint;
+    }[]
+  | undefined = [
+  {
+    tokenType: 0, // TokenType.OPTION, for example
+    tokenAddress: "0x1234567890abcdef1234567890abcdef12345678",
+    assetAddress: contractAddressesByChain.sepolia.USDC, // Mock asset address for USDC
+    endEpoch: BigInt(1672527600), // Some future epoch time for expiry
+    balance: BigInt(1000), // Mock balance
+  },
+  {
+    tokenType: 1, // TokenType.BACKING, for example
+    tokenAddress: "0xabcdef1234567890abcdef1234567890abcdef12",
+    assetAddress: contractAddressesByChain.sepolia.USDT, // Mock asset address for USDT
+    endEpoch: BigInt(1672527600), // Some future epoch time for expiry
+    balance: BigInt(500), // Mock balance
+  },
+];
 export const FirstTable = () => {
   const { address } = useAccount();
   const network = getTargetNetwork();
   // DataProvider.getUserTokens(coreContractAddress, userAddress)
-  const { data: userTokens } = useWingsContractRead({
-    contractName: "DataProvider",
-    functionName: "getUserTokens",
-    args: [
-      getAddressByTokenAndNetwork(
-        contractAddresses.coreContractAddress,
-        network.network
-      ),
-      address as Address0x,
-    ],
-  });
+  // const { data: userTokens } = useWingsContractRead({
+  //   contractName: "DataProvider",
+  //   functionName: "getUserTokens",
+  //   args: [
+  //     getAddressByTokenAndNetwork(
+  //       contractAddresses.coreContractAddress,
+  //       network.network
+  //     ),
+  //     address as Address0x,
+  //   ],
+  // });
 
   const modalRef = useRef<GenericModalHandles>(null);
   const methods = useForm<FormData>({

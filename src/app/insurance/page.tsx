@@ -73,9 +73,7 @@ export default function Page() {
       contractAddressesByChain[network.network as AvailableChains]?.WETH,
     ],
   });
-  console.log({
-    wethadd: contractAddressesByChain[network.network as AvailableChains]?.WETH,
-  });
+  console.log({ getOptionsPrice });
 
   const { formattedPrice: WETHFormattedPrice } = useGetPriceByAddress(
     contractAddressesByChain[network.network as AvailableChains]?.WETH
