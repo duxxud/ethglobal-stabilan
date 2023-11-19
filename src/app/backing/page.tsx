@@ -35,27 +35,24 @@ interface FormData {
 }
 
 export default function Page() {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   setValue,
-  //   watch,
-  //   formState: { errors },
-  // } = useForm({
-  //   defaultValues: {
-  //     amount: 0,
-  //   },
-  // });
   const network = getTargetNetwork();
 
   const [months, setMonths] = useState(1);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
   );
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (!isNaN(Number(value))) {
+      setAmount(value);
+    }
   };
 
   // ------------- Contract ---------- //
@@ -88,7 +85,7 @@ export default function Page() {
   };
 
   const resetForm = () => {
-    setAmount(0);
+    setAmount("");
     setMonths(1);
     setSelectedToken(undefined);
   };
@@ -176,11 +173,8 @@ export default function Page() {
                       </Typography>
                     }
                     value={amount}
-                    type="number"
                     name="amount"
-                    onChange={(e: any) => {
-                      setAmount(Number(e.target.value));
-                    }}
+                    onChange={handleAmountChange}
                   />
                 </div>
               </div>

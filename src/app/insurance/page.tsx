@@ -38,15 +38,16 @@ export default function Page() {
   console.log({ modifiedName: network.modifiedName });
   // StabilanCore.getOptionsPrice(assetAddress, amount, duration, payingTokenAddress)
   const [months, setMonths] = useState(1);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
   );
-
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const numericValue = value ? parseInt(value, 10) : 0;
-    setAmount(numericValue);
+
+    if (!isNaN(Number(value))) {
+      setAmount(value);
+    }
   };
 
   const selectToken = (token: IToken) => {
@@ -76,6 +77,16 @@ export default function Page() {
       contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
     ],
   });
+  console.log({
+    getOptionsPriceAddress: getAddressByTokenAndNetwork(
+      selectedToken?.name,
+      network.modifiedName
+    ),
+  });
+  console.log({
+    wethadd:
+      contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
+  });
   console.log({ getOptionsPrice });
 
   const { formattedPrice: WETHFormattedPrice } = useGetPriceByAddress(
@@ -101,7 +112,7 @@ export default function Page() {
   };
 
   const resetForm = () => {
-    setAmount(0);
+    setAmount("");
     setMonths(1);
     setSelectedToken(undefined);
   };
@@ -190,7 +201,6 @@ export default function Page() {
                     }
                     value={amount}
                     name="amount"
-                    type="number"
                     onChange={handleAmountChange}
                   />
                 </div>
