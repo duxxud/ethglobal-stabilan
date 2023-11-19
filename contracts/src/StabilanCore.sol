@@ -135,6 +135,8 @@ contract StabilanCore is IStabilanCore, Ownable {
         uint256 collateralPrice = priceFeedAggregator.getLatestPrice(address(currEpochData.backingToken.underlying()));
         uint256 assetPrice = priceFeedAggregator.getLatestPrice(assetAddress);
 
+        epochCosts = new uint256[](durationEpochs);
+
         for (uint256 i = 0; i < durationEpochs; i++) {
             uint256 _amount = amount;
             AssetEpochData storage assetData = assetsData[assetAddress][currentEpoch + i];
