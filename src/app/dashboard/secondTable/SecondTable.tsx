@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+
 import { tokens } from "app/config/tokens";
 import {
   Button,
@@ -11,8 +14,6 @@ import {
   RHFInputField,
   Typography,
 } from "lib";
-import { useRef } from "react";
-import { useForm } from "react-hook-form";
 
 interface FormData {
   amount: string;
@@ -34,7 +35,7 @@ export const SecondTable = () => {
   const modalContent = (
     <MyFormProvider methods={methods} onSubmit={handleSubmit(onSubmitAsync)}>
       <FlexCol className="gap-8">
-        <Typography type="body-bold">Execute option</Typography>
+        <Typography type="body-bold">Claim</Typography>
         <FlexCol>
           <RHFInputField<FormData>
             name="amount"

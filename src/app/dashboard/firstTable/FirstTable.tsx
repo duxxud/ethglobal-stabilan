@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+
 import { tokens } from "app/config/tokens";
 import {
   Button,
@@ -11,8 +14,6 @@ import {
   RHFInputField,
   Typography,
 } from "lib";
-import { useRef } from "react";
-import { useForm } from "react-hook-form";
 
 interface FormData {
   amount: string;

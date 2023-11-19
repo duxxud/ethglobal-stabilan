@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { RainbowKitCustom } from "@/components/button/RainbowKitCustom/RainbowKitCustom.client";
 import { Icon, Icons, SidebarItem, Typography } from "../../lib";
+
+import { RainbowKitCustom } from "@/components/button/RainbowKitCustom/RainbowKitCustom.client";
 
 interface NavBarProps {
   items: SidebarItem[];

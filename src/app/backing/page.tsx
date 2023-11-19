@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
 
-import { tokens } from "app/config/tokens";
-import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 import {
   Button,
   Card,
@@ -16,6 +14,9 @@ import {
   Typography,
 } from "../../lib";
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
+
+import { tokens } from "app/config/tokens";
+import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 
 interface IToken {
   name: string;

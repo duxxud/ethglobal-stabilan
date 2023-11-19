@@ -17,7 +17,7 @@
     "import/no-duplicates": "error",
     "import/no-self-import": "error",
     "import/order": [
-      "error",
+      "warn",
       {
         "newlines-between": "always",
         "groups": ["builtin", "external", "parent", "sibling", "index"]

@@ -2,16 +2,17 @@
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { Raleway } from "next/font/google";
-// Raleway, sans-serif
 import "./globals.css";
+
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
+import { WagmiConfig } from "wagmi";
 
 import { navigationBarConfig } from "../lib";
 
-import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
-import { wagmiConfig } from "lib/scaffold-lib/services/web3/wagmiConfig";
-import { appChains } from "lib/scaffold-lib/services/web3/wagmiConnectors";
-import { WagmiConfig } from "wagmi";
 import NavBar from "./nav-bar/NavBar";
+
+import { appChains } from "lib/scaffold-lib/services/web3/wagmiConnectors";
+import { wagmiConfig } from "lib/scaffold-lib/services/web3/wagmiConfig";
 
 const raleway = Raleway({
   weight: ["400", "500", "700", "800"],

@@ -1,8 +1,9 @@
 "use client";
 
-import { Card, FlexCol, Typography } from "lib";
 import { FirstTable } from "./firstTable/FirstTable";
 import { SecondTable } from "./secondTable/SecondTable";
+
+import { Card, FlexCol, Typography } from "lib";
 
 function getRandomBalance() {
   return (Math.random() * 100).toFixed(2);
