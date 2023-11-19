@@ -34,9 +34,12 @@ export const MockPriceFeedAggregatorComponent = () => {
     USDTPriceFeed:
       contractAddressesByChain[network.modifiedName as AvailableChains]
         ?.USDTPriceFeed,
-    DaiPriceFeed:
+    wBTCPriceFeed:
       contractAddressesByChain[network.modifiedName as AvailableChains]
-        ?.DaiPriceFeed,
+        ?.wBTCPriceFeed,
+    INSRDPriceFeed:
+      contractAddressesByChain[network.modifiedName as AvailableChains]
+        ?.INSRDPriceFeed,
     //gho?
     PriceFeedAggregator:
       contractAddressesByChain[network.modifiedName as AvailableChains]
@@ -51,7 +54,8 @@ export const MockPriceFeedAggregatorComponent = () => {
     const priceFeedMap: { [key in AvailableTokens]?: Address0x } = {
       USDC: PriceFeedAdresses.USDCPriceFeed,
       USDT: PriceFeedAdresses.USDTPriceFeed,
-      Dai: PriceFeedAdresses.DaiPriceFeed,
+      wBTC: PriceFeedAdresses.wBTCPriceFeed,
+      INSRD: PriceFeedAdresses.INSRDPriceFeed,
       //gho nema pricefeedaggregator?
       Gho: PriceFeedAdresses.PriceFeedAggregator,
     };

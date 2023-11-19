@@ -232,7 +232,14 @@ export default function Page() {
       <div className="grid grid-cols-12 gap-4">
         <div className="md:col-span-8 col-span-12 gap-12 flex flex-col">
           <Card size="big">
-            <Typography type="h5">Quote details</Typography>
+            <FlexRow className="content-start justify-between">
+              <Typography type="h5">Quote details</Typography>
+              {selectedToken?.name === "INSRD" && (
+                <Button color="primary" size="small">
+                  Subscirbe?
+                </Button>
+              )}
+            </FlexRow>
             <br />
             <div className="flex flex-col gap-12">
               <Typography type="body-regular">

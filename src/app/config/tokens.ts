@@ -6,7 +6,7 @@ import {
 
 import { Icons } from "lib";
 
-export type AvailableTokens = "USDC" | "USDT" | "Gho" | "Dai";
+export type AvailableTokens = "USDC" | "USDT" | "Gho" | "wBTC" | "INSRD";
 
 export const tokens = [
   {
@@ -37,12 +37,21 @@ export const tokens = [
     },
   },
   {
-    name: "Dai",
-    icon: Icons.tokenDai,
-    sepolia: { address: contractAddressesByChain.sepolia.DAI },
-    base: { address: contractAddressesByChain.base.DAI },
+    name: "WBTC",
+    icon: Icons.tokenWBTC,
+    sepolia: { address: contractAddressesByChain.sepolia.wBTC },
+    base: { address: contractAddressesByChain.base.wBTC },
     polygonZkevmTestnet: {
-      address: contractAddressesByChain.polygonZkevmTestnet.DAI,
+      address: contractAddressesByChain.polygonZkevmTestnet.wBTC,
+    },
+  },
+  {
+    name: "INSRD",
+    icon: Icons.tokenINSRD,
+    sepolia: { address: contractAddressesByChain.sepolia.INSRD },
+    base: { address: contractAddressesByChain.base.INSRD },
+    polygonZkevmTestnet: {
+      address: contractAddressesByChain.polygonZkevmTestnet.INSRD,
     },
   },
 ];

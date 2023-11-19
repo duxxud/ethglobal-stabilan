@@ -48,4 +48,6 @@ export const Icons = {
   tokenGho: "/tokens/gho.png",
   tokenUsdt: "/tokens/usdt.png",
   tokenDai: "/tokens/dai.png",
+  tokenWBTC: "/tokens/wbtcicon.png",
+  tokenINSRD: "/tokens/INSRD.png",
 };

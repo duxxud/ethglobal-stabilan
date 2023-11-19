@@ -30,6 +30,8 @@ export const contractAddresses = {
   StabilanCore: "0x727b5d0151e741f35457f44b7eAD596d6FBf5771" as Address0x,
   wBTC: "0x9cFa38b0558A1DbddE45c0d9A504Be0D28fe6289" as Address0x,
   wBTCPriceFeed: "0xD45214fcFBE25B30D86054c18178dD2EB35136dc" as Address0x,
+  INSRD: "0xc" as Address0x,
+  INSRDPriceFeed: "0xD" as Address0x,
 };
 
 export type AvailableChains = "sepolia" | "base" | "polygonZkevmTestnet";
@@ -73,5 +75,9 @@ export const contractAddressesByChain = {
     DataProvider: "0x3bFB7A3F5a567C18BfCB53A8681e17b01b578883" as Address0x,
     GHO: "0xdd7777135C4494e0dc6fB2059c63a5195E3D2B36" as Address0x,
     GHOPriceFeed: "0xd0E1424340f217af99B2595194c6C35185105A74" as Address0x,
+    wBTC: "0x9cFa38b0558A1DbddE45c0d9A504Be0D28fe6289" as Address0x,
+    wBTCPriceFeed: "0xD45214fcFBE25B30D86054c18178dD2EB35136dc" as Address0x,
+    INSRD: "0xc" as Address0x,
+    INSRDPriceFeed: "0xD" as Address0x,
   },
 };
