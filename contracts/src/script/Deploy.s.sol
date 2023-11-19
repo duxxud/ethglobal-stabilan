@@ -93,23 +93,24 @@ contract Deploy is Script {
             address(usdc),
             0.8 ether,
             0.97 ether,
-            1.1 ether,
+            0.1 ether,
             address(weth)
         );
         stabilanCore.setupAsset(
             address(usdt),
             0.8 ether,
             0.97 ether,
-            1.1 ether,
+            0.1 ether,
             address(weth)
         );
         stabilanCore.setupAsset(
             address(dai),
             0.8 ether,
             0.97 ether,
-            1.1 ether,
+            0.1 ether,
             address(weth)
         );
+
         console.log("Assets setuped");
 
         vm.stopBroadcast();
