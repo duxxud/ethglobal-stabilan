@@ -30,7 +30,22 @@ interface IToken {
   /* <CheckmarkIcon className="absolute top-0 right-0 h-6 w-6 text-green-500" /> */
 }
 
+interface FormData {
+  amount: number;
+}
+
 export default function Page() {
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   setValue,
+  //   watch,
+  //   formState: { errors },
+  // } = useForm({
+  //   defaultValues: {
+  //     amount: 0,
+  //   },
+  // });
   const network = getTargetNetwork();
 
   const [months, setMonths] = useState(1);
@@ -48,7 +63,9 @@ export default function Page() {
   const { data: getAssetAPY } = useWingsContractRead({
     contractName: "StabilanCore",
     functionName: "getAssetAPY",
-    args: [getAddressByTokenAndNetwork(selectedToken?.name, network.network)],
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+    ],
   });
 
   const { writeAsync: backAsync, isLoading: isBacking } = useWingsContractWrite(
@@ -62,7 +79,7 @@ export default function Page() {
   const submitAsync = async () => {
     await backAsync({
       args: [
-        getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+        getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
         parseUnits(String(amount), etherUnits.wei),
         BigInt(months),
       ],

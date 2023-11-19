@@ -35,13 +35,19 @@ interface IToken {
 
 export default function Page() {
   const network = getTargetNetwork();
-  console.log({ network });
+  console.log({ modifiedName: network.modifiedName });
   // StabilanCore.getOptionsPrice(assetAddress, amount, duration, payingTokenAddress)
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState(0);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
   );
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numericValue = value ? parseInt(value, 10) : 0;
+    setAmount(numericValue);
+  };
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
@@ -53,10 +59,10 @@ export default function Page() {
     contractName: "StabilanCore",
     functionName: "getYearlyCost",
     args: [
-      getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
       parseUnits(String(amount), etherUnits.wei),
       BigInt(months),
-      contractAddressesByChain[network.network as AvailableChains]?.WETH,
+      contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
     ],
   });
 
@@ -64,16 +70,16 @@ export default function Page() {
     contractName: "StabilanCore",
     functionName: "getOptionsPrice",
     args: [
-      getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
       parseUnits(String(amount), etherUnits.wei),
       BigInt(months),
-      contractAddressesByChain[network.network as AvailableChains]?.WETH,
+      contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
     ],
   });
   console.log({ getOptionsPrice });
 
   const { formattedPrice: WETHFormattedPrice } = useGetPriceByAddress(
-    contractAddressesByChain[network.network as AvailableChains]?.WETH
+    contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH
   );
 
   const { writeAsync: buyOptionsAsync, isLoading: isBuying } =
@@ -86,7 +92,7 @@ export default function Page() {
   const submitAsync = async () => {
     await buyOptionsAsync({
       args: [
-        getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+        getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
         parseUnits(String(amount), etherUnits.wei),
         BigInt(months),
       ],
@@ -185,9 +191,7 @@ export default function Page() {
                     value={amount}
                     name="amount"
                     type="number"
-                    onChange={(e: any) => {
-                      setAmount(Number(e.target.value));
-                    }}
+                    onChange={handleAmountChange}
                   />
                 </div>
               </div>

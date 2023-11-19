@@ -3,7 +3,7 @@ import addresses from "../../../../contracts-data/address/addresses.json";
 import { contractAddresses } from "app/config/Contract-Addresses";
 
 const contracts = {
-  11155111: [
+  1442: [
     {
       chainId: "1",
       name: "Mainnet",
@@ -2774,7 +2774,7 @@ const contracts = {
           bytecode: "",
         },
         DataProvider: {
-          address: "0xDataProvider",
+          address: contractAddresses.DataProvider,
           abi: [
             {
               inputs: [

@@ -29,17 +29,17 @@ export const MockPriceFeedAggregatorComponent = () => {
 
   const PriceFeedAdresses = {
     USDCPriceFeed:
-      contractAddressesByChain[network.network as AvailableChains]
+      contractAddressesByChain[network.modifiedName as AvailableChains]
         ?.USDCPriceFeed,
     USDTPriceFeed:
-      contractAddressesByChain[network.network as AvailableChains]
+      contractAddressesByChain[network.modifiedName as AvailableChains]
         ?.USDTPriceFeed,
     DaiPriceFeed:
-      contractAddressesByChain[network.network as AvailableChains]
+      contractAddressesByChain[network.modifiedName as AvailableChains]
         ?.DaiPriceFeed,
     //gho?
     PriceFeedAggregator:
-      contractAddressesByChain[network.network as AvailableChains]
+      contractAddressesByChain[network.modifiedName as AvailableChains]
         ?.PriceFeedAggregator,
   };
 
@@ -135,7 +135,7 @@ export const MockPriceFeedAggregatorComponent = () => {
                 args: [
                   getAddressByTokenAndNetwork(
                     selectedToken?.name,
-                    network.network
+                    network.modifiedName
                   ),
                   parseUnits(String(amount), etherUnits.wei),
                 ],

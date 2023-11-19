@@ -39,7 +39,7 @@ export const SecondTable = () => {
     args: [
       getAddressByTokenAndNetwork(
         contractAddresses.coreContractAddress,
-        network.network
+        network.modifiedName
       ),
       address as Address0x,
     ],
@@ -118,7 +118,7 @@ export const SecondTable = () => {
                 .map((userToken, index) => {
                   const tokenInfo = findTokenByAddress(
                     userToken.assetAddress,
-                    network.network
+                    network.modifiedName
                   );
                   const date = formatUntilDate(Number(userToken.endEpoch));
                   return (

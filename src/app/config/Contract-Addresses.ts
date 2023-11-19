@@ -14,6 +14,7 @@ export const contractAddresses = {
   ETH_ADDRESS: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" as Address0x,
   stETH: "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84" as Address0x,
   Uniswapv2Router: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D" as Address0x,
+  DataProvider: "0xb2ba959db02876C6e7B44CB50bffd3DE75fC3C4c" as Address0x,
   // stabilan specific
   USDC: "0x0D055518E94632b54aCf7b79b03f438B0f1BF049" as Address0x,
   USDCPriceFeed: "0x5575166bE5043Ab5B6043D298Eb66A7C1Ce185Ce" as Address0x,
@@ -28,7 +29,7 @@ export const contractAddresses = {
   StabilanCore: "0x215fc4C531AaDB67C0F5F82daE1bDEF5eC561A15" as Address0x,
 };
 
-export type AvailableChains = "sepolia" | "base";
+export type AvailableChains = "sepolia" | "base" | "polygonZkevmTestnet";
 
 export type AddressByChain = {
   [K in AvailableChains]: typeof contractAddresses;
@@ -50,5 +51,19 @@ export const contractAddressesByChain: AddressByChain = {
   },
   base: {
     ...contractAddresses,
+  },
+  polygonZkevmTestnet: {
+    ...contractAddresses,
+    PriceFeedAggregator:
+      "0x48AC85A71Cb5E1384A365fFf3D5f717B4eD411d0" as Address0x,
+    USDC: "0xA43D0B09A636DffB998d824b62117b83523289e6" as Address0x,
+    USDCPriceFeed: "0x343b8557F7dd059b668cbC5726Aa9257D5494CbC" as Address0x,
+    USDT: "0x9A0d06D999EED048700a9D2d7A39B47868905461" as Address0x,
+    USDTPriceFeed: "0x89369f1B135b13b625EdD4882f41A8a66892c958" as Address0x,
+    DAI: "0xD7e2b15E06C571155093257D08636b96bB8B1222" as Address0x,
+    DaiPriceFeed: "0x7117e2E8fb018D96C74Fa6D50dE717F6814A6A5E" as Address0x,
+    WETH: "0xc055C513c798951053B1a0c218601ee08AB01034" as Address0x, // Updated WETH address
+    TokenFactory: "0x8EC279087f1fC188A009251cc1381c222b4102e1" as Address0x,
+    StabilanCore: "0x6A4aCb742600FE0Be6c5aC1Bb640548525396042" as Address0x,
   },
 };

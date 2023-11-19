@@ -115,12 +115,26 @@ export function getBlockExplorerAddressLink(
 /**
  * @returns targetNetwork object consisting targetNetwork from scaffold.config and extra network metadata
  */
+export type ExtendedChainInfo = chains.Chain &
+  Partial<TChainAttributes> & { modifiedName: string };
 
-export function getTargetNetwork(): chains.Chain & Partial<TChainAttributes> {
+export function getTargetNetwork(): ExtendedChainInfo {
   const configuredNetwork = scaffoldConfig.targetNetwork;
+
+  // Convert network name to camelCase if it contains hyphens
+  const modifiedName = configuredNetwork.network.includes("-")
+    ? toCamelCase(configuredNetwork.network)
+    : configuredNetwork.network;
 
   return {
     ...configuredNetwork,
     ...NETWORKS_EXTRA_DATA[configuredNetwork.id],
+    modifiedName: modifiedName,
   };
+}
+
+function toCamelCase(str: string) {
+  return str.replace(/-([a-z])/g, function (g) {
+    return g[1].toUpperCase();
+  });
 }

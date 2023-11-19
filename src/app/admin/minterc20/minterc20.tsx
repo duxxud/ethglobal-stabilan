@@ -35,7 +35,7 @@ export const Minterc20 = () => {
       contractName: "MockERC20",
       functionName: "mint",
       overrideContractAddress: selectedToken
-        ? getAddressByTokenAndNetwork(selectedToken.name, network.network)
+        ? getAddressByTokenAndNetwork(selectedToken.name, network.modifiedName)
         : undefined,
       args: [undefined, undefined],
       onSuccess: () => {

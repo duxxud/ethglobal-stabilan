@@ -11,6 +11,7 @@ import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 
 export default function Page() {
   const network = getTargetNetwork();
+  console.log({ nw: network.name });
   const { address } = useAccount();
 
   const { writeAsync: updateEpochAsync, isLoading: isEpoching } =

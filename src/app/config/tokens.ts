@@ -13,6 +13,9 @@ export const tokens = [
     name: "USDC",
     icon: Icons.tokenUsdc,
     sepolia: { address: contractAddressesByChain.sepolia.USDC },
+    polygonZkevmTestnet: {
+      address: contractAddressesByChain.polygonZkevmTestnet.USDC,
+    },
     base: { address: contractAddressesByChain.base.USDC },
   },
   {
@@ -20,18 +23,27 @@ export const tokens = [
     icon: Icons.tokenUsdt,
     sepolia: { address: contractAddressesByChain.sepolia.USDT },
     base: { address: contractAddressesByChain.base.USDT },
+    polygonZkevmTestnet: {
+      address: contractAddressesByChain.polygonZkevmTestnet.USDT,
+    },
   },
   {
     name: "Gho",
     icon: Icons.tokenGho,
     sepolia: { address: contractAddressesByChain.sepolia.GHO },
     base: { address: contractAddressesByChain.base.GHO },
+    polygonZkevmTestnet: {
+      address: contractAddressesByChain.polygonZkevmTestnet.GHO,
+    },
   },
   {
     name: "Dai",
     icon: Icons.tokenDai,
     sepolia: { address: contractAddressesByChain.sepolia.DAI },
     base: { address: contractAddressesByChain.base.DAI },
+    polygonZkevmTestnet: {
+      address: contractAddressesByChain.polygonZkevmTestnet.DAI,
+    },
   },
 ];
 
@@ -57,6 +69,7 @@ export function getAddressByTokenAndNetwork(
 ): Address0x | undefined {
   // Find the token in the array
   const token = tokens.find((token) => token.name === tokenName);
+  console.log({ token });
 
   if (!token) {
     console.error(`Token ${tokenName} not found.`);
