@@ -6,10 +6,7 @@ import "./interfaces/IOptionToken.sol";
 import "./interfaces/IDataProvider.sol";
 
 contract DataProvider is IDataProvider {
-    function getUserTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory) {
+    function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
@@ -23,9 +20,7 @@ contract DataProvider is IDataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.OPTION,
                     stabilanTokenAddress: address(optionTokens[i]),
-                    undelyingAssetAddress: address(
-                        optionTokens[i].underlying()
-                    ),
+                    undelyingAssetAddress: address(optionTokens[i].underlying()),
                     backedAsset: address(0),
                     endEpoch: optionTokens[i].endEpoch(),
                     balance: balance
@@ -39,9 +34,7 @@ contract DataProvider is IDataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.BACKING,
                     stabilanTokenAddress: address(backingTokens[i]),
-                    undelyingAssetAddress: address(
-                        backingTokens[i].underlying()
-                    ),
+                    undelyingAssetAddress: address(backingTokens[i].underlying()),
                     backedAsset: backingTokens[i].backedAsset(),
                     endEpoch: backingTokens[i].endEpoch(),
                     balance: balance
@@ -57,15 +50,12 @@ contract DataProvider is IDataProvider {
         return userTokens;
     }
 
-    function getUserOptionTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory) {
+    function getUserOptionTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
         IOptionToken[] memory optionTokens;
-        (optionTokens, ) = core.allStabilanTokens();
+        (optionTokens,) = core.allStabilanTokens();
 
         for (uint256 i = 0; i < optionTokens.length; i++) {
             uint256 balance = optionTokens[i].balanceOf(account);
@@ -73,9 +63,7 @@ contract DataProvider is IDataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.OPTION,
                     stabilanTokenAddress: address(optionTokens[i]),
-                    undelyingAssetAddress: address(
-                        optionTokens[i].underlying()
-                    ),
+                    undelyingAssetAddress: address(optionTokens[i].underlying()),
                     backedAsset: address(0),
                     endEpoch: optionTokens[i].endEpoch(),
                     balance: balance
@@ -91,10 +79,7 @@ contract DataProvider is IDataProvider {
         return userTokens;
     }
 
-    function getUserBackingTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory) {
+    function getUserBackingTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
@@ -107,9 +92,7 @@ contract DataProvider is IDataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.BACKING,
                     stabilanTokenAddress: address(backingTokens[i]),
-                    undelyingAssetAddress: address(
-                        backingTokens[i].underlying()
-                    ),
+                    undelyingAssetAddress: address(backingTokens[i].underlying()),
                     backedAsset: backingTokens[i].backedAsset(),
                     endEpoch: backingTokens[i].endEpoch(),
                     balance: balance

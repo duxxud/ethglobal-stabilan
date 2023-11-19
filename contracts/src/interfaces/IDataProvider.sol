@@ -18,18 +18,9 @@ interface IDataProvider {
         uint256 balance;
     }
 
-    function getUserTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory);
+    function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory);
 
-    function getUserOptionTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory);
+    function getUserOptionTokens(IStabilanCore core, address account) external view returns (UserToken[] memory);
 
-    function getUserBackingTokens(
-        IStabilanCore core,
-        address account
-    ) external view returns (UserToken[] memory);
+    function getUserBackingTokens(IStabilanCore core, address account) external view returns (UserToken[] memory);
 }

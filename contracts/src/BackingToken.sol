@@ -28,11 +28,7 @@ contract BackingToken is IBackingToken, StabilanToken {
         backedAsset = _backedAsset;
     }
 
-    function insuranceTransfer(
-        address from,
-        address to,
-        uint256 amount
-    ) external override onlyInsurancePlugin {
+    function insuranceTransfer(address from, address to, uint256 amount) external override onlyInsurancePlugin {
         _transfer(from, to, amount);
     }
 }

@@ -8,9 +8,5 @@ interface IBackingToken is IStabilanToken {
 
     function backedAsset() external view returns (address);
 
-    function insuranceTransfer(
-        address from,
-        address to,
-        uint256 amount
-    ) external;
+    function insuranceTransfer(address from, address to, uint256 amount) external;
 }

@@ -12,33 +12,23 @@ contract InsurancePlugin is Plugin {
     IDataProvider public immutable dataProvider;
     IStabilanCore public immutable stabilan;
 
-    constructor(
-        address _stabilanCore,
-        address _dataProvider,
-        address _token
-    ) Plugin(IERC20Plugins(_token)) {
+    constructor(address _stabilanCore, address _dataProvider, address _token) Plugin(IERC20Plugins(_token)) {
         dataProvider = IDataProvider(_dataProvider);
         stabilan = IStabilanCore(_stabilanCore);
     }
 
-    function _updateBalances(
-        address from,
-        address to,
-        uint256 amount
-    ) internal override {
+    function _updateBalances(address from, address to, uint256 amount) internal override {
         if (from != address(0) && to != address(0)) {
-            IDataProvider.UserToken[] memory backingTokens = dataProvider
-                .getUserBackingTokens(stabilan, from);
+            IDataProvider.UserToken[] memory backingTokens = dataProvider.getUserBackingTokens(stabilan, from);
 
             for (uint256 i = 0; i < backingTokens.length; i++) {
-                IBackingToken backingToken = IBackingToken(
-                    backingTokens[i].stabilanTokenAddress
-                );
+                if (amount == 0) {
+                    break;
+                }
 
-                uint256 amountToSend = Math.min(
-                    backingToken.balanceOf(from),
-                    amount
-                );
+                IBackingToken backingToken = IBackingToken(backingTokens[i].stabilanTokenAddress);
+
+                uint256 amountToSend = Math.min(backingToken.balanceOf(from), amount);
 
                 backingToken.insuranceTransfer(from, to, amountToSend);
                 amount -= amountToSend;
