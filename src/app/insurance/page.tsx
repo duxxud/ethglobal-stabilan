@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
+import { etherUnits, parseUnits } from "viem";
 
 import {
   Button,
@@ -15,8 +16,17 @@ import {
 } from "../../lib";
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
 
-import { tokens } from "app/config/tokens";
+import {
+  AvailableChains,
+  contractAddressesByChain,
+} from "app/config/Contract-Addresses";
+import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
+import { useGetPriceByAddress } from "lib/client/hooks/useGetPriceByAddress";
+import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
+import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
+import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
+import { displayTokens } from "lib/utils/tokens/display-tokens";
 
 interface IToken {
   name: string;
@@ -27,6 +37,9 @@ interface IToken {
 }
 
 export default function Page() {
+  const network = getTargetNetwork();
+  console.log({ network });
+  // StabilanCore.getOptionsPrice(assetAddress, amount, duration, payingTokenAddress)
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState(0);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
@@ -35,6 +48,61 @@ export default function Page() {
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
+  };
+
+  // -- contract -- //
+  // StabilanCore.getYearlyCost(assetAddress, amount, duration, payingTokenAddress)
+  const { data: getYearlyCost } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "getYearlyCost",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+      parseUnits(String(amount), etherUnits.wei),
+      BigInt(months),
+      contractAddressesByChain[network.network as AvailableChains]?.WETH,
+    ],
+  });
+
+  const { data: getOptionsPrice } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "getOptionsPrice",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+      parseUnits(String(amount), etherUnits.wei),
+      BigInt(months),
+      contractAddressesByChain[network.network as AvailableChains]?.WETH,
+    ],
+  });
+  console.log({
+    wethadd: contractAddressesByChain[network.network as AvailableChains]?.WETH,
+  });
+
+  const { formattedPrice: WETHFormattedPrice } = useGetPriceByAddress(
+    contractAddressesByChain[network.network as AvailableChains]?.WETH
+  );
+
+  const { writeAsync: buyOptionsAsync, isLoading: isBuying } =
+    useWingsContractWrite({
+      contractName: "StabilanCore",
+      functionName: "buyOptions",
+      args: [undefined, undefined, undefined],
+    });
+
+  const submitAsync = async () => {
+    await buyOptionsAsync({
+      args: [
+        getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+        parseUnits(String(amount), etherUnits.wei),
+        BigInt(months),
+      ],
+      onSuccess: () => resetForm(),
+    });
+  };
+
+  const resetForm = () => {
+    setAmount(0);
+    setMonths(1);
+    setSelectedToken(undefined);
   };
 
   return (
@@ -194,19 +262,30 @@ export default function Page() {
                 <FlexRow className="justify-between">
                   <Typography>You`ll pay:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    0.001 ETH
+                    {displayTokens(getOptionsPrice, {
+                      displayInDollars: true,
+                      formattedPrice: WETHFormattedPrice,
+                    })}
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">
                   <Typography>Yearly cost:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    1.1896%
+                    {displayTokens(getYearlyCost, {
+                      displayInDollars: true,
+                      formattedPrice: WETHFormattedPrice,
+                    })}
                   </Typography>
                 </FlexRow>
 
                 <Divider />
 
-                <Button color="success" size="big">
+                <Button
+                  color="success"
+                  size="big"
+                  onClick={submitAsync}
+                  loading={isBuying}
+                >
                   Pay
                 </Button>
               </FlexCol>

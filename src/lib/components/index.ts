@@ -20,5 +20,6 @@ export * from "./menu/MenuItem/MenuItem";
 export * from "./menu/Sidebar/Sidebar.client";
 export * from "./modal/GenericModal/GenericModal.client";
 export * from "./page-content/PageContent/PageContent";
+export * from "./table/EmptyContent";
 export * from "./text/GradiantTypography/GradiantTypography";
 export * from "./text/Typography/Typography";

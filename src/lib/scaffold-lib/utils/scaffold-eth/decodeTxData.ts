@@ -3,7 +3,7 @@
 import { Abi, decodeFunctionData, getAbiItem } from "viem";
 import { hardhat } from "wagmi/chains";
 
-import contractData from "../../generated/contracts";
+import contractData from "../../abi-wrapper/contracts";
 
 import { TransactionWithFunction } from "./block";
 import { GenericContractsDeclaration } from "./contract";

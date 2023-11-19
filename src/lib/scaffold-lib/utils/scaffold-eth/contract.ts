@@ -23,7 +23,7 @@ import {
 } from "wagmi";
 
 import scaffoldConfig from "../../../../../scaffold.config";
-import contractsData from "../../generated/contracts";
+import contractsData from "../../abi-wrapper/contracts";
 
 /**
  * @description Combines members of an intersection into a readable type.

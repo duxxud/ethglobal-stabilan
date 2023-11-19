@@ -25,19 +25,19 @@ const configuredNetwork = getTargetNetwork();
 const { onlyLocalBurnerWallet } = scaffoldConfig;
 
 // We always want to have mainnet enabled (ENS resolution, ETH price, etc). But only once.
+// const enabledChains = [chains.sepolia, chains.base];
+
 const enabledChains =
   configuredNetwork.id === 1
     ? [configuredNetwork]
-    : [configuredNetwork, chains.mainnet];
+    : [configuredNetwork, chains.base];
 
 export const appChains = configureChains(
   enabledChains,
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http:
-          process.env.NEXT_PUBLIC_RPC_URL ||
-          `https://rpc.tenderly.co/fork/7b5f8b50-4a44-4677-8de4-baada71e9c81`,
+        http: process.env.NEXT_PUBLIC_RPC_URL || "",
       }),
     }),
   ],

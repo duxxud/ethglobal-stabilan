@@ -5,18 +5,6 @@ import { SecondTable } from "./secondTable/SecondTable";
 
 import { Card, FlexCol, Typography } from "lib";
 
-function getRandomBalance() {
-  return (Math.random() * 100).toFixed(2);
-}
-
-function getRandomDate() {
-  const start = new Date(2020, 0, 1);
-  const end = new Date();
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  ).toLocaleDateString();
-}
-
 export default function Page() {
   return (
     <div>

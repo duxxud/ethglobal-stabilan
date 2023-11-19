@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
+import { etherUnits, formatUnits, parseUnits } from "viem";
 
 import {
   Button,
@@ -15,7 +16,9 @@ import {
 } from "../../lib";
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
 
-import { tokens } from "app/config/tokens";
+import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
+import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
+import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 
 interface IToken {
@@ -27,6 +30,8 @@ interface IToken {
 }
 
 export default function Page() {
+  const network = getTargetNetwork();
+
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState(0);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
@@ -35,6 +40,42 @@ export default function Page() {
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
+  };
+
+  // ------------- Contract ---------- //
+  // StabilanCore.getAssetAPY(assetAddress)
+  // StabilanCore.backing(assetAddress, amount, durationEpochs)
+
+  const getAssetAPY = 1n;
+  // const { data: getAssetAPY } = useWingsContractRead({
+  //   contractName: "StabilanCore",
+  //   functionName: "getAssetAPY",
+  //   args: [getAddressByTokenAndNetwork(selectedToken?.name, network.network)],
+  // });
+
+  const { writeAsync: backAsync, isLoading: isBacking } = useWingsContractWrite(
+    {
+      contractName: "StabilanCore",
+      functionName: "backing",
+      args: [undefined, undefined, undefined],
+    }
+  );
+
+  const submitAsync = async () => {
+    await backAsync({
+      args: [
+        getAddressByTokenAndNetwork(selectedToken?.name, network.network),
+        parseUnits(String(amount), etherUnits.wei),
+        BigInt(months),
+      ],
+      onSuccess: () => resetForm(),
+    });
+  };
+
+  const resetForm = () => {
+    setAmount(0);
+    setMonths(1);
+    setSelectedToken(undefined);
   };
 
   return (
@@ -200,12 +241,17 @@ export default function Page() {
                 <FlexRow className="justify-between">
                   <Typography>APY:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    1.1896%
+                    {formatUnits(getAssetAPY, etherUnits.wei)}
                   </Typography>
                 </FlexRow>
                 <Divider />
 
-                <Button color="success" size="big">
+                <Button
+                  color="success"
+                  size="big"
+                  onClick={submitAsync}
+                  loading={isBacking}
+                >
                   Pay
                 </Button>
               </FlexCol>

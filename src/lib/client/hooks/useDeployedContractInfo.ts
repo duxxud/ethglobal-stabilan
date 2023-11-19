@@ -4,7 +4,7 @@ import { Address, usePublicClient } from "wagmi";
 
 import scaffoldConfig from "../../../../scaffold.config";
 
-import contracts from "lib/scaffold-lib/generated/contracts";
+import contracts from "lib/scaffold-lib/abi-wrapper/contracts";
 import {
   Contract,
   ContractCodeStatus,
