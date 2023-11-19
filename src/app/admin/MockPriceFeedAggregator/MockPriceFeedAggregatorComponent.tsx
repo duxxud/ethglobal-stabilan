@@ -77,6 +77,7 @@ export const MockPriceFeedAggregatorComponent = () => {
     <div>
       <Card>
         <FlexCol className="gap-4 flex-wrap">
+          <Typography type="h5">MockPriceFeedAggregator</Typography>
           <div className="flex gap-3">
             {tokens.map((token, index) => (
               <div

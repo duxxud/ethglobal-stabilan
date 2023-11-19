@@ -49,6 +49,7 @@ export const Minterc20 = () => {
     <div>
       <Card>
         <FlexCol className="gap-4 flex-wrap">
+          <Typography type="h5">minterc20</Typography>
           <div className="flex gap-3">
             {tokens.map((token, index) => (
               <div
