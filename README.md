@@ -4,7 +4,9 @@ Stabilan is a Decentralized Trustless Insurance Protocol developed during the ET
 <br/>
 We present a use case where users can protect their assets from price crashes or stablecoins from depegging.<br/>
 
-**DEMO**: https://stabilan-fe-2.vercel.app/s
+**DEMO**: https://stabilan-fe-2.vercel.app/
+
+**VIDEO:** https://www.loom.com/share/6a5bc8c3050e444c81a83aef0c4267af
 
 # What is the Stabilan Protocol?
 
