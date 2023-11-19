@@ -39,6 +39,7 @@ export default function Page() {
   // StabilanCore.getOptionsPrice(assetAddress, amount, duration, payingTokenAddress)
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState("");
+  const [isApproved, setIsApproved] = useState(false);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
   );
@@ -56,16 +57,16 @@ export default function Page() {
 
   // -- contract -- //
   // StabilanCore.getYearlyCost(assetAddress, amount, duration, payingTokenAddress)
-  const { data: getYearlyCost } = useWingsContractRead({
-    contractName: "StabilanCore",
-    functionName: "getYearlyCost",
-    args: [
-      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
-      parseUnits(String(amount), etherUnits.wei),
-      BigInt(months),
-      contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
-    ],
-  });
+  // const { data: getYearlyCost } = useWingsContractRead({
+  //   contractName: "StabilanCore",
+  //   functionName: "getYearlyCost",
+  //   args: [
+  //     getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+  //     parseUnits(String(amount), etherUnits.wei),
+  //     BigInt(months),
+  //     contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
+  //   ],
+  // });
 
   const { data: getOptionsPrice } = useWingsContractRead({
     contractName: "StabilanCore",
@@ -93,6 +94,23 @@ export default function Page() {
     contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH
   );
 
+  const { data: assetsConfig } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "assetsConfig",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+    ],
+  });
+  console.log({ assetsConfig });
+
+  const { writeAsync: approveOptionsAsync, isLoading: isApproving } =
+    useWingsContractWrite({
+      contractName: "MockERC20",
+      functionName: "approve",
+      overrideContractAddress: assetsConfig ? (assetsConfig as any)[0] : "0xss",
+      args: [undefined, undefined],
+    });
+
   const { writeAsync: buyOptionsAsync, isLoading: isBuying } =
     useWingsContractWrite({
       contractName: "StabilanCore",
@@ -101,7 +119,25 @@ export default function Page() {
     });
 
   const submitAsync = async () => {
+    if (!isApproved) {
+      await approveOptionsAsync({
+        args: [
+          contractAddressesByChain[network.modifiedName as AvailableChains]
+            ?.StabilanCore,
+          getOptionsPrice
+            ? parseUnits(String((getOptionsPrice as any)[0]), etherUnits.wei)
+            : BigInt(0),
+        ],
+        onSuccess: () => setIsApproved(true),
+      });
+      return;
+    }
+
+    //prvo mora approve
     await buyOptionsAsync({
+      value: getOptionsPrice
+        ? parseUnits(String((getOptionsPrice as any)[0]), etherUnits.wei)
+        : BigInt(0),
       args: [
         getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
         parseUnits(String(amount), etherUnits.wei),
@@ -272,13 +308,15 @@ export default function Page() {
                 <FlexRow className="justify-between">
                   <Typography>You`ll pay:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    {displayTokens(getOptionsPrice, {
-                      displayInDollars: true,
-                      formattedPrice: WETHFormattedPrice,
-                    })}
+                    {getOptionsPrice
+                      ? displayTokens((getOptionsPrice as any)[0], {
+                          displayInDollars: true,
+                          formattedPrice: WETHFormattedPrice,
+                        })
+                      : "/"}
                   </Typography>
                 </FlexRow>
-                <FlexRow className="justify-between">
+                {/* <FlexRow className="justify-between">
                   <Typography>Yearly cost:</Typography>
                   <Typography type="body-bold" className="text-info">
                     {displayTokens(getYearlyCost, {
@@ -286,7 +324,7 @@ export default function Page() {
                       formattedPrice: WETHFormattedPrice,
                     })}
                   </Typography>
-                </FlexRow>
+                </FlexRow> */}
 
                 <Divider />
 
@@ -294,9 +332,9 @@ export default function Page() {
                   color="success"
                   size="big"
                   onClick={submitAsync}
-                  loading={isBuying}
+                  loading={isBuying || isApproving}
                 >
-                  Pay
+                  {isApproved ? "Pay" : "Approve"}
                 </Button>
               </FlexCol>
             )}

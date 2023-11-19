@@ -16,6 +16,10 @@ import {
 } from "../../lib";
 import { InputSliderFieldS } from "../../lib/components/form/input-stabilan/InputSliderField/InputSliderField";
 
+import {
+  AvailableChains,
+  contractAddressesByChain,
+} from "app/config/Contract-Addresses";
 import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
 import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
@@ -30,13 +34,10 @@ interface IToken {
   /* <CheckmarkIcon className="absolute top-0 right-0 h-6 w-6 text-green-500" /> */
 }
 
-interface FormData {
-  amount: number;
-}
-
 export default function Page() {
   const network = getTargetNetwork();
 
+  const [isApproved, setIsApproved] = useState(false);
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
@@ -65,6 +66,22 @@ export default function Page() {
     ],
   });
 
+  const { data: assetsConfig } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "assetsConfig",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+    ],
+  });
+
+  const { writeAsync: approveOptionsAsync, isLoading: isApproving } =
+    useWingsContractWrite({
+      contractName: "MockERC20",
+      functionName: "approve",
+      overrideContractAddress: assetsConfig ? (assetsConfig as any)[0] : "0xss",
+      args: [undefined, undefined],
+    });
+
   const { writeAsync: backAsync, isLoading: isBacking } = useWingsContractWrite(
     {
       contractName: "StabilanCore",
@@ -74,6 +91,27 @@ export default function Page() {
   );
 
   const submitAsync = async () => {
+    if (!isApproved) {
+      console.log({
+        amount: amount ? parseUnits(String(amount), etherUnits.wei) : BigInt(0),
+      });
+      console.log({
+        address:
+          contractAddressesByChain[network.modifiedName as AvailableChains]
+            ?.StabilanCore,
+      });
+
+      await approveOptionsAsync({
+        args: [
+          contractAddressesByChain[network.modifiedName as AvailableChains]
+            ?.StabilanCore,
+          amount ? parseUnits(String(amount), etherUnits.wei) : BigInt(0),
+        ],
+        onSuccess: () => setIsApproved(true),
+      });
+      return;
+    }
+
     await backAsync({
       args: [
         getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
@@ -262,9 +300,9 @@ export default function Page() {
                   color="success"
                   size="big"
                   onClick={submitAsync}
-                  loading={isBacking}
+                  loading={isBacking || isApproving}
                 >
-                  Pay
+                  {isApproved ? "Pay" : "Approve"}
                 </Button>
               </FlexCol>
             )}
