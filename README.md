@@ -1,51 +1,55 @@
 # Stabilan
 
-Stabilan is a Decentralized Trustless Insurance Protocol built during the ETHGlobal Istanbul 2023 Hackathon.
-We are presenting usecase where users can protect their assets of the price crash or stablecoins from depeg.
+Stabilan is a Decentralized Trustless Insurance Protocol developed during the ETHGlobal Istanbul 2023 Hackathon.
+We present a use case where users can protect their assets from price crashes or stablecoins from depegging.
 
-## What is Stabilan protocol?
+**DEMO**: https://stabilan-fe-2.vercel.app/s
 
-Protocol is acting as a matchmaking pool between Asset Backers (risk takers) and users which are buying insurance.
-Insurance is represented as an *put option* with predetermined strike price and duration chosen by insuree.
-Stabilan Protocol is ensuring that all insurances are always fully collateralized and solvent. 
-Insurees are guaranteed to be always able to sell their options for the strike price and get that value in collateral asset. 
+# What is the Stabilan Protocol?
 
-## How It works?
+The protocol acts as a matchmaking pool between Asset Backers (risk takers) and users who are purchasing insurance.
+Insurance is represented as a put option with a predetermined strike price and duration chosen by the insuree.
+The Stabilan Protocol ensures that all insurances are always fully collateralized and solvent.
+Insurees are guaranteed to always be able to sell their options for the strike price and receive that value in the collateral asset.
 
-Backers choose an asset to back, amount of collateral to provide and duration (in months) for how long to back the asset.
-Insurees choose an asset for which they want to be insured, asset amount and duration (in months) of insurance. 
-Insurees pays premium which is calculated based on the current utilization of the pool (similar to variable rates on the Lending protocols). The whole premium is splitted between Backers as a reward, and automatically staked as a new collateral.
+# How It Works
+Backers choose an asset to back, the amount of collateral to provide, and the duration (in months) for how long they will back the asset.
+Insurees select an asset for which they want to be insured, the asset amount, and the duration (in months) of the insurance.
+Insurees pay a premium, which is calculated based on the current utilization of the pool (similar to variable rates in Lending protocols). The entire premium is split between Backers as a reward and automatically staked as new collateral.
 
-Insurees gets option tokens in their wallet which are liquid and transferable. Backers also gets backing token in their wallet which is transferable, giving them option to sell their position, while keeping portion of premiums earned until that moment.
+Insurees receive option tokens in their wallet, which are liquid and transferable. Backers also receive backing tokens in their wallet, which are transferable, giving them the option to sell their position while keeping a portion of the premiums earned up to that point.
 
-Insurees can execute their options at any moment before the expiration date. They burn option token, and send wanted amount of the asset to the protocol, and gets back the collateral valued with the predetermined strike price of the token.
+Insurees can exercise their options at any time before the expiration date. They burn the option token, send the desired amount of the asset to the protocol, and receive back the collateral valued at the predetermined strike price of the token.
 
-When the backing period expires, backers are able to collect all earned premiums during their backing duration, and also assets which are obtained when options are exectued.
+When the backing period expires, backers can collect all earned premiums during their backing duration, as well as assets obtained when options are executed.
 
-Price of the collateral asset is obtained from the external oracle. For the purposes of this hackathon, Chainlink oracle is used on the Base testnet, while Chronicle oracle is used on the Polygon zkEVM testnet.
+The price of the collateral asset is obtained from an external oracle. For the purposes of this hackathon, the Chainlink oracle is used on the Base testnet, while the Chronicle oracle is used on the Polygon zkEVM testnet.
 
-### Main features
-- **Trustless and decentralized**
-- - All smart contracts are open sourced and verified on the blockchain. There are no owners of the protocol, and nobody is taking fees, besides Backers who are providing liquidity.
-- **Full solvency, No comission, No jury**
-- - Insurees are always able to execute their options at the strike price. There is no condition besides expiration date.
-- **Fair insurance price**
-- - Price is calculated based on the current utilization of the collateral. If the utilization is low, the insurance price is low encoruging users to buy it and givin oportunity to resell for higher price. If utilization is high, that means demand is high and there is opportunity for Backers to provide more collateral earning more rewards.
-- **Maximal collateral usage**
-- - Premium which is paid by users is given in the collateral token, and automatically staked for it to be able to cover new insurances.
-- **Asset agnostic**
-- - Protocol works with any ERC20 token. It will be on the Backers (future DAO token holders) to determin risk of an asset which will determin striking price.
+# Main Features
+- **Trustless and Decentralized**
+  - All smart contracts are open-sourced and verified on the blockchain. There are no owners of the protocol, and no one takes fees, besides Backers who provide liquidity.
+- **Full Solvency, No Commission, No Jury**
+  - Insurees are always able to execute their options at the strike price. There is no condition other than the expiration date.
+- **Fair Insurance Price**
+  - The price is calculated based on the current utilization of the collateral. If utilization is low, the insurance price is low, encouraging users to buy it and giving the opportunity to resell for a higher price. If utilization is high, indicating high demand, there is an opportunity for Backers to provide more collateral, earning more rewards.
+- **Maximal Collateral Usage**
+  - The premium paid by users is given in the collateral token and automatically staked to cover new insurances.
+- **Asset Agnostic**
+  - The protocol works with any ERC20 token. It will be up to the Backers (future DAO token holders) to determine the risk of an asset, which will determine the striking price.
 
-
-## Technical details
+## Technical Details
 
 ### Smart Contracts
 
 Smart Contracts are deployed on the Polygon zkEVM testnet and Base testnet.
-Addresses:
 
+#### Polygon zkEVM addresses
+
+StabilanCore:  0xc7253058832346174170609fF60a25787Db20087
+DataProvider:  0x701bb47110870e256e8cF227Ecd16B91a4865547
+Insrd:  0x24026186C7Cc7741982543764a54cA3bBbDD9C0e
+InsurancePlugin:  0x6c302554Ef2A882d982b740d985Dc5EdF8635eC9
 
 ### 1Inch Token Plugin
-
-We are presenting the usecase of 1Inch Token Plugin - InsurancePlugin which allows users to enable asset to be always insured in their wallet.
-InsurancePlugin checks if both users opted to be always insured, and on asset transfer between them, options (insurance tokens) are transfered automatically in the amount of the asset transfer.
+We present the use case of the 1Inch Token Plugin - InsurancePlugin, which allows users to ensure assets are always insured in their wallet.
+The InsurancePlugin checks if both users have opted to be always insured, and on asset transfer between them, options (insurance tokens) are transferred automatically in the amount of the asset transfer.
