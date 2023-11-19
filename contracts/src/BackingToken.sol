@@ -8,6 +8,14 @@ import "./StabilanToken.sol";
 
 contract BackingToken is IBackingToken, StabilanToken {
     address public backedAsset;
+    address public insurancePlugin;
+
+    modifier onlyInsurancePlugin() {
+        if (msg.sender != insurancePlugin) {
+            revert NotInsurancePlugin();
+        }
+        _;
+    }
 
     constructor(
         string memory _name,
@@ -18,5 +26,9 @@ contract BackingToken is IBackingToken, StabilanToken {
         address _backedAsset
     ) StabilanToken(_name, _symbol, _underlying, _endEpoch, _coreContract) {
         backedAsset = _backedAsset;
+    }
+
+    function insuranceTransfer(address from, address to, uint256 amount) external override onlyInsurancePlugin {
+        _transfer(from, to, amount);
     }
 }

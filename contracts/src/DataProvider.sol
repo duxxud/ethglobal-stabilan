@@ -3,22 +3,9 @@ pragma solidity ^0.8.18;
 
 import "./interfaces/IStabilanCore.sol";
 import "./interfaces/IOptionToken.sol";
+import "./interfaces/IDataProvider.sol";
 
-contract DataProvider {
-    enum TokenType {
-        OPTION,
-        BACKING
-    }
-
-    struct UserToken {
-        TokenType tokenType;
-        address stabilanTokenAddress;
-        address undelyingAssetAddress;
-        address backedAsset;
-        uint256 endEpoch;
-        uint256 balance;
-    }
-
+contract DataProvider is IDataProvider {
     function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
