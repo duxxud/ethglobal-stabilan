@@ -154,14 +154,16 @@ export default function Page() {
         {tokens.map((token, index) => (
           <div
             key={index}
-            className="cursor-pointer flex flex-col flex-grow items-center rounded-2xl p-4 border border-dashed border-[rgba(145,158,171,0.2)] relative"
+            className={`cursor-pointer flex flex-col flex-grow items-center rounded-2xl p-4 border border-dashed border-[rgba(145,158,171,0.2)] relative ${
+              selectedToken?.name === token.name ? "border-primary" : ""
+            }`}
             onClick={() => selectToken(token)}
           >
             {selectedToken?.name === token.name && (
               <CheckmarkIcon
                 style={{
                   position: "absolute",
-                  left: "185px",
+                  left: "145px",
                   top: "50px",
                 }}
                 className="h-6 w-6 text-primary z-10"
@@ -177,7 +179,9 @@ export default function Page() {
             </div>
             <div className="flex flex-col gap-3 text-center">
               <Typography type="body-bold">{token.name}</Typography>
-              <Typography type="meta">Stablecoin</Typography>
+              <Typography type="meta">
+                {token.name === "WBTC" ? <>Bitcoin</> : <>Stablecoin</>}
+              </Typography>
             </div>
           </div>
         ))}
