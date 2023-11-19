@@ -76,7 +76,7 @@ export const contractAddressesByChain = {
     INSRD: "0x24026186C7Cc7741982543764a54cA3bBbDD9C0e" as Address0x,
     INSRDPriceFeed: "0x5F8bC1976DcC59c44BBd8Afd8FC260b6A32131B1" as Address0x,
     InsurancePlugin: "0x6c302554Ef2A882d982b740d985Dc5EdF8635eC9" as Address0x,
-    GHO: "0xdd7777135C4494e0dc6fB2059c63a5195E3D2B36" as Address0x, // unchanged
-    GHOPriceFeed: "0xd0E1424340f217af99B2595194c6C35185105A74" as Address0x, // unchanged
+    GHO: "0xe862D0574355bD492cf2A4c6C9E6c66dC28d4D8f" as Address0x, // unchanged
+    GHOPriceFeed: "0x33D572F7Dc6FA6dEe50C69E94821501481803560" as Address0x, // unchanged
   },
 };
