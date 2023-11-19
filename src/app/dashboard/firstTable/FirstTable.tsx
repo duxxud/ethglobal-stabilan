@@ -56,7 +56,7 @@ export const FirstTable = () => {
             className="flex-1 mt-4"
             type="submit"
           >
-            Claim
+            Execute option
           </Button>
         </FlexCol>
       </FlexCol>
@@ -101,13 +101,14 @@ export const FirstTable = () => {
               <td className="px-6 py-4">35.49 Tokens Tokens</td>
               <td className="px-6 py-4">6/13/2023</td>
               <td className="px-6 py-4">
+                {/* todo if date is in the past, write expired instead of button */}
                 <GenericModal
                   ref={modalRef}
                   buttonProps={{
                     color: "primary",
                     className: "flex-1",
                   }}
-                  buttonText="Claim"
+                  buttonText="Execute option"
                   onOpen={reset}
                 >
                   {modalContent}

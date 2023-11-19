@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
 
 import { tokens } from "app/config/tokens";
+import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 import {
   Button,
   Card,
@@ -179,6 +180,14 @@ export default function Page() {
                   <Typography>Pay in:</Typography>
                   <Typography type="body-bold" className="text-info">
                     ETH
+                  </Typography>
+                </FlexRow>
+                <FlexRow className="justify-between">
+                  <Typography>Until:</Typography>
+                  <Typography type="body-bold" className="text-info">
+                    {getDateAsLastDayOfTheMonth({
+                      numberOfMonths: months,
+                    }).toDateString()}
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">
