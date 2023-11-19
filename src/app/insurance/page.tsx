@@ -24,6 +24,7 @@ import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
 import { useGetPriceByAddress } from "lib/client/hooks/useGetPriceByAddress";
 import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
+import { useWingsContractWrite2 } from "lib/client/hooks/useWingsContractWrite2";
 import {
   getTargetNetwork,
   notification,
@@ -134,7 +135,7 @@ export default function Page() {
   };
 
   const { writeAsync: approveOptionsAsync, isLoading: isApproving } =
-    useWingsContractWrite({
+    useWingsContractWrite2({
       contractName: "MockERC20",
       functionName: "approve",
       overrideContractAddress: assetsConfig ? (assetsConfig as any)[0] : "0xss",
@@ -152,13 +153,16 @@ export default function Page() {
 
   const submitAsync = async () => {
     if (!isApproved) {
+      console.log({
+        formatedOptionPrice: getOptionsPrice
+          ? (getOptionsPrice as any)[0]
+          : BigInt(0),
+      });
       await approveOptionsAsync({
         args: [
           contractAddressesByChain[network.modifiedName as AvailableChains]
             ?.StabilanCore,
-          getOptionsPrice
-            ? parseUnits(String((getOptionsPrice as any)[0]), etherUnits.wei)
-            : BigInt(0),
+          getOptionsPrice ? (getOptionsPrice as any)[0] : BigInt(0),
         ],
         onSuccess: () => setIsApproved(true),
       });
@@ -167,9 +171,6 @@ export default function Page() {
 
     //prvo mora approve
     await buyOptionsAsync({
-      value: getOptionsPrice
-        ? parseUnits(String((getOptionsPrice as any)[0]), etherUnits.wei)
-        : BigInt(0),
       args: [
         getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
         parseUnits(String(amount), etherUnits.wei),
@@ -364,11 +365,13 @@ export default function Page() {
                   <Typography>You`ll pay:</Typography>
                   <Typography type="body-bold" className="text-info">
                     {getOptionsPrice
-                      ? displayTokens((getOptionsPrice as any)[0], {
-                          displayInDollars: true,
-                          formattedPrice: WETHFormattedPrice,
-                        })
+                      ? formatUnits((getOptionsPrice as any)[0], 18)
                       : "/"}
+                    {/* {getOptionsPrice
+                      ? displayTokens((getOptionsPrice as any)[0], {
+                          maxDecimals: 12,
+                        })
+                      : "/"} */}
                   </Typography>
                 </FlexRow>
                 {/* <FlexRow className="justify-between">

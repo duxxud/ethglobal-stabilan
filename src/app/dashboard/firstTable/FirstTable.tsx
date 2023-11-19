@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 
 import { TokenType, formatUntilDate } from "../common";
@@ -15,25 +13,12 @@ import {
   findContractKeyByAddress,
   findTokenByAddress,
 } from "app/config/tokens";
-import {
-  Button,
-  EmptyContent,
-  FlexCol,
-  GenericModal,
-  GenericModalHandles,
-  ImageWrapper,
-  MyFormProvider,
-  RHFInputField,
-  Typography,
-} from "lib";
+import { EmptyContent, FlexCol, ImageWrapper, Typography } from "lib";
 import { useAccountBalance } from "lib/client/hooks/useAccountBalance";
 import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { displayTokens } from "lib/utils/tokens/display-tokens";
-
-interface FormData {
-  amount: string;
-}
+import { ExecuteOptionModal } from "../common/executeOptionModal";
 
 export const FirstTable = () => {
   const { address } = useAccount();
@@ -49,50 +34,6 @@ export const FirstTable = () => {
       address as Address0x,
     ],
   });
-
-  const modalRef = useRef<GenericModalHandles>(null);
-  const methods = useForm<FormData>({
-    defaultValues: {
-      amount: "",
-    },
-  });
-  const { handleSubmit, reset, watch } = methods;
-
-  const onSubmitAsync = async () => {
-    console.log("first");
-  };
-
-  const modalContent = (
-    <MyFormProvider methods={methods} onSubmit={handleSubmit(onSubmitAsync)}>
-      <FlexCol className="gap-8">
-        <Typography type="body-bold">Execute option</Typography>
-        <FlexCol>
-          <RHFInputField<FormData>
-            name="amount"
-            rightLabel={
-              <FlexCol className="items-end content-center justify-center gap-4">
-                <div className="flex flex-col items-end content-center justify-center">
-                  <Typography type="body-bold">Max</Typography>
-                  <Typography type="tiny">MAX: 0</Typography>
-                </div>
-                <Typography type="body-bold">ETH</Typography>
-              </FlexCol>
-            }
-            placeholder="0"
-            type="number"
-          />
-          <Button
-            size="big"
-            color="primary"
-            className="flex-1 mt-4"
-            type="submit"
-          >
-            Execute option
-          </Button>
-        </FlexCol>
-      </FlexCol>
-    </MyFormProvider>
-  );
 
   return (
     <div className="relative overflow-x-auto">
@@ -122,7 +63,7 @@ export const FirstTable = () => {
                 .filter((ut) => ut.tokenType === TokenType.OPTION)
                 .map((userToken, index) => {
                   const tokenInfo = findTokenByAddress(
-                    userToken.backedAsset,
+                    userToken.undelyingAssetAddress,
                     network.modifiedName
                   );
                   const date = formatUntilDate(Number(userToken.endEpoch));
@@ -154,17 +95,11 @@ export const FirstTable = () => {
                         {new Date(date) < new Date() ? (
                           <span>Expired</span>
                         ) : (
-                          <GenericModal
-                            ref={modalRef}
-                            buttonProps={{
-                              color: "primary",
-                              className: "flex-1",
-                            }}
-                            buttonText="Execute option"
-                            onOpen={reset}
-                          >
-                            {modalContent}
-                          </GenericModal>
+                          <ExecuteOptionModal
+                            stabilanTokenAddress={
+                              userToken.stabilanTokenAddress
+                            }
+                          />
                         )}
                       </td>
                     </tr>

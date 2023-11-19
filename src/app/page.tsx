@@ -4,40 +4,40 @@ import { Icons, ImageWrapper, Typography } from "lib";
 
 const features = [
   {
-    title: "Our Belief",
+    title: "Trustless and Decentralized",
     icon: Icons.logo,
     description:
-      "We believe in empowering individuals to secure their digital assets with ease and confidence. Our mission is to revolutionize asset protection in the digital age, ensuring peace of mind for our users in the face of market uncertainties.",
+      "All smart contracts are open-sourced and verified on the blockchain. There are no owners of the protocol, and no one takes fees, besides Backers who provide liquidity.",
   },
   {
-    title: "How We Empower You",
+    title: "Full Solvency, No Commission, No Jury",
     icon: Icons.logo,
     description:
-      "Our approach combines the security of blockchain technology with user-friendly services. By leveraging Ethereum, we offer flexible and reliable protection options through tokens, backed by a transparent and dynamic pricing system.",
+      "Insurees are always able to execute their options at the strike price. There is no condition other than the expiration date.",
   },
   {
-    title: "Our Services",
+    title: "Fair Insurance Price",
     icon: Icons.logo,
     description:
-      "Stabilan provides a suite of services including token-based asset protection, a market-responsive token pricing model, and opportunities for asset backing. All these are accessible through an intuitive and comprehensive user dashboard.",
+      "The price is calculated based on the current utilization of the collateral. If utilization is low, the insurance price is low, encouraging users to buy it and giving the opportunity to resell for a higher price. If utilization is high, indicating high demand, there is an opportunity for Backers to provide more collateral, earning more rewards.",
   },
   {
-    title: "Token-Based Insurance",
+    title: "Maximal Collateral Usage",
     icon: Icons.logo,
     description:
-      "Purchase protection tokens using Ethereum to insure your digital assets. These tokens are your safeguard, offering adaptability and security in a fluctuating market.",
-  },
-  {
-    title: "Asset Backing Opportunities",
-    icon: Icons.logo,
-    description:
-      "Engage in our asset backing program to support other users' digital assets, while earning rewards for accurate market predictions. This feature promotes a collaborative and supportive ecosystem.",
+      "The premium paid by users is given in the collateral token and automatically staked to cover new insurances.",
   },
   {
     title: "User Dashboard",
     icon: Icons.logo,
     description:
       "Manage your protection tokens and backing activities through our user-friendly dashboard. It gives you a real-time overview of your investments and their market performance.",
+  },
+  {
+    title: "Asset Agnostic",
+    icon: Icons.logo,
+    description:
+      "The protocol works with any ERC20 token. It will be up to the Backers (future DAO token holders) to determine the risk of an asset, which will determine the striking price.",
   },
 ];
 
@@ -47,7 +47,7 @@ export default function Home() {
       <MainContent />
       <div className="my-48">
         <div className="w-full text-center">
-          <Typography type="h2">Stabilan - some more text here</Typography>
+          <Typography type="h2">Stabilan - features</Typography>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mx-20 mt-20">
           {features.map((feature, index) => (

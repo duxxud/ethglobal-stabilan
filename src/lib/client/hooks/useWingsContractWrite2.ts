@@ -16,7 +16,7 @@ import { getParsedError } from "../../scaffold-lib/utils/scaffold-eth/utilsContr
 
 import { useDeployedContractInfo } from "./useDeployedContractInfo";
 
-export const useWingsContractWrite = <
+export const useWingsContractWrite2 = <
   TContractName extends ContractName,
   TFunctionName extends ExtractAbiFunctionNames<
     ContractAbi<TContractName>,
@@ -38,9 +38,7 @@ export const useWingsContractWrite = <
   const configuredNetwork = getTargetNetwork();
 
   const wagmiContractWrite = useContractWrite({
-    address:
-      (overrideContractAddress as Address) ||
-      (deployedContractData?.address as Address),
+    address: overrideContractAddress as Address,
     abi: deployedContractData?.abi as Abi,
     functionName: functionName as any,
     args: args as unknown[],

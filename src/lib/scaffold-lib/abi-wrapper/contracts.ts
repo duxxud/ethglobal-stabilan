@@ -1956,7 +1956,7 @@ const contracts = {
           bytecode: "",
         },
         MockERC20: {
-          address: "0xMockERC20",
+          address: contractAddressesByChain.polygonZkevmTestnet.WETH,
           abi: [
             {
               inputs: [
@@ -2337,7 +2337,7 @@ const contracts = {
           bytecode: "",
         },
         MockPriceFeedAggregator: {
-          address: "0xMockPriceFeedAggregator",
+          address: contractAddressesByChain.polygonZkevmTestnet.WETH,
           abi: [
             {
               inputs: [
