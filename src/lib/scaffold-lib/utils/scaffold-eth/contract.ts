@@ -25,6 +25,8 @@ import {
 import scaffoldConfig from "../../../../../scaffold.config";
 import contractsData from "../../abi-wrapper/contracts";
 
+import { Address0x } from "app/config/Contract-Addresses";
+
 /**
  * @description Combines members of an intersection into a readable type.
  * @example
@@ -191,6 +193,7 @@ export type UseScaffoldWriteConfig<
   contractName: TContractName;
   onBlockConfirmation?: (txnReceipt: TransactionReceipt) => void;
   blockConfirmations?: number;
+  overrideContractAddress?: Address0x;
 } & IsContractDeclarationMissing<
   Partial<UseContractWriteConfig>,
   {

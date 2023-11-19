@@ -32,9 +32,6 @@ interface IToken {
   name: string;
   icon: string;
 }
-{
-  /* <CheckmarkIcon className="absolute top-0 right-0 h-6 w-6 text-green-500" /> */
-}
 
 export default function Page() {
   const network = getTargetNetwork();

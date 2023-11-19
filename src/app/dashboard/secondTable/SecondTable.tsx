@@ -2,6 +2,9 @@
 
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useAccount } from "wagmi";
+
+import { TokenType, formatUntilDate } from "../common";
 
 import { Address0x, contractAddresses } from "app/config/Contract-Addresses";
 import {
@@ -21,8 +24,6 @@ import {
 import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { displayTokens } from "lib/utils/tokens/display-tokens";
-import { useAccount } from "wagmi";
-import { TokenType, formatUntilDate } from "../common";
 
 interface FormData {
   amount: string;

@@ -1,9 +1,18 @@
 "use client";
 
+import { useAccount } from "wagmi";
+
+import { MockPriceFeedAggregatorComponent } from "./MockPriceFeedAggregator/MockPriceFeedAggregatorComponent";
+import { Minterc20 } from "./minterc20/minterc20";
+
 import { Button, FlexCol, Typography } from "lib";
 import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
+import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 
 export default function Page() {
+  const network = getTargetNetwork();
+  const { address } = useAccount();
+
   const { writeAsync: updateEpochAsync, isLoading: isEpoching } =
     useWingsContractWrite({
       contractName: "StabilanCore",
@@ -20,7 +29,8 @@ export default function Page() {
         </Typography>
       </FlexCol>
       <Button
-        color="warning"
+        className="w-48"
+        color="error"
         loading={isEpoching}
         onClick={() => {
           updateEpochAsync();
@@ -28,6 +38,11 @@ export default function Page() {
       >
         Update epoch
       </Button>
+
+      <FlexCol className="gap-10">
+        <Minterc20 />
+        <MockPriceFeedAggregatorComponent />
+      </FlexCol>
     </div>
   );
 }

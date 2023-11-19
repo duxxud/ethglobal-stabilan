@@ -1,0 +1,635 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "getLatestPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "prices",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPrice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x608060405234801561001057600080fd5b5061016a806100206000396000f3fe608060405234801561001057600080fd5b50600436106100405760003560e01c8062e4768b1461004557806316345f1814610071578063cfed246b146100ac575b600080fd5b61006f6100533660046100e8565b6001600160a01b03909116600090815260208190526040902055565b005b61009a61007f366004610112565b6001600160a01b031660009081526020819052604090205490565b60405190815260200160405180910390f35b61009a6100ba366004610112565b60006020819052908152604090205481565b80356001600160a01b03811681146100e357600080fd5b919050565b600080604083850312156100fb57600080fd5b610104836100cc565b946020939093013593505050565b60006020828403121561012457600080fd5b61012d826100cc565b939250505056fea2646970667358221220e2a3955f22fc73722e39ca9b8e3afda6f20fc76c46bf99fe31b0a8cb96acde5664736f6c63430008150033",
+    "sourceMap": "143:331:42:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561001057600080fd5b50600436106100405760003560e01c8062e4768b1461004557806316345f1814610071578063cfed246b146100ac575b600080fd5b61006f6100533660046100e8565b6001600160a01b03909116600090815260208190526040902055565b005b61009a61007f366004610112565b6001600160a01b031660009081526020819052604090205490565b60405190815260200160405180910390f35b61009a6100ba366004610112565b60006020819052908152604090205481565b80356001600160a01b03811681146100e357600080fd5b919050565b600080604083850312156100fb57600080fd5b610104836100cc565b946020939093013593505050565b60006020828403121561012457600080fd5b61012d826100cc565b939250505056fea2646970667358221220e2a3955f22fc73722e39ca9b8e3afda6f20fc76c46bf99fe31b0a8cb96acde5664736f6c63430008150033",
+    "sourceMap": "143:331:42:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;254:95;;;;;;:::i;:::-;-1:-1:-1;;;;;321:13:42;;;:6;:13;;;;;;;;;;:21;254:95;;;355:117;;;;;;:::i;:::-;-1:-1:-1;;;;;452:13:42;426:7;452:13;;;;;;;;;;;;355:117;;;;788:25:45;;;776:2;761:18;355:117:42;;;;;;;206:41;;;;;;:::i;:::-;;;;;;;;;;;;;;;14:173:45;82:20;;-1:-1:-1;;;;;131:31:45;;121:42;;111:70;;177:1;174;167:12;111:70;14:173;;;:::o;192:254::-;260:6;268;321:2;309:9;300:7;296:23;292:32;289:52;;;337:1;334;327:12;289:52;360:29;379:9;360:29;:::i;:::-;350:39;436:2;421:18;;;;408:32;;-1:-1:-1;;;192:254:45:o;451:186::-;510:6;563:2;551:9;542:7;538:23;534:32;531:52;;;579:1;576;569:12;531:52;602:29;621:9;602:29;:::i;:::-;592:39;451:186;-1:-1:-1;;;451:186:45:o",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "getLatestPrice(address)": "16345f18",
+    "prices(address)": "cfed246b",
+    "setPrice(address,uint256)": "00e4768b"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"getLatestPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"prices\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"setPrice\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"getLatestPrice(address)\":{\"params\":{\"asset\":\"The asset to get the price of\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getLatestPrice(address)\":{\"notice\":\"Returns the latest price of an asset\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/mock/MockPriceFeedAggregator.sol\":\"MockPriceFeedAggregator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"]},\"sources\":{\"src/interfaces/IPriceFeedAggregator.sol\":{\"keccak256\":\"0x8a39c8779094c3fa86ade5cff6c0db64fadda623f110da8910d939229731f93d\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://abb5ee268ad3eb585077e0101bd829b9f1e24e29d01885f399e2fd17c15aac2c\",\"dweb:/ipfs/QmRK8NiaKt16mPCt6VeSk4W9QfE8pBm1Gokee8VPJ1bRH9\"]},\"src/mock/MockPriceFeedAggregator.sol\":{\"keccak256\":\"0xf2d3e6bc6194cc23a478783783bb86dba867be32a1ebca6a7732eb537f25b300\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://4d10fa6f9e087209cc3cd26b4832449acdd2444beb434acd9d4347df1c491e71\",\"dweb:/ipfs/Qmc4qUWXmqCrZjAxPVqBZBiFQnKiWg73smJuLb6xf6nJQU\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.21+commit.d9974bed"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getLatestPrice",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "prices",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setPrice"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "getLatestPrice(address)": {
+            "params": {
+              "asset": "The asset to get the price of"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "getLatestPrice(address)": {
+            "notice": "Returns the latest price of an asset"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/mock/MockPriceFeedAggregator.sol": "MockPriceFeedAggregator"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/interfaces/IPriceFeedAggregator.sol": {
+        "keccak256": "0x8a39c8779094c3fa86ade5cff6c0db64fadda623f110da8910d939229731f93d",
+        "urls": [
+          "bzz-raw://abb5ee268ad3eb585077e0101bd829b9f1e24e29d01885f399e2fd17c15aac2c",
+          "dweb:/ipfs/QmRK8NiaKt16mPCt6VeSk4W9QfE8pBm1Gokee8VPJ1bRH9"
+        ],
+        "license": "UNLICENSED"
+      },
+      "src/mock/MockPriceFeedAggregator.sol": {
+        "keccak256": "0xf2d3e6bc6194cc23a478783783bb86dba867be32a1ebca6a7732eb537f25b300",
+        "urls": [
+          "bzz-raw://4d10fa6f9e087209cc3cd26b4832449acdd2444beb434acd9d4347df1c491e71",
+          "dweb:/ipfs/Qmc4qUWXmqCrZjAxPVqBZBiFQnKiWg73smJuLb6xf6nJQU"
+        ],
+        "license": "UNLICENSED"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/mock/MockPriceFeedAggregator.sol",
+    "id": 43504,
+    "exportedSymbols": {
+      "IPriceFeedAggregator": [42893],
+      "MockPriceFeedAggregator": [43503]
+    },
+    "nodeType": "SourceUnit",
+    "src": "39:436:42",
+    "nodes": [
+      {
+        "id": 43467,
+        "nodeType": "PragmaDirective",
+        "src": "39:24:42",
+        "nodes": [],
+        "literals": ["solidity", "^", "0.8", ".13"]
+      },
+      {
+        "id": 43469,
+        "nodeType": "ImportDirective",
+        "src": "65:76:42",
+        "nodes": [],
+        "absolutePath": "src/interfaces/IPriceFeedAggregator.sol",
+        "file": "../interfaces/IPriceFeedAggregator.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 43504,
+        "sourceUnit": 42894,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 43468,
+              "name": "IPriceFeedAggregator",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 42893,
+              "src": "73:20:42",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 43503,
+        "nodeType": "ContractDefinition",
+        "src": "143:331:42",
+        "nodes": [
+          {
+            "id": 43475,
+            "nodeType": "VariableDeclaration",
+            "src": "206:41:42",
+            "nodes": [],
+            "constant": false,
+            "functionSelector": "cfed246b",
+            "mutability": "mutable",
+            "name": "prices",
+            "nameLocation": "241:6:42",
+            "scope": 43503,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 43474,
+              "keyName": "",
+              "keyNameLocation": "-1:-1:-1",
+              "keyType": {
+                "id": 43472,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "214:7:42",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "206:27:42",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueName": "",
+              "valueNameLocation": "-1:-1:-1",
+              "valueType": {
+                "id": 43473,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "225:7:42",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "id": 43489,
+            "nodeType": "FunctionDefinition",
+            "src": "254:95:42",
+            "nodes": [],
+            "body": {
+              "id": 43488,
+              "nodeType": "Block",
+              "src": "311:38:42",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "id": 43486,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "id": 43482,
+                        "name": "prices",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 43475,
+                        "src": "321:6:42",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                          "typeString": "mapping(address => uint256)"
+                        }
+                      },
+                      "id": 43484,
+                      "indexExpression": {
+                        "id": 43483,
+                        "name": "asset",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 43477,
+                        "src": "328:5:42",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "321:13:42",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 43485,
+                      "name": "price",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 43479,
+                      "src": "337:5:42",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "321:21:42",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 43487,
+                  "nodeType": "ExpressionStatement",
+                  "src": "321:21:42"
+                }
+              ]
+            },
+            "functionSelector": "00e4768b",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setPrice",
+            "nameLocation": "263:8:42",
+            "parameters": {
+              "id": 43480,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 43477,
+                  "mutability": "mutable",
+                  "name": "asset",
+                  "nameLocation": "280:5:42",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 43489,
+                  "src": "272:13:42",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 43476,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "272:7:42",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 43479,
+                  "mutability": "mutable",
+                  "name": "price",
+                  "nameLocation": "295:5:42",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 43489,
+                  "src": "287:13:42",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 43478,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "287:7:42",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "271:30:42"
+            },
+            "returnParameters": {
+              "id": 43481,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "311:0:42"
+            },
+            "scope": 43503,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 43502,
+            "nodeType": "FunctionDefinition",
+            "src": "355:117:42",
+            "nodes": [],
+            "body": {
+              "id": 43501,
+              "nodeType": "Block",
+              "src": "435:37:42",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "id": 43497,
+                      "name": "prices",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 43475,
+                      "src": "452:6:42",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 43499,
+                    "indexExpression": {
+                      "id": 43498,
+                      "name": "asset",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 43491,
+                      "src": "459:5:42",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "452:13:42",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 43496,
+                  "id": 43500,
+                  "nodeType": "Return",
+                  "src": "445:20:42"
+                }
+              ]
+            },
+            "baseFunctions": [42892],
+            "functionSelector": "16345f18",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLatestPrice",
+            "nameLocation": "364:14:42",
+            "overrides": {
+              "id": 43493,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "408:8:42"
+            },
+            "parameters": {
+              "id": 43492,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 43491,
+                  "mutability": "mutable",
+                  "name": "asset",
+                  "nameLocation": "387:5:42",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 43502,
+                  "src": "379:13:42",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 43490,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "379:7:42",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "378:15:42"
+            },
+            "returnParameters": {
+              "id": 43496,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 43495,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 43502,
+                  "src": "426:7:42",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 43494,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "426:7:42",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "425:9:42"
+            },
+            "scope": 43503,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 43470,
+              "name": "IPriceFeedAggregator",
+              "nameLocations": ["179:20:42"],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 42893,
+              "src": "179:20:42"
+            },
+            "id": 43471,
+            "nodeType": "InheritanceSpecifier",
+            "src": "179:20:42"
+          }
+        ],
+        "canonicalName": "MockPriceFeedAggregator",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [43503, 42893],
+        "name": "MockPriceFeedAggregator",
+        "nameLocation": "152:23:42",
+        "scope": 43504,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 42
+}

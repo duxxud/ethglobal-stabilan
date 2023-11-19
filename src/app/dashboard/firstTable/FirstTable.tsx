@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 
+import { TokenType, formatUntilDate } from "../common";
+
 import { contractAddressesByChain } from "app/config/Contract-Addresses";
 import { findTokenByAddress } from "app/config/tokens";
 import {
@@ -17,9 +19,9 @@ import {
   RHFInputField,
   Typography,
 } from "lib";
+import { useAccountBalance } from "lib/client/hooks/useAccountBalance";
 import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
 import { displayTokens } from "lib/utils/tokens/display-tokens";
-import { TokenType, formatUntilDate } from "../common";
 
 interface FormData {
   amount: string;
@@ -51,6 +53,7 @@ const userTokens:
 ];
 export const FirstTable = () => {
   const { address } = useAccount();
+  const { balance } = useAccountBalance();
   const network = getTargetNetwork();
   // DataProvider.getUserTokens(coreContractAddress, userAddress)
   // const { data: userTokens } = useWingsContractRead({

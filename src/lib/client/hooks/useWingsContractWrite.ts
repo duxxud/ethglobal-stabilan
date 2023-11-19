@@ -29,6 +29,7 @@ export const useWingsContractWrite = <
   value,
   onBlockConfirmation,
   blockConfirmations,
+  overrideContractAddress,
   ...writeConfig
 }: UseScaffoldWriteConfig<TContractName, TFunctionName>) => {
   const { data: deployedContractData } = useDeployedContractInfo(contractName);
@@ -37,7 +38,9 @@ export const useWingsContractWrite = <
   const configuredNetwork = getTargetNetwork();
 
   const wagmiContractWrite = useContractWrite({
-    address: deployedContractData?.address as Address,
+    address:
+      (overrideContractAddress as Address) ||
+      (deployedContractData?.address as Address),
     abi: deployedContractData?.abi as Abi,
     functionName: functionName as any,
     args: args as unknown[],

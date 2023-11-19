@@ -1,5 +1,7 @@
 import addresses from "../../../../contracts-data/address/addresses.json";
 
+import { contractAddresses } from "app/config/Contract-Addresses";
+
 const contracts = {
   11155111: [
     {
@@ -2244,7 +2246,7 @@ const contracts = {
           bytecode: "",
         },
         StabilanCore: {
-          address: "0xStabilanCore",
+          address: contractAddresses.StabilanCore,
           abi: [
             {
               inputs: [
@@ -2254,13 +2256,13 @@ const contracts = {
                   type: "address",
                 },
                 {
-                  internalType: "address",
-                  name: "_owner",
+                  internalType: "contract IPriceFeedAggregator",
+                  name: "_priceFeedAggregator",
                   type: "address",
                 },
                 {
-                  internalType: "contract IPriceFeedAggregator",
-                  name: "_priceFeedAggregator",
+                  internalType: "address",
+                  name: "_owner",
                   type: "address",
                 },
               ],
@@ -2278,8 +2280,40 @@ const contracts = {
               type: "error",
             },
             {
-              inputs: [],
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "inEpochId",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "insuringAssetValue",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "totalAvailableCollateralUSD",
+                  type: "uint256",
+                },
+              ],
               name: "NotEnoughBacking",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "msgValue",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "optionsPrice",
+                  type: "uint256",
+                },
+              ],
+              name: "NotEnoughETHSent",
               type: "error",
             },
             {
@@ -2403,6 +2437,11 @@ const contracts = {
               name: "assetsConfig",
               outputs: [
                 {
+                  internalType: "address",
+                  name: "collateralAsset",
+                  type: "address",
+                },
+                {
                   internalType: "uint256",
                   name: "collateralRatio",
                   type: "uint256",
@@ -2518,6 +2557,25 @@ const contracts = {
                   name: "assetAddress",
                   type: "address",
                 },
+              ],
+              name: "getAssetAPY",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "assetAddress",
+                  type: "address",
+                },
                 {
                   internalType: "uint256",
                   name: "amount",
@@ -2621,8 +2679,23 @@ const contracts = {
                 },
                 {
                   internalType: "uint256",
+                  name: "collateralRatio",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "strikePricePercent",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
                   name: "expectedApy",
                   type: "uint256",
+                },
+                {
+                  internalType: "address",
+                  name: "collateralAddress",
+                  type: "address",
                 },
               ],
               name: "setupAsset",
@@ -2752,6 +2825,464 @@ const contracts = {
                 },
               ],
               stateMutability: "view",
+              type: "function",
+            },
+          ],
+          evm: {
+            bytecode: {
+              linkReferences: {},
+              object: "",
+              opcodes: "",
+              sourceMap: "",
+            },
+            deployedBytecode: {
+              immutableReferences: {},
+              linkReferences: {},
+              object: "",
+              opcodes: "",
+              sourceMap: "",
+            },
+          },
+          bytecode: "",
+        },
+        MockERC20: {
+          address: "0xMockERC20",
+          abi: [
+            {
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "symbol",
+                  type: "string",
+                },
+              ],
+              stateMutability: "nonpayable",
+              type: "constructor",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "spender",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "allowance",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "needed",
+                  type: "uint256",
+                },
+              ],
+              name: "ERC20InsufficientAllowance",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "sender",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "balance",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "needed",
+                  type: "uint256",
+                },
+              ],
+              name: "ERC20InsufficientBalance",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "approver",
+                  type: "address",
+                },
+              ],
+              name: "ERC20InvalidApprover",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "receiver",
+                  type: "address",
+                },
+              ],
+              name: "ERC20InvalidReceiver",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "sender",
+                  type: "address",
+                },
+              ],
+              name: "ERC20InvalidSender",
+              type: "error",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "spender",
+                  type: "address",
+                },
+              ],
+              name: "ERC20InvalidSpender",
+              type: "error",
+            },
+            {
+              anonymous: false,
+              inputs: [
+                {
+                  indexed: true,
+                  internalType: "address",
+                  name: "owner",
+                  type: "address",
+                },
+                {
+                  indexed: true,
+                  internalType: "address",
+                  name: "spender",
+                  type: "address",
+                },
+                {
+                  indexed: false,
+                  internalType: "uint256",
+                  name: "value",
+                  type: "uint256",
+                },
+              ],
+              name: "Approval",
+              type: "event",
+            },
+            {
+              anonymous: false,
+              inputs: [
+                {
+                  indexed: true,
+                  internalType: "address",
+                  name: "from",
+                  type: "address",
+                },
+                {
+                  indexed: true,
+                  internalType: "address",
+                  name: "to",
+                  type: "address",
+                },
+                {
+                  indexed: false,
+                  internalType: "uint256",
+                  name: "value",
+                  type: "uint256",
+                },
+              ],
+              name: "Transfer",
+              type: "event",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "owner",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "spender",
+                  type: "address",
+                },
+              ],
+              name: "allowance",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "spender",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "value",
+                  type: "uint256",
+                },
+              ],
+              name: "approve",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "account",
+                  type: "address",
+                },
+              ],
+              name: "balanceOf",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "account",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "amount",
+                  type: "uint256",
+                },
+              ],
+              name: "burn",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "decimals",
+              outputs: [
+                {
+                  internalType: "uint8",
+                  name: "",
+                  type: "uint8",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "account",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "amount",
+                  type: "uint256",
+                },
+              ],
+              name: "mint",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "name",
+              outputs: [
+                {
+                  internalType: "string",
+                  name: "",
+                  type: "string",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "symbol",
+              outputs: [
+                {
+                  internalType: "string",
+                  name: "",
+                  type: "string",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "totalSupply",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "to",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "value",
+                  type: "uint256",
+                },
+              ],
+              name: "transfer",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "from",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "to",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "value",
+                  type: "uint256",
+                },
+              ],
+              name: "transferFrom",
+              outputs: [
+                {
+                  internalType: "bool",
+                  name: "",
+                  type: "bool",
+                },
+              ],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+          ],
+          evm: {
+            bytecode: {
+              linkReferences: {},
+              object: "",
+              opcodes: "",
+              sourceMap: "",
+            },
+            deployedBytecode: {
+              immutableReferences: {},
+              linkReferences: {},
+              object: "",
+              opcodes: "",
+              sourceMap: "",
+            },
+          },
+          bytecode: "",
+        },
+        MockPriceFeedAggregator: {
+          address: "0xMockPriceFeedAggregator",
+          abi: [
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "asset",
+                  type: "address",
+                },
+              ],
+              name: "getLatestPrice",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "prices",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "asset",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              name: "setPrice",
+              outputs: [],
+              stateMutability: "nonpayable",
               type: "function",
             },
           ],
