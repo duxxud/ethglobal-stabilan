@@ -69,7 +69,9 @@ export const Minterc20 = () => {
                 </div>
                 <div className="flex flex-col gap-3 text-center">
                   <Typography type="body-bold">{token.name}</Typography>
-                  <Typography type="meta">Stablecoin</Typography>
+                  <Typography type="meta">
+                    {token.name === "WBTC" ? <>Bitcoin</> : <>Stablecoin</>}
+                  </Typography>
                 </div>
               </div>
             ))}

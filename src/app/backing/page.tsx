@@ -278,7 +278,13 @@ export default function Page() {
                     <Typography type="body-bold">
                       {selectedToken.name}
                     </Typography>
-                    <Typography type="meta">Stablecoin</Typography>
+                    <Typography type="meta">
+                      {selectedToken.name === "WBTC" ? (
+                        <>Bitcoin</>
+                      ) : (
+                        <>Stablecoin</>
+                      )}
+                    </Typography>
                   </FlexCol>
                 </FlexRow>
                 <Divider />
