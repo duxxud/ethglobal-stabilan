@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
-import { etherUnits, parseUnits } from "viem";
+import { etherUnits, formatUnits, parseUnits } from "viem";
 
 import {
   Button,
@@ -24,7 +24,10 @@ import { getAddressByTokenAndNetwork, tokens } from "app/config/tokens";
 import { useGetPriceByAddress } from "lib/client/hooks/useGetPriceByAddress";
 import { useWingsContractRead } from "lib/client/hooks/useWingsContractRead";
 import { useWingsContractWrite } from "lib/client/hooks/useWingsContractWrite";
-import { getTargetNetwork } from "lib/scaffold-lib/utils/scaffold-eth";
+import {
+  getTargetNetwork,
+  notification,
+} from "lib/scaffold-lib/utils/scaffold-eth";
 import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 import { displayTokens } from "lib/utils/tokens/display-tokens";
 
@@ -41,15 +44,8 @@ export default function Page() {
   const [amount, setAmount] = useState("");
   const [isApproved, setIsApproved] = useState(false);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
-    undefined
+    tokens[0]
   );
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (!isNaN(Number(value))) {
-      setAmount(value);
-    }
-  };
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
@@ -68,16 +64,8 @@ export default function Page() {
   //   ],
   // });
 
-  const { data: getOptionsPrice } = useWingsContractRead({
-    contractName: "StabilanCore",
-    functionName: "getOptionsPrice",
-    args: [
-      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
-      parseUnits(String(amount), etherUnits.wei),
-      BigInt(months),
-      contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
-    ],
-  });
+  // function getMaxOptionAmount(address assetAddress, uint256 durationEpochs) external view returns (uint256) {
+
   console.log({
     getOptionsPriceAddress: getAddressByTokenAndNetwork(
       selectedToken?.name,
@@ -88,7 +76,6 @@ export default function Page() {
     wethadd:
       contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH,
   });
-  console.log({ getOptionsPrice });
 
   const { formattedPrice: WETHFormattedPrice } = useGetPriceByAddress(
     contractAddressesByChain[network.modifiedName as AvailableChains]?.WETH
@@ -102,6 +89,49 @@ export default function Page() {
     ],
   });
   console.log({ assetsConfig });
+  const { data: getOptionsPrice } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "getOptionsPrice",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+      parseUnits(String(amount), etherUnits.wei),
+      BigInt(months),
+      assetsConfig ? (assetsConfig as any)[0] : "0xss",
+    ],
+  });
+
+  const { data: getMaxOptionAmount } = useWingsContractRead({
+    contractName: "StabilanCore",
+    functionName: "getMaxOptionAmount",
+    args: [
+      getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
+      BigInt(months),
+    ],
+  });
+
+  console.log({ getMaxOptionAmount });
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (!isNaN(Number(value))) {
+      console.log({ value });
+      console.log({
+        max: formatUnits(getMaxOptionAmount || BigInt(0), etherUnits.wei),
+      });
+      if (
+        Number(value) >
+        Number(formatUnits(getMaxOptionAmount || BigInt(0), etherUnits.wei))
+      ) {
+        notification.error(
+          "Insufficient amount!, max amount is: " +
+            Number(formatUnits(getMaxOptionAmount || BigInt(0), etherUnits.wei))
+        );
+        return;
+      }
+      setAmount(value);
+    }
+  };
 
   const { writeAsync: approveOptionsAsync, isLoading: isApproving } =
     useWingsContractWrite({
@@ -117,6 +147,8 @@ export default function Page() {
       functionName: "buyOptions",
       args: [undefined, undefined, undefined],
     });
+
+  console.log({ getOptionsPrice });
 
   const submitAsync = async () => {
     if (!isApproved) {
@@ -151,6 +183,7 @@ export default function Page() {
     setAmount("");
     setMonths(1);
     setSelectedToken(undefined);
+    setIsApproved(false);
   };
 
   return (
@@ -233,6 +266,11 @@ export default function Page() {
                     rightLabel={
                       <Typography type="h6" className="text-info">
                         {selectedToken ? selectedToken.name : "/"}
+                      </Typography>
+                    }
+                    downLabel={
+                      <Typography type="body-bold">
+                        Max: <>{displayTokens(getMaxOptionAmount, {}) || "/"}</>
                       </Typography>
                     }
                     value={amount}

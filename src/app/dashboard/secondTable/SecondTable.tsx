@@ -11,7 +11,10 @@ import {
   AvailableChains,
   contractAddressesByChain,
 } from "app/config/Contract-Addresses";
-import { findTokenByAddress } from "app/config/tokens";
+import {
+  findContractKeyByAddress,
+  findTokenByAddress,
+} from "app/config/tokens";
 import {
   Button,
   EmptyContent,
@@ -117,7 +120,7 @@ export const SecondTable = () => {
                 .filter((ut) => ut.tokenType === TokenType.BACKING)
                 .map((userToken, index) => {
                   const tokenInfo = findTokenByAddress(
-                    userToken.assetAddress,
+                    userToken.backedAsset,
                     network.modifiedName
                   );
                   const date = formatUntilDate(Number(userToken.endEpoch));
@@ -128,7 +131,7 @@ export const SecondTable = () => {
                     >
                       <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center">
                         <ImageWrapper
-                          src={tokenInfo?.icon || "default-icon.png"}
+                          src={tokenInfo?.icon || ""}
                           alt={tokenInfo?.name || "Unknown"}
                           width="30"
                           height="30"
@@ -138,7 +141,10 @@ export const SecondTable = () => {
                       </td>
                       <td className="px-6 py-4">
                         {displayTokens(userToken.balance, {
-                          tokenLabel: tokenInfo?.name,
+                          tokenLabel: findContractKeyByAddress(
+                            userToken.undelyingAssetAddress,
+                            network.modifiedName
+                          ),
                         })}
                       </td>
                       <td className="px-6 py-4">{date}</td>

@@ -12,6 +12,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   value?: string | number | readonly string[] | undefined;
   onChange: ChangeEventHandler<HTMLInputElement> | undefined;
   rightLabel?: ReactNode;
+  downLabel?: ReactNode;
   label?: ReactNode;
   placeholder?: string;
   fullWidth?: boolean;
@@ -24,6 +25,7 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
       onChange,
       name,
       rightLabel,
+      downLabel,
       label,
       placeholder,
       fullWidth,
@@ -37,7 +39,11 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
     return (
       <div className={`${classes} border focus-within:border-success`}>
         {label && <div className="flex mb-4">{label}</div>}
-        <div className="flex flex-row items-center flex-wrap mb-[30px]">
+        <div
+          className={`flex flex-row items-center flex-wrap ${
+            downLabel ? "" : "mb-[30px]"
+          }`}
+        >
           <input
             ref={ref}
             className="text-2xl flex-1 outline-none bg-transparent not-italic"
@@ -50,6 +56,7 @@ export const InputFieldS = React.forwardRef<HTMLInputElement, InputFieldProps>(
           />
           {rightLabel && <div className="flex-shrink-0">{rightLabel}</div>}
         </div>
+        {downLabel && <div className="mt-3">{downLabel}</div>}
       </div>
     );
   }

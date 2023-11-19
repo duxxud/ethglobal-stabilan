@@ -11,8 +11,9 @@ import { navigationBarConfig } from "../lib";
 
 import NavBar from "./nav-bar/NavBar";
 
-import { appChains } from "lib/scaffold-lib/services/web3/wagmiConnectors";
 import { wagmiConfig } from "lib/scaffold-lib/services/web3/wagmiConfig";
+import { appChains } from "lib/scaffold-lib/services/web3/wagmiConnectors";
+import { Toaster } from "react-hot-toast";
 
 const raleway = Raleway({
   weight: ["400", "500", "700", "800"],
@@ -41,7 +42,7 @@ export default function RootLayout({
           </RainbowKitProvider>
         </WagmiConfig>
       </body>
-      {/* <Toaster /> */}
+      <Toaster />
     </html>
   );
 }

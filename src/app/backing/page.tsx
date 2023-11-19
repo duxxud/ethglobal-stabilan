@@ -41,7 +41,7 @@ export default function Page() {
   const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState("");
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
-    undefined
+    tokens[0]
   );
 
   const selectToken = (token: IToken) => {
@@ -65,7 +65,14 @@ export default function Page() {
       getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
     ],
   });
+  console.log({ getAssetAPY });
 
+  console.log({
+    adres: getAddressByTokenAndNetwork(
+      selectedToken?.name,
+      network.modifiedName
+    ),
+  });
   const { data: assetsConfig } = useWingsContractRead({
     contractName: "StabilanCore",
     functionName: "assetsConfig",
@@ -73,10 +80,12 @@ export default function Page() {
       getAddressByTokenAndNetwork(selectedToken?.name, network.modifiedName),
     ],
   });
+  console.log({ assetsConfig });
 
+  // todo check if this is working - overrideContractAddress??
   const { writeAsync: approveOptionsAsync, isLoading: isApproving } =
     useWingsContractWrite({
-      contractName: "MockERC20",
+      contractName: "WETH",
       functionName: "approve",
       overrideContractAddress: assetsConfig ? (assetsConfig as any)[0] : "0xss",
       args: [undefined, undefined],
@@ -92,6 +101,7 @@ export default function Page() {
 
   const submitAsync = async () => {
     if (!isApproved) {
+      console.log({ assetsConfig });
       console.log({
         amount: amount ? parseUnits(String(amount), etherUnits.wei) : BigInt(0),
       });
@@ -109,6 +119,7 @@ export default function Page() {
         ],
         onSuccess: () => setIsApproved(true),
       });
+      console.log("first");
       return;
     }
 
@@ -126,6 +137,7 @@ export default function Page() {
     setAmount("");
     setMonths(1);
     setSelectedToken(undefined);
+    setIsApproved(false);
   };
 
   return (
@@ -290,8 +302,10 @@ export default function Page() {
                   <Typography>APY:</Typography>
                   <Typography type="body-bold" className="text-info">
                     {getAssetAPY
-                      ? formatUnits(getAssetAPY, etherUnits.wei)
-                      : "0"}
+                      ? `${(
+                          Number(formatUnits(getAssetAPY, etherUnits.wei)) * 100
+                        ).toFixed(2)}%`
+                      : "/"}
                   </Typography>
                 </FlexRow>
                 <Divider />

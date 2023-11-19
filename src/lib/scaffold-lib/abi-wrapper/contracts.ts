@@ -167,7 +167,7 @@ const contracts = {
           bytecode: "",
         },
         WETH: {
-          address: addresses.WETH,
+          address: contractAddressesByChain.polygonZkevmTestnet.WETH,
           abi: [
             {
               constant: true,
@@ -1492,6 +1492,60 @@ const contracts = {
               inputs: [
                 {
                   internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              name: "assetsData",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "strikePrice",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "collateralAmount",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "reservedAmount",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "activeUntilTimestamp",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "totalPremium",
+                  type: "uint256",
+                },
+                {
+                  internalType: "contract IOptionToken",
+                  name: "optionToken",
+                  type: "address",
+                },
+                {
+                  internalType: "contract IBackingToken",
+                  name: "backingToken",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
                   name: "assetAddress",
                   type: "address",
                 },
@@ -1587,6 +1641,30 @@ const contracts = {
                 },
               ],
               name: "getAssetAPY",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "assetAddress",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "durationEpochs",
+                  type: "uint256",
+                },
+              ],
+              name: "getMaxOptionAmount",
               outputs: [
                 {
                   internalType: "uint256",
@@ -1748,6 +1826,34 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "assetAddress",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "collateralRatio",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "strikePricePercent",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "expectedApy",
+                  type: "uint256",
+                },
+              ],
+              name: "updateAssetConfig",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
               inputs: [],
               name: "updateEpoch",
               outputs: [],
@@ -1799,12 +1905,17 @@ const contracts = {
                     },
                     {
                       internalType: "address",
-                      name: "tokenAddress",
+                      name: "stabilanTokenAddress",
                       type: "address",
                     },
                     {
                       internalType: "address",
-                      name: "assetAddress",
+                      name: "undelyingAssetAddress",
+                      type: "address",
+                    },
+                    {
+                      internalType: "address",
+                      name: "backedAsset",
                       type: "address",
                     },
                     {

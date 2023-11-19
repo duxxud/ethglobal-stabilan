@@ -17,8 +17,18 @@ export enum TokenType {
 
 export interface UserToken {
   tokenType: TokenType;
-  address: Address0x;
-  assetAddress: Address0x;
+  stabilanTokenAddress: Address0x;
+  undelyingAssetAddress: Address0x;
+  backedAsset: Address0x;
   endEpoch: number;
   balance: number;
 }
+
+// struct UserToken {
+//   TokenType tokenType;
+//   address stabilanTokenAddress;
+//   address undelyingAssetAddress;
+//   address backedAsset;
+//   uint256 endEpoch;
+//   uint256 balance;
+// }

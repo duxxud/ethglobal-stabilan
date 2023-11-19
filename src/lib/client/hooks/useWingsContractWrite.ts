@@ -37,6 +37,7 @@ export const useWingsContractWrite = <
   const [isMining, setIsMining] = useState(false);
   const configuredNetwork = getTargetNetwork();
 
+  console.log({ overrideContractAddress });
   const wagmiContractWrite = useContractWrite({
     address:
       (overrideContractAddress as Address) ||

@@ -95,3 +95,19 @@ export function findTokenByAddress(
   const networkKey = networkName as AvailableChains; // Cast to AvailableChains type
   return tokens.find((token) => token[networkKey]?.address === address);
 }
+
+export function findContractKeyByAddress(
+  address: Address0x,
+  networkName: string
+): string | undefined {
+  const networkKey = networkName as AvailableChains;
+  const networkContracts = contractAddressesByChain[networkKey];
+
+  for (const contractKey in networkContracts) {
+    if ((networkContracts as any)[contractKey] === address) {
+      return contractKey;
+    }
+  }
+
+  return undefined;
+}

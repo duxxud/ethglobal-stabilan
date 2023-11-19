@@ -130,7 +130,7 @@ export const FirstTable = () => {
                     >
                       <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center">
                         <ImageWrapper
-                          src={tokenInfo?.icon || "default-icon.png"}
+                          src={tokenInfo?.icon || ""}
                           alt={tokenInfo?.name || "Unknown"}
                           width="30"
                           height="30"

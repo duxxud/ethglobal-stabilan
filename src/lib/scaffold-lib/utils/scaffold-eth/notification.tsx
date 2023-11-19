@@ -1,3 +1,8 @@
+import React from "react";
+import { toast } from "react-hot-toast";
+
+import { Spinner } from "../../..";
+
 type TPositions =
   | "top-left"
   | "top-center"
@@ -20,13 +25,13 @@ type NotificationOptions = {
   position?: TPositions;
 };
 
-// const ENUM_STATUSES = {
-//   success: <CheckCircleIcon className="w-7 text-success" />,
-//   loading: <Spinner />,
-//   error: <ExclamationCircleIcon className="w-7 text-error" />,
-//   info: <InformationCircleIcon className="w-7 text-info" />,
-//   warning: <ExclamationTriangleIcon className="w-7 text-warning" />,
-// };
+const ENUM_STATUSES = {
+  success: <>🍭</>,
+  loading: <Spinner />,
+  error: <>🌋</>,
+  info: <>💁</>,
+  warning: <>⚠️</>,
+};
 
 const DEFAULT_DURATION = 3000;
 const DEFAULT_POSITION: TPositions = "top-center";
@@ -41,7 +46,36 @@ const Notification = ({
   icon,
   position = DEFAULT_POSITION,
 }: TNotificationProps) => {
-  return <>test</>;
+  return toast.custom(
+    (t) => (
+      <div
+        className={`flex flex-row bg-slate-200 items-start justify-between max-w-sm rounded-xl shadow-center shadow-accent bg-base-200 p-4 transform-gpu relative transition-all duration-500 ease-in-out space-x-2
+        ${
+          position.substring(0, 3) == "top"
+            ? `hover:translate-y-1 ${t.visible ? "top-0" : "-top-96"}`
+            : `hover:-translate-y-1 ${t.visible ? "bottom-0" : "-bottom-96"}`
+        }`}
+      >
+        <div className="text-2xl self-start">
+          {icon ? icon : ENUM_STATUSES[status]}
+        </div>
+        <div className={`break-all whitespace-pre-line ${icon ? "mt-1" : ""}`}>
+          {content}
+        </div>
+
+        <div
+          className={`cursor-pointer text-lg ${icon ? "mt-1" : ""}`}
+          onClick={() => toast.dismiss(t.id)}
+        >
+          ✖️
+        </div>
+      </div>
+    ),
+    {
+      duration: status === "loading" ? Infinity : duration,
+      position,
+    }
+  );
 };
 
 export const notification = {
@@ -60,7 +94,7 @@ export const notification = {
   loading: (content: React.ReactNode, options?: NotificationOptions) => {
     return Notification({ content, status: "loading", ...options });
   },
-  remove: (toastId: any) => {
-    // toast.remove(toastId);
+  remove: (toastId: string) => {
+    toast.remove(toastId);
   },
 };
