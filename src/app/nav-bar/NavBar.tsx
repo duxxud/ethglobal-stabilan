@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Button, Icon, Icons, SidebarItem, Typography } from "../../lib";
+import { RainbowKitCustom } from "@/components/button/RainbowKitCustom/RainbowKitCustom.client";
+import { Icon, Icons, SidebarItem, Typography } from "../../lib";
 
 interface NavBarProps {
   items: SidebarItem[];
@@ -74,7 +75,7 @@ const NavBar = ({ items }: NavBarProps) => {
             <span className="sr-only">Search</span>
           </button>
           <div className="relative hidden md:block">
-            <Button color="success">Connect wallet</Button>
+            <RainbowKitCustom />
           </div>
           <button
             data-collapse-toggle="navbar-search"

@@ -7,7 +7,7 @@
 }
 
 .modalContent {
-  @apply relative w-full max-w-md mx-auto bg-white shadow-lg p-6;
+  @apply relative w-full max-w-md mx-auto bg-white shadow-lg p-8 rounded-3xl;
 }
 
 .modalCloseButton {

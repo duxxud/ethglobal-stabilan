@@ -82,7 +82,7 @@ export const RainbowKitCustom = () => {
                     {chain.name}
                   </button>
                   <Button onClick={openAccountModal} size="big" color="success">
-                    {account.displayName}
+                    {/* {account.displayName} */}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
                       : ""}

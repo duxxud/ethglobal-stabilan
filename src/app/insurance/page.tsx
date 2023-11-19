@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { CheckmarkIcon } from "react-hot-toast";
 
+import { tokens } from "app/config/tokens";
+import { getDateAsLastDayOfTheMonth } from "lib/utils/date/find-last-day-of-the-month";
 import {
   Button,
   Card,
@@ -24,30 +26,11 @@ interface IToken {
 }
 
 export default function Page() {
-  const [months, setMonths] = useState(28);
+  const [months, setMonths] = useState(1);
   const [amount, setAmount] = useState(0);
   const [selectedToken, setSelectedToken] = useState<IToken | undefined>(
     undefined
   );
-
-  const tokens = [
-    {
-      name: "Uniswap v3",
-      icon: "https://app.nexusmutual.io/logos/uniswapv2.svg",
-    },
-    {
-      name: "Goldfinch",
-      icon: "https://app.nexusmutual.io/logos/goldfinch.svg",
-    },
-    {
-      name: "Oneinch",
-      icon: "https://app.nexusmutual.io/logos/oneinch.svg",
-    },
-    {
-      name: "Beefy",
-      icon: "https://app.nexusmutual.io/logos/beefy.svg",
-    },
-  ];
 
   const selectToken = (token: IToken) => {
     setSelectedToken(token);
@@ -80,12 +63,17 @@ export default function Page() {
                 className="h-6 w-6 text-primary z-10"
               />
             )}
-            <div className="min-h-[80px]">
-              <Icon src={token.icon} width={64} height={64} />
+            <div className="min-h-[70px]">
+              <Icon
+                className="rounded-full"
+                src={token.icon}
+                width={55}
+                height={55}
+              />
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 text-center">
               <Typography type="body-bold">{token.name}</Typography>
-              <Typography type="meta">Protocol</Typography>
+              <Typography type="meta">Stablecoin</Typography>
             </div>
           </div>
         ))}
@@ -114,10 +102,11 @@ export default function Page() {
                     }
                     value={months}
                     name="months"
-                    min={28}
-                    max={365}
+                    min={1}
+                    max={6}
                     onChange={(e) => {
-                      setMonths(Number(e.target.value));
+                      const newValue = Number(e.target.value);
+                      setMonths(newValue > 6 ? 6 : newValue);
                     }}
                   />
                 </div>
@@ -126,7 +115,7 @@ export default function Page() {
                     label={<Typography type="body-bold">Amount</Typography>}
                     rightLabel={
                       <Typography type="h6" className="text-info">
-                        ETH
+                        {selectedToken ? selectedToken.name : "/"}
                       </Typography>
                     }
                     value={amount}
@@ -173,19 +162,32 @@ export default function Page() {
               <FlexCol className="gap-6">
                 <Typography type="h5">Summary</Typography>
                 <FlexRow className="gap-3 items-center">
-                  <Icon src={selectedToken.icon} width={64} height={64} />
+                  <Icon
+                    className="rounded-full"
+                    src={selectedToken.icon}
+                    width={64}
+                    height={64}
+                  />
                   <FlexCol className="gap-3">
                     <Typography type="body-bold">
                       {selectedToken.name}
                     </Typography>
-                    <Typography type="meta">Protocol</Typography>
+                    <Typography type="meta">Stablecoin</Typography>
                   </FlexCol>
                 </FlexRow>
                 <Divider />
                 <FlexRow className="justify-between">
                   <Typography>Pay in:</Typography>
                   <Typography type="body-bold" className="text-info">
-                    ETH
+                    {selectedToken.name}
+                  </Typography>
+                </FlexRow>
+                <FlexRow className="justify-between">
+                  <Typography>Until:</Typography>
+                  <Typography type="body-bold" className="text-info">
+                    {getDateAsLastDayOfTheMonth({
+                      numberOfMonths: months,
+                    }).toDateString()}
                   </Typography>
                 </FlexRow>
                 <FlexRow className="justify-between">
@@ -200,6 +202,7 @@ export default function Page() {
                     1.1896%
                   </Typography>
                 </FlexRow>
+
                 <Divider />
 
                 <Button color="success" size="big">

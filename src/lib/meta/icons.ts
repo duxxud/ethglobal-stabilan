@@ -43,4 +43,9 @@ export const Icons = {
   dsosActive: "/whiteSidebarIcons/solar_clipboard-list-bold.svg",
   vestActive: "/whiteSidebarIcons/solar_shield-keyhole-minimalistic-bold.svg",
   earnActive: "/whiteSidebarIcons/solar_wad-of-money-linear.svg",
+  // -------------- tokens --------------//
+  tokenUsdc: "/tokens/usdc.png",
+  tokenGho: "/tokens/gho.png",
+  tokenUsdt: "/tokens/usdt.png",
+  tokenDai: "/tokens/dai.png",
 };
