@@ -6,11 +6,12 @@ import { useAccount } from "wagmi";
 
 import { TokenType, formatUntilDate } from "../common";
 
-import { Address0x, contractAddresses } from "app/config/Contract-Addresses";
 import {
-  findTokenByAddress,
-  getAddressByTokenAndNetwork,
-} from "app/config/tokens";
+  Address0x,
+  AvailableChains,
+  contractAddressesByChain,
+} from "app/config/Contract-Addresses";
+import { findTokenByAddress } from "app/config/tokens";
 import {
   Button,
   EmptyContent,
@@ -40,20 +41,10 @@ export const FirstTable = () => {
     contractName: "DataProvider",
     functionName: "getUserTokens",
     args: [
-      getAddressByTokenAndNetwork(
-        contractAddresses.coreContractAddress,
-        network.modifiedName
-      ),
+      contractAddressesByChain[network.modifiedName as AvailableChains]
+        ?.StabilanCore,
       address as Address0x,
     ],
-  });
-  console.log({ userTokens });
-  console.log({ mf: network.modifiedName });
-  console.log({
-    t: getAddressByTokenAndNetwork(
-      contractAddresses.coreContractAddress,
-      network.modifiedName
-    ),
   });
 
   const modalRef = useRef<GenericModalHandles>(null);

@@ -69,7 +69,6 @@ export function getAddressByTokenAndNetwork(
 ): Address0x | undefined {
   // Find the token in the array
   const token = tokens.find((token) => token.name === tokenName);
-  console.log({ token });
 
   if (!token) {
     console.error(`Token ${tokenName} not found.`);
