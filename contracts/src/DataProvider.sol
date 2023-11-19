@@ -3,23 +3,13 @@ pragma solidity ^0.8.18;
 
 import "./interfaces/IStabilanCore.sol";
 import "./interfaces/IOptionToken.sol";
+import "./interfaces/IDataProvider.sol";
 
-contract DataProvider {
-    enum TokenType {
-        OPTION,
-        BACKING
-    }
-
-    struct UserToken {
-        TokenType tokenType;
-        address stabilanTokenAddress;
-        address undelyingAssetAddress;
-        address backedAsset;
-        uint256 endEpoch;
-        uint256 balance;
-    }
-
-    function getUserTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
+contract DataProvider is IDataProvider {
+    function getUserTokens(
+        IStabilanCore core,
+        address account
+    ) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
@@ -33,7 +23,9 @@ contract DataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.OPTION,
                     stabilanTokenAddress: address(optionTokens[i]),
-                    undelyingAssetAddress: address(optionTokens[i].underlying()),
+                    undelyingAssetAddress: address(
+                        optionTokens[i].underlying()
+                    ),
                     backedAsset: address(0),
                     endEpoch: optionTokens[i].endEpoch(),
                     balance: balance
@@ -47,7 +39,9 @@ contract DataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.BACKING,
                     stabilanTokenAddress: address(backingTokens[i]),
-                    undelyingAssetAddress: address(backingTokens[i].underlying()),
+                    undelyingAssetAddress: address(
+                        backingTokens[i].underlying()
+                    ),
                     backedAsset: backingTokens[i].backedAsset(),
                     endEpoch: backingTokens[i].endEpoch(),
                     balance: balance
@@ -63,12 +57,15 @@ contract DataProvider {
         return userTokens;
     }
 
-    function getUserOptionTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
+    function getUserOptionTokens(
+        IStabilanCore core,
+        address account
+    ) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
         IOptionToken[] memory optionTokens;
-        (optionTokens,) = core.allStabilanTokens();
+        (optionTokens, ) = core.allStabilanTokens();
 
         for (uint256 i = 0; i < optionTokens.length; i++) {
             uint256 balance = optionTokens[i].balanceOf(account);
@@ -76,7 +73,9 @@ contract DataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.OPTION,
                     stabilanTokenAddress: address(optionTokens[i]),
-                    undelyingAssetAddress: address(optionTokens[i].underlying()),
+                    undelyingAssetAddress: address(
+                        optionTokens[i].underlying()
+                    ),
                     backedAsset: address(0),
                     endEpoch: optionTokens[i].endEpoch(),
                     balance: balance
@@ -92,7 +91,10 @@ contract DataProvider {
         return userTokens;
     }
 
-    function getUserBackingTokens(IStabilanCore core, address account) external view returns (UserToken[] memory) {
+    function getUserBackingTokens(
+        IStabilanCore core,
+        address account
+    ) external view returns (UserToken[] memory) {
         UserToken[] memory userTokensTemp = new UserToken[](100);
         uint256 userTokenLen = 0;
 
@@ -105,7 +107,9 @@ contract DataProvider {
                 userTokensTemp[userTokenLen++] = UserToken({
                     tokenType: TokenType.BACKING,
                     stabilanTokenAddress: address(backingTokens[i]),
-                    undelyingAssetAddress: address(backingTokens[i].underlying()),
+                    undelyingAssetAddress: address(
+                        backingTokens[i].underlying()
+                    ),
                     backedAsset: backingTokens[i].backedAsset(),
                     endEpoch: backingTokens[i].endEpoch(),
                     balance: balance
