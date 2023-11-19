@@ -1,6 +1,7 @@
 # Stabilan
 
 Stabilan is a Decentralized Trustless Insurance Protocol developed during the ETHGlobal Istanbul 2023 Hackathon.<br/>
+<br/>
 We present a use case where users can protect their assets from price crashes or stablecoins from depegging.<br/>
 
 **DEMO**: https://stabilan-fe-2.vercel.app/s
@@ -8,14 +9,17 @@ We present a use case where users can protect their assets from price crashes or
 # What is the Stabilan Protocol?
 
 The protocol acts as a matchmaking pool between Asset Backers (risk takers) and users who are purchasing insurance.<br/>
+<br/>
 Insurance is represented as a put option with a predetermined strike price and duration chosen by the insuree.<br/>
+<br/>
 The Stabilan Protocol ensures that all insurances are always fully collateralized and solvent.<br/>
+<br/>
 Insurees are guaranteed to always be able to sell their options for the strike price and receive that value in the collateral asset.<br/>
 
 # How It Works
-Backers choose an asset to back, the amount of collateral to provide, and the duration (in months) for how long they will back the asset.<br/>
-Insurees select an asset for which they want to be insured, the asset amount, and the duration (in months) of the insurance.<br/>
-Insurees pay a premium, which is calculated based on the current utilization of the pool (similar to variable rates in Lending protocols). The entire premium is split between Backers as a reward and automatically staked as new collateral.<br/>
+Backers choose an asset to back, the amount of collateral to provide, and the duration (in months) for how long they will back the asset.<br/><br/>
+Insurees select an asset for which they want to be insured, the asset amount, and the duration (in months) of the insurance.<br/><br/>
+Insurees pay a premium, which is calculated based on the current utilization of the pool (similar to variable rates in Lending protocols). The entire premium is split between Backers as a reward and automatically staked as new collateral.<br/><br/>
 <br/>
 Insurees receive option tokens in their wallet, which are liquid and transferable. Backers also receive backing tokens in their wallet, which are transferable, giving them the option to sell their position while keeping a portion of the premiums earned up to that point.<br/>
 <br/>
