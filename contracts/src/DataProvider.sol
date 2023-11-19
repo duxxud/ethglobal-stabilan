@@ -14,6 +14,7 @@ contract DataProvider {
         TokenType tokenType;
         address stabilanTokenAddress;
         address undelyingAssetAddress;
+        address backedAsset;
         uint256 endEpoch;
         uint256 balance;
     }
@@ -33,6 +34,7 @@ contract DataProvider {
                     tokenType: TokenType.OPTION,
                     stabilanTokenAddress: address(optionTokens[i]),
                     undelyingAssetAddress: address(optionTokens[i].underlying()),
+                    backedAsset: address(0),
                     endEpoch: optionTokens[i].endEpoch(),
                     balance: balance
                 });
@@ -46,6 +48,7 @@ contract DataProvider {
                     tokenType: TokenType.BACKING,
                     stabilanTokenAddress: address(backingTokens[i]),
                     undelyingAssetAddress: address(backingTokens[i].underlying()),
+                    backedAsset: backingTokens[i].backedAsset(),
                     endEpoch: backingTokens[i].endEpoch(),
                     balance: balance
                 });
@@ -53,8 +56,8 @@ contract DataProvider {
         }
 
         UserToken[] memory userTokens = new UserToken[](userTokenLen);
-        for(uint256 i = 0; i < userTokenLen; i++) {
-          userTokens[i] = userTokensTemp[i];
+        for (uint256 i = 0; i < userTokenLen; i++) {
+            userTokens[i] = userTokensTemp[i];
         }
 
         return userTokens;

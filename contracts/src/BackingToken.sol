@@ -7,7 +7,7 @@ import "./interfaces/IBackingToken.sol";
 import "./StabilanToken.sol";
 
 contract BackingToken is IBackingToken, StabilanToken {
-    address backedAsset;
+    address public backedAsset;
 
     constructor(
         string memory _name,
